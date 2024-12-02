@@ -18,8 +18,7 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var bytes, _ = os.ReadFile("input.txt")
 	var input = string(bytes)
-	assert.Equal(t, 999, TotalDistanceBetweenListsElements(input))
+	assert.Equal(t, 1530215, TotalDistanceBetweenListsElements(input))
 }
