@@ -21,6 +21,10 @@ func TotalDistanceBetweenListsElements(input string) int {
 	return totalDifferences
 }
 
+func SimilarityScoreFor(input string) int {
+	return -1
+}
+
 func parseListsFrom(rows []string) ([]int, []int) {
 	var rowsCount = len(rows)
 	var firstList = make([]int, 0, rowsCount)
