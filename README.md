@@ -15,12 +15,13 @@ Use temporary container with current directory volume:
 
 ```
 $ docker run --rm -it -v $PWD:/app -w /app golang:1.23.3 bash
+# go install github.com/mfridman/tparse@latest
 ```
 
 and run tests with
 ```
-# go install github.com/mfridman/tparse@latest
-# go test -json | tparse
+# go test ./... -json | tparse
+# go test ./day01 -json | tparse
 ```
 
 ### VSCode Dev Container setup
