@@ -24,7 +24,6 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 }
 
 func TestSolveSecondPartWithProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var input =
 		"3   4\n" +
 		"4   3\n" +
@@ -36,8 +35,7 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileBytes, _ = os.ReadFile("input.txt")
 	var actual = SimilarityScoreFor(string(fileBytes))
-	assert.Equal(t, 9999, actual)
+	assert.Equal(t, 26800609, actual)
 }

@@ -20,7 +20,14 @@ func TotalDistanceBetweenListsElements(input string) int {
 }
 
 func SimilarityScoreFor(input string) int {
-	return -1
+	var firstList, secondList = parseListsFrom(input)
+	var similarityScore = 0
+	for _, element := range firstList.elements {
+		var occurenceCount = secondList.OccurenceCount(element)
+		similarityScore += element * occurenceCount
+	}
+
+	return similarityScore
 }
 
 func parseListsFrom(input string) (NumberList, NumberList) {
