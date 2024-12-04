@@ -1,21 +1,19 @@
 package day01
 
 import (
-	"sort"
 	"strconv"
 	"strings"
 )
 
 func TotalDistanceBetweenListsElements(input string) int {
-	var rows = rowsFrom(input)
-	var firstList, secondList = parseListsFrom(rows)
+	var firstList, secondList = parseListsFrom(input)
 
-	sort.Ints(firstList)
-	sort.Ints(secondList)
+	firstList.Sort()
+	secondList.Sort()
 
 	var totalDifferences = 0
-	for i := 0; i < len(firstList); i++ {
-		totalDifferences += absoluteDifference(firstList[i], secondList[i])
+	for i := 0; i < firstList.Length(); i++ {
+		totalDifferences += absoluteDifference(firstList.At(i), secondList.At(i))
 	}
 
 	return totalDifferences
@@ -25,8 +23,10 @@ func SimilarityScoreFor(input string) int {
 	return -1
 }
 
-func parseListsFrom(rows []string) ([]int, []int) {
+func parseListsFrom(input string) (NumberList, NumberList) {
+	var rows = rowsFrom(input)
 	var rowsCount = len(rows)
+
 	var firstList = make([]int, 0, rowsCount)
 	var secondList = make([]int, 0, rowsCount)
 	for _, row := range rows {
@@ -37,7 +37,7 @@ func parseListsFrom(rows []string) ([]int, []int) {
 		secondList = append(secondList, secondListNumber)
 	}
 
-	return firstList, secondList
+	return NumberList{firstList}, NumberList{secondList}
 }
 
 func absoluteDifference(n1 int, n2 int) int {
