@@ -18,6 +18,14 @@ func (this NumberList) At(index int) int {
 	return this.elements[index]
 }
 
+func (this NumberList) SimilarityScoreWith(other NumberList) int {
+	if(this.elements[0] == other.elements[0]) {
+		return this.elements[0]
+	}
+
+	return 0
+}
+
 func (this NumberList) OccurenceCount(target int) int {
 	var count = 0
 

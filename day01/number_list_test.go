@@ -36,3 +36,19 @@ func TestGetOccurenceCount(t *testing.T) {
 	assert.Equal(t, 1, numberList.OccurenceCount(66));
 	assert.Equal(t, 0, numberList.OccurenceCount(99));
 }
+
+func TestSimilarityScoreIsZeroWithoutCommonNumbers(t *testing.T) {
+	var firstList = NumberList{[]int{19}}
+	var secondList = NumberList{[]int{42}}
+	
+	assert.Equal(t, 0, firstList.SimilarityScoreWith(secondList));
+	assert.Equal(t, 0, secondList.SimilarityScoreWith(firstList));
+}
+
+func TestSimilarityScoreWithSingleCommonNumberIsTheNumberValue(t *testing.T) {
+	var firstList = NumberList{[]int{19}}
+	var secondList = NumberList{[]int{19}}
+	
+	assert.Equal(t, 19, firstList.SimilarityScoreWith(secondList));
+	assert.Equal(t, 19, secondList.SimilarityScoreWith(firstList));
+}
