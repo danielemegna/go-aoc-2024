@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func TotalDistanceBetweenListsElements(input string) int {
-	var firstList, secondList = parseListsFrom(input)
+func TotalDistanceBetweenListsElements(fileContent string) int {
+	var firstList, secondList = parseListsFrom(fileContent)
 
 	firstList.Sort()
 	secondList.Sort()
@@ -19,8 +19,8 @@ func TotalDistanceBetweenListsElements(input string) int {
 	return totalDifferences
 }
 
-func SimilarityScoreFor(input string) int {
-	var firstList, secondList = parseListsFrom(input)
+func SimilarityScoreFor(fileContent string) int {
+	var firstList, secondList = parseListsFrom(fileContent)
 	return firstList.SimilarityScoreWith(secondList)
 }
 
