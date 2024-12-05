@@ -45,10 +45,34 @@ func TestSimilarityScoreIsZeroWithoutCommonNumbers(t *testing.T) {
 	assert.Equal(t, 0, secondList.SimilarityScoreWith(firstList));
 }
 
-func TestSimilarityScoreWithSingleCommonNumberIsTheNumberValue(t *testing.T) {
+func TestSimilarityScoreWithSameSingleNumberIsTheNumberValue(t *testing.T) {
 	var firstList = NumberList{[]int{19}}
 	var secondList = NumberList{[]int{19}}
 	
 	assert.Equal(t, 19, firstList.SimilarityScoreWith(secondList));
 	assert.Equal(t, 19, secondList.SimilarityScoreWith(firstList));
+}
+
+func TestSimilarityScoreWithSingleCommonNumberIsTheNumberValue(t *testing.T) {
+	var firstList = NumberList{[]int{19, 42, 11}}
+	var secondList = NumberList{[]int{63, 84, 19}}
+	
+	assert.Equal(t, 19, firstList.SimilarityScoreWith(secondList));
+	assert.Equal(t, 19, secondList.SimilarityScoreWith(firstList));
+}
+
+func TestSimilarityScoreIsTheSumOfCommonElements(t *testing.T) {
+	var firstList = NumberList{[]int{19, 42, 63, 11, 69}}
+	var secondList = NumberList{[]int{63, 84, 19, 72, 88}}
+	
+	assert.Equal(t, 19 + 63, firstList.SimilarityScoreWith(secondList));
+	assert.Equal(t, 19 + 63, secondList.SimilarityScoreWith(firstList));
+}
+
+func TestSimilarityScoreShouldCountMultipleCommonElements(t *testing.T) {
+	var firstList = NumberList{[]int{19, 42, 63, 11, 69}}
+	var secondList = NumberList{[]int{63, 84, 19, 72, 19}}
+	
+	assert.Equal(t, (19 * 2) + (63 * 1), firstList.SimilarityScoreWith(secondList));
+	assert.Equal(t, (19 * 2) + (63 * 1), secondList.SimilarityScoreWith(firstList));
 }
