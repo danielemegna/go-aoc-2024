@@ -15,12 +15,18 @@ func TestNotConstantIncreasingReportIsInvalid(t *testing.T) {
 	assert.False(t, report.IsValid())
 }
 
-func TestConstantReportIsValid(t *testing.T) {
+func TestConstantReportIsNotValid(t *testing.T) {
 	var report = Report{[]int{2, 2, 2}}
-	assert.True(t, report.IsValid())
+	assert.False(t, report.IsValid())
+}
+
+func TestReportWithTwoConstantValueInTheMiddleIsNotValid(t *testing.T) {
+	var report = Report{[]int{1, 2, 3, 3, 4}}
+	assert.False(t, report.IsValid())
 }
 
 func TestSequentialDecreasingReportIsValid(t *testing.T) {
 	var report = Report{[]int{4, 3, 2}}
 	assert.True(t, report.IsValid())
 }
+
