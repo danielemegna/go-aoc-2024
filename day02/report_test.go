@@ -44,3 +44,9 @@ func TestDecreasingReportWithMoreThanThreeLevelDifferenceIsNotValid(t *testing.T
 	var report = Report{[]int{9, 7, 6, 2, 1}}
 	assert.False(t, report.IsValid())
 }
+
+func TestBuildReportFromString(t *testing.T) {
+	assert.Equal(t, Report{[]int{1, 3, 2, 4, 5}}, BuildReportFrom("1 3 2 4 5"))
+	assert.Equal(t, Report{[]int{1, 3, 6, 7, 9}}, BuildReportFrom("1 3 6 7 9"))
+	assert.Equal(t, Report{[]int{7, 6, 4, 2, 1}}, BuildReportFrom("7 6 4 2 1"))
+}

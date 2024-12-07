@@ -1,5 +1,10 @@
 package day02
 
+import (
+	"strconv"
+	"strings"
+)
+
 type Report struct {
 	levels []int
 }
@@ -25,6 +30,18 @@ func (this Report) IsValid() bool {
 	}
 
 	return true
+}
+
+func BuildReportFrom(value string) Report {
+	var reportLevels []int
+	var levelsAsStrings = strings.Split(value, " ")
+
+	for _, levelAsString := range levelsAsStrings {
+		var levelValue, _ = strconv.Atoi(levelAsString)
+		reportLevels = append(reportLevels, levelValue)
+	}
+
+	return Report{reportLevels}
 }
 
 func isAValidIncreasingDiffence(levelsDifference int) bool {
