@@ -43,6 +43,9 @@ func simulateFileContent(inputLines []string) string {
 }
 
 func readFileContent() string {
-	var fileBytes, _ = os.ReadFile("input.txt")
+	var fileBytes, err = os.ReadFile("input.txt")
+	if err != nil {
+		panic("Cannot find input.txt file to solve with file")
+	}
 	return string(fileBytes)
 }
