@@ -21,7 +21,6 @@ func TestConstantReportIsValid(t *testing.T) {
 }
 
 func TestSequentialDecreasingReportIsValid(t *testing.T) {
-	t.Skip("WIP")
 	var report = Report{[]int{4, 3, 2}}
 	assert.True(t, report.IsValid())
 }
