@@ -5,20 +5,32 @@ type Report struct {
 }
 
 func (this Report) IsValid() bool {
-	var isIncreasing = true
-	var isDecreasing = true
+	var isAValidIncreasingReport = true
+	var isAValidDecreasingReport = true
 
 	for i := 0; i < len(this.levels)-1; i++ {
-		if(isIncreasing && this.levels[i] >= this.levels[i+1]) {
-			isIncreasing = false
+		var levelDifferenceWithNext = this.levels[i+1] - this.levels[i]
+
+		if isAValidIncreasingReport {
+			isAValidIncreasingReport = isAValidIncreasingDiffence(levelDifferenceWithNext)
 		}
-		if(isDecreasing && this.levels[i] <= this.levels[i+1]) {
-			isDecreasing = false
+
+		if isAValidDecreasingReport {
+			isAValidDecreasingReport = isAValidDecreasingDiffence(levelDifferenceWithNext)
 		}
-		
-		if(!isIncreasing && !isDecreasing) {
-			return false;
+
+		if !isAValidIncreasingReport && !isAValidDecreasingReport {
+			return false
 		}
 	}
+
 	return true
+}
+
+func isAValidIncreasingDiffence(levelsDifference int) bool {
+	return levelsDifference > 0 && levelsDifference <= 3
+}
+
+func isAValidDecreasingDiffence(levelsDifference int) bool {
+	return levelsDifference < 0 && levelsDifference >= -3
 }
