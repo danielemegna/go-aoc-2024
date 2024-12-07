@@ -1,5 +1,23 @@
 package day02
 
+import "strings"
+
 func SafeReportsCount(fileContent string) int {
-	return 2
+	var safeReportsCount = 0
+	var rows = rowsFrom(fileContent)
+
+	for _, row := range rows {
+		var report = BuildReportFrom(row)	
+		if(report.IsValid()) {
+			safeReportsCount++
+		}
+	}
+
+	return safeReportsCount
+}
+
+func rowsFrom(input string) []string {
+	var rows = strings.Split(input, "\n")
+	rows = rows[:len(rows)-1]
+	return rows
 }
