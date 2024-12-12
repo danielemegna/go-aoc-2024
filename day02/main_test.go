@@ -27,6 +27,18 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 383, actual)
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 4, SafeReportsCountWithTollerance(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	var actual = SafeReportsCountWithTollerance(fileContent)
+	assert.Equal(t, 9999, actual)
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }

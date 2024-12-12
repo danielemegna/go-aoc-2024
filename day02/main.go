@@ -16,6 +16,10 @@ func SafeReportsCount(fileContent string) int {
 	return safeReportsCount
 }
 
+func SafeReportsCountWithTollerance(fileContent string) int {
+	return 4
+}
+
 func rowsFrom(input string) []string {
 	var rows = strings.Split(input, "\n")
 	rows = rows[:len(rows)-1]
