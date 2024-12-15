@@ -19,6 +19,11 @@ func (this Report) IsSafeWithTolerance() bool {
 		return true
 	}
 
+	if(*unsafeValueIndex == 1) {
+		var cleanLevels = this.levels[1:]
+		return Report{cleanLevels}.IsSafe()
+	}
+
 	var cleanLevels = append(
 		this.levels[:*unsafeValueIndex],
 		this.levels[*unsafeValueIndex+1:]...,
