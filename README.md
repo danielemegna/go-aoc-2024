@@ -26,6 +26,7 @@ and run tests with
 ```
 # go test ./... -json | tparse
 # go test ./day01 -json | tparse
+# go test ./day02 -run TestRunSingleTest -json | tparse
 ```
 
 ### VSCode Dev Container setup
