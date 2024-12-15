@@ -46,9 +46,21 @@ func TestDecreasingReportWithMoreThanThreeLevelDifferenceIsNotSafe(t *testing.T)
 }
 
 func TestSafeReportToleratingStartingSingleBadLevel(t *testing.T) {
-	var report = Report{[]int{99, 1, 3, 6, 8}}
-	assert.False(t, report.IsSafe())
-	assert.True(t, report.IsSafeWithTolerance())
+	var reports = []Report{
+		{[]int{99, 1, 3, 5}},
+		{[]int{99, 7, 6, 5}},
+		{[]int{1, 6, 7, 8}},
+		{[]int{1, 7, 6, 5}},
+		{[]int{1, 1, 3, 5}},
+		{[]int{7, 7, 6, 5}},
+		{[]int{8, 6, 7, 8}},
+		{[]int{6, 7, 6, 5}},
+	}
+
+	for _, report := range reports {
+		assert.False(t, report.IsSafe(), report)
+		assert.True(t, report.IsSafeWithTolerance(), report)
+	}
 }
 
 func TestSafeReportToleratingSingleBadLevelInTheMiddle(t *testing.T) {

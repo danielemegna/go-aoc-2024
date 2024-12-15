@@ -1,6 +1,7 @@
 package day02
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -19,19 +20,13 @@ func (this Report) IsSafeWithTolerance() bool {
 		return true
 	}
 
-	if *unsafeValueIndex == 1 {
-		var excludeFirstLevelValue = this.levels[1:]
-		var isSafe = Report{excludeFirstLevelValue}.IsSafe()
-		if isSafe {
-			return isSafe
-		}
-	}
+	var withoutFirstValueReport = Report{slices.Clone(this.levels[1:])}
+	var withoutFoundUnsafeValueReport = Report{append(
+		slices.Clone(this.levels[:*unsafeValueIndex]),
+		slices.Clone(this.levels[*unsafeValueIndex+1:])...,
+	)}
 
-	var cleanLevels = append(
-		this.levels[:*unsafeValueIndex],
-		this.levels[*unsafeValueIndex+1:]...,
-	)
-	return Report{cleanLevels}.IsSafe()
+	return withoutFoundUnsafeValueReport.IsSafe() || withoutFirstValueReport.IsSafe()
 }
 
 func (this Report) unsafeValueIndex() *int {
