@@ -25,8 +25,8 @@ $ docker run --rm -it -v $PWD:/app -w /app golang:1.23.3 bash
 and run tests with
 ```
 # go test ./... -json | tparse
-# go test ./day01 -json | tparse
-# go test ./day02 -run TestRunSingleTest -json | tparse
+# go test ./day01 -json | tparse --all
+# go test ./day02 -run TestRunSingleTest -json | tparse --all
 ```
 
 ### VSCode Dev Container setup
