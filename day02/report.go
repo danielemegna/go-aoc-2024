@@ -9,22 +9,22 @@ type Report struct {
 	levels []int
 }
 
-func (this Report) IsValid() bool {
-	var isAValidIncreasingReport = true
-	var isAValidDecreasingReport = true
+func (this Report) IsSafe() bool {
+	var isASafeIncreasingReport = true
+	var isASafeDecreasingReport = true
 
 	for i := 0; i < len(this.levels)-1; i++ {
 		var levelDifferenceWithNext = this.levels[i+1] - this.levels[i]
 
-		if isAValidIncreasingReport {
-			isAValidIncreasingReport = isAValidIncreasingDiffence(levelDifferenceWithNext)
+		if isASafeIncreasingReport {
+			isASafeIncreasingReport = isASafeIncreasingDiffence(levelDifferenceWithNext)
 		}
 
-		if isAValidDecreasingReport {
-			isAValidDecreasingReport = isAValidDecreasingDiffence(levelDifferenceWithNext)
+		if isASafeDecreasingReport {
+			isASafeDecreasingReport = isASafeDecreasingDiffence(levelDifferenceWithNext)
 		}
 
-		if !isAValidIncreasingReport && !isAValidDecreasingReport {
+		if !isASafeIncreasingReport && !isASafeDecreasingReport {
 			return false
 		}
 	}
@@ -44,10 +44,10 @@ func BuildReportFrom(value string) Report {
 	return Report{reportLevels}
 }
 
-func isAValidIncreasingDiffence(levelsDifference int) bool {
+func isASafeIncreasingDiffence(levelsDifference int) bool {
 	return levelsDifference > 0 && levelsDifference <= 3
 }
 
-func isAValidDecreasingDiffence(levelsDifference int) bool {
+func isASafeDecreasingDiffence(levelsDifference int) bool {
 	return levelsDifference < 0 && levelsDifference >= -3
 }

@@ -8,7 +8,7 @@ func SafeReportsCount(fileContent string) int {
 
 	for _, row := range rows {
 		var report = BuildReportFrom(row)	
-		if(report.IsValid()) {
+		if(report.IsSafe()) {
 			safeReportsCount++
 		}
 	}

@@ -5,44 +5,44 @@ import (
 	"testing"
 )
 
-func TestSequentialIncreasingReportIsValid(t *testing.T) {
+func TestSequentialIncreasingReportIsSafe(t *testing.T) {
 	var report = Report{[]int{1, 2, 3}}
-	assert.True(t, report.IsValid())
+	assert.True(t, report.IsSafe())
 }
 
-func TestSequentialDecreasingReportIsValid(t *testing.T) {
+func TestSequentialDecreasingReportIsSafe(t *testing.T) {
 	var report = Report{[]int{4, 3, 2}}
-	assert.True(t, report.IsValid())
+	assert.True(t, report.IsSafe())
 }
 
-func TestNotIncreasingOrDecreasingReportIsInvalid(t *testing.T) {
+func TestNotIncreasingOrDecreasingReportIsNotSafe(t *testing.T) {
 	var report = Report{[]int{1, 3, 2}}
-	assert.False(t, report.IsValid())
+	assert.False(t, report.IsSafe())
 }
 
-func TestConstantLevelValuesReportIsNotValid(t *testing.T) {
+func TestConstantLevelValuesReportIsNotSafe(t *testing.T) {
 	var report = Report{[]int{2, 2, 2}}
-	assert.False(t, report.IsValid())
+	assert.False(t, report.IsSafe())
 }
 
-func TestReportWithConstantLevelValuesInTheMiddleIsNotValid(t *testing.T) {
+func TestReportWithConstantLevelValuesInTheMiddleIsNotSafe(t *testing.T) {
 	var report = Report{[]int{1, 2, 3, 3, 4}}
-	assert.False(t, report.IsValid())
+	assert.False(t, report.IsSafe())
 }
 
-func TestReportWithAtMostThreeLevelDifferencesIsValid(t *testing.T) {
+func TestReportWithAtMostThreeLevelDifferencesIsSafe(t *testing.T) {
 	var report = Report{[]int{1, 3, 6, 7, 9}}
-	assert.True(t, report.IsValid())
+	assert.True(t, report.IsSafe())
 }
 
-func TestIncreasingReportWithMoreThanThreeLevelDifferenceIsNotValid(t *testing.T) {
+func TestIncreasingReportWithMoreThanThreeLevelDifferenceIsNotSafe(t *testing.T) {
 	var report = Report{[]int{1, 2, 7, 8, 9}}
-	assert.False(t, report.IsValid())
+	assert.False(t, report.IsSafe())
 }
 
-func TestDecreasingReportWithMoreThanThreeLevelDifferenceIsNotValid(t *testing.T) {
+func TestDecreasingReportWithMoreThanThreeLevelDifferenceIsNotSafe(t *testing.T) {
 	var report = Report{[]int{9, 7, 6, 2, 1}}
-	assert.False(t, report.IsValid())
+	assert.False(t, report.IsSafe())
 }
 
 func TestBuildReportFromString(t *testing.T) {
