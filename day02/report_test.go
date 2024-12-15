@@ -70,15 +70,18 @@ func TestSafeReportToleratingSingleBadLevelInTheMiddle(t *testing.T) {
 		{[]int{5, 6, 6, 8}},
 		{[]int{5, 6, 5, 8}},
 		{[]int{5, 4, 6, 7}},
+		{[]int{5, 4, 8, 9}},
 
 		{[]int{8, 1, 6, 5}},
 		{[]int{8, 7, 99, 5}},
 		{[]int{8, 7, 7, 5}},
 		{[]int{8, 7, 8, 5}},
-		{[]int{8, 9, 7, 6}},
+		{[]int{8, 9, 5, 4}},
 
 		{[]int{1, 3, 2, 4, 5}},
 		{[]int{8, 6, 4, 4, 1}},
+		{[]int{27, 29, 25, 22, 19}},
+		{[]int{44, 47, 46, 47, 49}},
 	}
 
 	for _, report := range reports {
