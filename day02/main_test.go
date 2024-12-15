@@ -33,10 +33,9 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	var actual = SafeReportsCountWithTollerance(fileContent)
-	assert.Equal(t, 9999, actual)
+	assert.Equal(t, 436, actual)
 }
 
 func simulateFileContent(inputLines []string) string {
