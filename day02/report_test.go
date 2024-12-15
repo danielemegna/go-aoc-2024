@@ -54,6 +54,7 @@ func TestSafeReportToleratingStartingSingleBadLevel(t *testing.T) {
 func TestSafeReportToleratingSingleBadLevelInTheMiddle(t *testing.T) {
 	var reports = []Report{
 		{[]int{1, 3, 2, 4, 5}},
+		{[]int{3, 99, 4, 5}},
 		{[]int{8, 6, 4, 4, 1}},
 		{[]int{1, 2, 3, 2, 4}},
 	}
@@ -83,6 +84,10 @@ func TestUnsafeReportRegardlessToleratingSingleBadLevel(t *testing.T) {
 		{[]int{1, 2, 7, 8, 9}},
 		{[]int{9, 7, 6, 2, 1}},
 		{[]int{1, 2, 3, 2, 3}},
+		{[]int{99, 3, 4, 5, 99}},
+		{[]int{3, 99, 4, 5, 99}},
+		{[]int{99, 3, 4, 99, 5}},
+		{[]int{3, 99, 4, 99, 5}},
 	}
 
 	for _, report := range reports {

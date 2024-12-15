@@ -19,9 +19,12 @@ func (this Report) IsSafeWithTolerance() bool {
 		return true
 	}
 
-	if(*unsafeValueIndex == 1) {
-		var cleanLevels = this.levels[1:]
-		return Report{cleanLevels}.IsSafe()
+	if *unsafeValueIndex == 1 {
+		var excludeFirstLevelValue = this.levels[1:]
+		var isSafe = Report{excludeFirstLevelValue}.IsSafe()
+		if isSafe {
+			return isSafe
+		}
 	}
 
 	var cleanLevels = append(
@@ -47,7 +50,7 @@ func (this Report) unsafeValueIndex() *int {
 		}
 
 		if !isASafeIncreasingReport && !isASafeDecreasingReport {
-			var unsafeValueIndex = i + 1 // TODO check with first index unsafe value
+			var unsafeValueIndex = i + 1
 			return &unsafeValueIndex
 		}
 	}
