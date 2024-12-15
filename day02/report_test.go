@@ -45,6 +45,36 @@ func TestDecreasingReportWithMoreThanThreeLevelDifferenceIsNotSafe(t *testing.T)
 	assert.False(t, report.IsSafe())
 }
 
+func TestSafeReportToleratingSingleBadLevelInTheMiddle(t *testing.T) {
+	var report = Report{[]int{1, 3, 2, 4, 5}}
+	assert.False(t, report.IsSafe())
+	assert.True(t, report.IsSafeWithTolerance())
+	report = Report{[]int{8, 6, 4, 4, 1}}
+	assert.False(t, report.IsSafe())
+	assert.True(t, report.IsSafeWithTolerance())
+	report = Report{[]int{1, 2, 3, 2, 4}}
+	assert.False(t, report.IsSafe())
+	assert.True(t, report.IsSafeWithTolerance())
+}
+
+func TestSafeReportToleratingSingleBadLevelAtTheEnd(t *testing.T) {
+	var report = Report{[]int{1, 3, 6, 1}}
+	assert.False(t, report.IsSafe())
+	assert.True(t, report.IsSafeWithTolerance())
+}
+
+func TestUnsafeReportRegardlessToleratingSingleBadLevel(t *testing.T) {
+	var report = Report{[]int{1, 2, 7, 8, 9}}
+	assert.False(t, report.IsSafe())
+	assert.False(t, report.IsSafeWithTolerance())
+	report = Report{[]int{9, 7, 6, 2, 1}}
+	assert.False(t, report.IsSafe())
+	assert.False(t, report.IsSafeWithTolerance())
+	report = Report{[]int{1, 2, 3, 2, 3}}
+	assert.False(t, report.IsSafe())
+	assert.False(t, report.IsSafeWithTolerance())
+}
+
 func TestBuildReportFromString(t *testing.T) {
 	assert.Equal(t, Report{[]int{1, 3, 2, 4, 5}}, BuildReportFrom("1 3 2 4 5"))
 	assert.Equal(t, Report{[]int{1, 3, 6, 7, 9}}, BuildReportFrom("1 3 6 7 9"))

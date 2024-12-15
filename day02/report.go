@@ -10,6 +10,23 @@ type Report struct {
 }
 
 func (this Report) IsSafe() bool {
+	return this.unsafeValueIndex() == nil
+}
+
+func (this Report) IsSafeWithTolerance() bool {
+	var unsafeValueIndex = this.unsafeValueIndex()
+	if unsafeValueIndex == nil {
+		return true
+	}
+
+	var cleanLevels = append(
+		this.levels[:*unsafeValueIndex],
+		this.levels[*unsafeValueIndex+1:]...,
+	)
+	return Report{cleanLevels}.IsSafe()
+}
+
+func (this Report) unsafeValueIndex() *int {
 	var isASafeIncreasingReport = true
 	var isASafeDecreasingReport = true
 
@@ -25,11 +42,12 @@ func (this Report) IsSafe() bool {
 		}
 
 		if !isASafeIncreasingReport && !isASafeDecreasingReport {
-			return false
+			var unsafeValueIndex = i + 1 // TODO check with first index unsafe value
+			return &unsafeValueIndex
 		}
 	}
 
-	return true
+	return nil
 }
 
 func BuildReportFrom(value string) Report {
