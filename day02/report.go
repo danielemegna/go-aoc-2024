@@ -15,18 +15,25 @@ func (this Report) IsSafe() bool {
 }
 
 func (this Report) IsSafeWithTolerance() bool {
-
-	if this.IsSafe() {
+	var unsafeValueIndex = this.unsafeValueIndex()
+	if unsafeValueIndex == nil {
 		return true
 	}
 
-	for i := 0; i < len(this.levels); i++ {
-		var partialReport = Report{append(
-			slices.Clone(this.levels[:i]),
-			slices.Clone(this.levels[i+1:])...,
-		)}
+	var reportsToTry = []Report{
+		{slices.Clone(this.levels[1:])},
+		{append(
+			slices.Clone(this.levels[:*unsafeValueIndex-1]),
+			slices.Clone(this.levels[*unsafeValueIndex:])...,
+		)},
+		{append(
+			slices.Clone(this.levels[:*unsafeValueIndex]),
+			slices.Clone(this.levels[*unsafeValueIndex+1:])...,
+		)},
+	}
 
-		if partialReport.IsSafe() {
+	for _, report := range reportsToTry {
+		if report.IsSafe() {
 			return true
 		}
 	}
