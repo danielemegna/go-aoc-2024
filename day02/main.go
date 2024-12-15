@@ -17,7 +17,17 @@ func SafeReportsCount(fileContent string) int {
 }
 
 func SafeReportsCountWithTollerance(fileContent string) int {
-	return 4
+	var safeReportsCount = 0
+	var rows = rowsFrom(fileContent)
+
+	for _, row := range rows {
+		var report = BuildReportFrom(row)	
+		if(report.IsSafeWithTolerance()) {
+			safeReportsCount++
+		}
+	}
+
+	return safeReportsCount
 }
 
 func rowsFrom(input string) []string {
