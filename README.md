@@ -11,6 +11,8 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 1530215, actual)
 }
 ```
+
+> following AOC authors guidelines, input.txt files are not included in the repo
 ----
 
 ### Docker-only dev setup
