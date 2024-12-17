@@ -15,8 +15,6 @@ func ParseInstruction(s string) Instruction {
 }
 
 type Instruction interface {
-	GetFirstOperand() int
-	GetSecondOperand() int
 	GetTotal() int
 }
 
@@ -25,8 +23,6 @@ type MulInstruction struct {
 	multiplier  int
 }
 
-func (this MulInstruction) GetFirstOperand() int  { return this.multiplying }
-func (this MulInstruction) GetSecondOperand() int { return this.multiplier }
 func (this MulInstruction) GetTotal() int {
 	return this.multiplying * this.multiplier
 }
