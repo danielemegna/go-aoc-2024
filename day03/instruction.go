@@ -5,6 +5,13 @@ import (
 	"strings"
 )
 
+func FindAndParseInstructions(s string) []Instruction {
+	if strings.HasPrefix(s, "mul") {
+		return []Instruction{ParseInstruction(s)}
+	}
+	return []Instruction{}
+}
+
 func ParseInstruction(s string) Instruction {
 	var commaSplitParts = strings.Split(s, ",")
 	var firstOperandPart = strings.Split(commaSplitParts[0], "(")

@@ -30,3 +30,21 @@ func TestParseMultiplyInstructionWithGarbageAround(t *testing.T) {
 	var instruction = ParseInstruction("%&xmul(14,8)!@^do")
 	assert.Equal(t, MulInstruction{14, 8}, instruction)
 }
+
+func TestFindAndParseInstructionsOfEmptyString(t *testing.T) {
+	var actual = FindAndParseInstructions("")
+	assert.Equal(t, []Instruction{}, actual)
+}
+
+func TestFindAndParseInstructionsOfGarbageString(t *testing.T) {
+	var actual = FindAndParseInstructions("4]then(mu")
+	assert.Equal(t, []Instruction{}, actual)
+}
+
+func TestFindAndParseInstructionsSingleMulInstruction(t *testing.T) {
+	var actual = FindAndParseInstructions("mul(11,8)")
+	var expected = []Instruction{
+		MulInstruction{11, 8},
+	}
+	assert.Equal(t, expected, actual)
+}
