@@ -25,3 +25,8 @@ func TestParseMultiplyInstructionWithMultipleDigitsOperand(t *testing.T) {
 	instruction = ParseInstruction("mul(2,24)")
 	assert.Equal(t, MulInstruction{2, 24}, instruction)
 }
+
+func TestParseMultiplyInstructionWithGarbageAround(t *testing.T) {
+	var instruction = ParseInstruction("%&xmul(14,8)!@^do")
+	assert.Equal(t, MulInstruction{14, 8}, instruction)
+}
