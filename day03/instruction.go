@@ -13,11 +13,11 @@ func FindAndParseInstructions(s string) []Instruction {
 }
 
 func ParseInstruction(s string) Instruction {
-	var commaSplitParts = strings.Split(s, ",")
-	var firstOperandPart = strings.Split(commaSplitParts[0], "(")
-	var secondOperandParts = strings.Split(commaSplitParts[1], ")")
-	var multiplying, _ = strconv.Atoi(firstOperandPart[len(firstOperandPart)-1])
-	var multiplier, _ = strconv.Atoi(secondOperandParts[0])
+	var firstOperandPart, secondOperandPart, _ = strings.Cut(s, ",")
+	var _, firstOperandString, _ = strings.Cut(firstOperandPart, "(")
+	var secondOperandString, _, _ = strings.Cut(secondOperandPart, ")")
+	var multiplying, _ = strconv.Atoi(firstOperandString)
+	var multiplier, _ = strconv.Atoi(secondOperandString)
 	return MulInstruction{multiplying, multiplier}
 }
 
