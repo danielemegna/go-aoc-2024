@@ -1,5 +1,5 @@
 package day03
 
-func SumOfOperationsIn(fileContent string) int {
+func SumOfInstructionsIn(fileContent string) int {
 	return 161
 }

@@ -13,13 +13,13 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 2*4+5*5+11*8+8*5, SumOfOperationsIn(fileContent))
+	assert.Equal(t, 2*4+5*5+11*8+8*5, SumOfInstructionsIn(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
 	t.Skip("WIP")
 	var fileContent = readFileContent()
-	var actual = SumOfOperationsIn(fileContent)
+	var actual = SumOfInstructionsIn(fileContent)
 	assert.Equal(t, 999, actual)
 }
 
