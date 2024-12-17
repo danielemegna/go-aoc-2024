@@ -1,5 +1,7 @@
 package day03
 
+import "strconv"
+
 type Instruction interface {
 	GetFirstOperand() int
 	GetSecondOperand() int
@@ -12,11 +14,13 @@ type MulInstruction struct {
 }
 
 func ParseInstruction(s string) Instruction {
-	return MulInstruction{}
+	var multiplying, _ = strconv.Atoi(s[4:5])
+	var multiplier, _ = strconv.Atoi(s[6:7])
+	return MulInstruction{multiplying, multiplier}
 }
 
-func (this MulInstruction) GetFirstOperand() int  { return -1 }
-func (this MulInstruction) GetSecondOperand() int { return -1 }
+func (this MulInstruction) GetFirstOperand() int  { return this.multiplying }
+func (this MulInstruction) GetSecondOperand() int { return this.multiplier }
 func (this MulInstruction) GetTotal() int {
 	return this.multiplying * this.multiplier
 }

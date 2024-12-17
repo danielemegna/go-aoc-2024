@@ -12,9 +12,17 @@ func TestGetTotalOfMultiplyInstruction(t *testing.T) {
 	assert.Equal(t, 3*5, instruction.GetTotal())
 }
 
+func TestGetOperandsOfMultiplyInstruction(t *testing.T) {
+	var instruction = MulInstruction{2, 3}
+	assert.Equal(t, 2, instruction.GetFirstOperand())
+	assert.Equal(t, 3, instruction.GetSecondOperand())
+}
+
 func TestParseMultiplyInstruction(t *testing.T) {
-	t.Skip("WIP")
 	var instruction = ParseInstruction("mul(2,3)")
 	assert.Equal(t, 2, instruction.GetFirstOperand())
 	assert.Equal(t, 3, instruction.GetSecondOperand())
+	instruction = ParseInstruction("mul(5,2)")
+	assert.Equal(t, 5, instruction.GetFirstOperand())
+	assert.Equal(t, 2, instruction.GetSecondOperand())
 }
