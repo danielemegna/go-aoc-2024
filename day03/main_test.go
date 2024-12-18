@@ -23,10 +23,9 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	var actual = SumOfEnabledInstructionsIn(fileContent)
-	assert.Equal(t, 999, actual)
+	assert.Equal(t, 106921067, actual)
 }
 
 func readFileContent() string {
