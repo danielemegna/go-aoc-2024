@@ -48,3 +48,24 @@ func TestFindAndParseInstructionsSingleMulInstruction(t *testing.T) {
 	}
 	assert.Equal(t, expected, actual)
 }
+
+func TestFindAndParseMultipleInstructions(t *testing.T) {
+	var actual = FindAndParseInstructions("mul(8,10)mul(21,2)mul(1,3)")
+	var expected = []Instruction{
+		MulInstruction{8, 10},
+		MulInstruction{21, 2},
+		MulInstruction{1, 3},
+	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestFindAndParseMultipleInstructionsWithGarbage(t *testing.T) {
+	var actual = FindAndParseInstructions("xmul(2,4)%&mul[3,7]!@^_mul(5,51)+mul(32,64]tn(mul(11,8)mul(8,5))")
+	var expected = []Instruction{
+		MulInstruction{2, 4},
+		MulInstruction{5, 51},
+		MulInstruction{11, 8},
+		MulInstruction{8, 5},
+	}
+	assert.Equal(t, expected, actual)
+}

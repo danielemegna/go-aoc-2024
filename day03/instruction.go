@@ -1,15 +1,19 @@
 package day03
 
 import (
+	"github.com/samber/lo"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 func FindAndParseInstructions(s string) []Instruction {
-	if strings.HasPrefix(s, "mul") {
-		return []Instruction{ParseInstruction(s)}
-	}
-	return []Instruction{}
+	var r, _ = regexp.Compile(`mul\(\d+,\d+\)`)
+	var matches = r.FindAllString(s, -1)
+
+	return lo.Map(matches, func(m string, _ int) Instruction {
+		return ParseInstruction(m)
+	})
 }
 
 func ParseInstruction(s string) Instruction {
