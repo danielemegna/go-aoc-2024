@@ -17,10 +17,9 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	var actual = SumOfInstructionsIn(fileContent)
-	assert.Equal(t, 999, actual)
+	assert.Equal(t, 174561379, actual)
 }
 
 func simulateFileContent(inputLines []string) string {
