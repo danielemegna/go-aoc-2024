@@ -17,6 +17,18 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 174561379, actual)
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
+	assert.Equal(t, 2*4+8*5, SumOfEnabledInstructionsIn(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	var actual = SumOfEnabledInstructionsIn(fileContent)
+	assert.Equal(t, 999, actual)
+}
+
 func readFileContent() string {
 	var fileBytes, err = os.ReadFile("input.txt")
 	if err != nil {

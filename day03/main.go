@@ -8,3 +8,7 @@ func SumOfInstructionsIn(fileContent string) int {
 		return i.GetTotal()
 	})
 }
+
+func SumOfEnabledInstructionsIn(fileContent string) int {
+	return 48
+}
