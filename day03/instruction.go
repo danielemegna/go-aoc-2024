@@ -4,7 +4,6 @@ import (
 	"github.com/samber/lo"
 	"regexp"
 	"strconv"
-	"strings"
 )
 
 func FindAndParseInstructions(s string) []Instruction {
@@ -17,11 +16,10 @@ func FindAndParseInstructions(s string) []Instruction {
 }
 
 func ParseInstruction(s string) Instruction {
-	var firstOperandPart, secondOperandPart, _ = strings.Cut(s, ",")
-	var _, firstOperandString, _ = strings.Cut(firstOperandPart, "(")
-	var secondOperandString, _, _ = strings.Cut(secondOperandPart, ")")
-	var multiplying, _ = strconv.Atoi(firstOperandString)
-	var multiplier, _ = strconv.Atoi(secondOperandString)
+	var r, _ = regexp.Compile(`mul\((\d+),(\d+)\)`)
+	var matches = r.FindStringSubmatch(s)
+	var multiplying, _ = strconv.Atoi(matches[1])
+	var multiplier, _ = strconv.Atoi(matches[2])
 	return MulInstruction{multiplying, multiplier}
 }
 
