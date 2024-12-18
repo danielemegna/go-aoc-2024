@@ -13,19 +13,27 @@ func SumOfInstructionsIn(fileContent string) int {
 }
 
 func SumOfEnabledInstructionsIn(fileContent string) int {
+	return SumOfInstructionsIn(keepOnlyEnabledPartsIn(fileContent))
+}
+
+func keepOnlyEnabledPartsIn(fileContent string) string {
+	var enabledParts = ""
+
 	var remaining = fileContent
-	var total = 0
-
 	for true {
-		var beforeDisable, afterDisable, _ = strings.Cut(remaining, "don't()")
-		total += SumOfInstructionsIn(beforeDisable)
+		var beforeDisable, afterDisable, foundDisableInstruction = strings.Cut(remaining, "don't()")
+		enabledParts += beforeDisable
 
-		var _, afterEnable, foundEnable = strings.Cut(afterDisable, "do()")
-		if !foundEnable {
+		if !foundDisableInstruction {
+			break
+		}
+
+		var _, afterEnable, foundEnableInstruction = strings.Cut(afterDisable, "do()")
+		if !foundEnableInstruction {
 			break
 		}
 
 		remaining = afterEnable
 	}
-	return total
+	return enabledParts
 }
