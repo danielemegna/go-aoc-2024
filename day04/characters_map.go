@@ -31,5 +31,5 @@ func (this CharactersMap) XMasOccurrencesAt(c Coordinate) int {
 }
 
 func (this CharactersMap) IsOutOfBounds(i int) bool {
-	return i >= len(this)
+	return i < 0 || i >= len(this)
 }

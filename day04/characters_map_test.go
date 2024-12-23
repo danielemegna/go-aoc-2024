@@ -51,6 +51,8 @@ func TestNoXMasOccurrencesOutOfMapBounds(t *testing.T) {
 
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 99, Y: 0}))
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 99}))
+	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: -1, Y: 0}))
+	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: -1}))
 }
 
 func TestNoXMasOccurrencesInSmallMap(t *testing.T) {
