@@ -20,8 +20,6 @@ func CountXMasOccurrences(fileContent string) int {
 	return 18
 }
 
-type CharactersMap = [][]string
-
 func rowsFrom(input string) []string {
 	var rows = strings.Split(input, "\n")
 	rows = rows[:len(rows)-1]
