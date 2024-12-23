@@ -29,3 +29,14 @@ func TestSingleXMasOccurrenceAtZeroZeroHorizontal(t *testing.T) {
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 1, Y: 0}))
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 1}))
 }
+
+func TestUncompleteXMasHorizontalOccurrence(t *testing.T) {
+	var m CharactersMap = CharactersMap{
+		{".", ".", ".", "."},
+		{"X", "M", "A", "."},
+		{".", ".", ".", "."},
+		{".", ".", ".", "."},
+	}
+
+	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 1}))
+}

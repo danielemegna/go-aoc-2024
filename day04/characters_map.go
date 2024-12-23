@@ -12,5 +12,13 @@ func (this CharactersMap) XMasOccurrencesAt(c Coordinate) int {
 		return 0
 	}
 
+	var neededParts = []string{"M", "A", "S"}
+	for partIndex, neededPart := range neededParts {
+		var checkingX = c.X + partIndex + 1
+		if this[c.Y][checkingX] != neededPart {
+			return 0
+		}
+	}
+
 	return 1
 }
