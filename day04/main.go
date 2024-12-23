@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func CountXMasOccurences(fileContent string) int {
+func CountXMasOccurrences(fileContent string) int {
 	var rows = rowsFrom(fileContent)
 
 	var matrix CharactersMap = lo.Map(rows, func(row string, _ int) []string {

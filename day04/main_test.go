@@ -22,13 +22,13 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 18, CountXMasOccurences(fileContent))
+	assert.Equal(t, 18, CountXMasOccurrences(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
 	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 999, CountXMasOccurences(fileContent))
+	assert.Equal(t, 999, CountXMasOccurrences(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
