@@ -64,3 +64,16 @@ func TestNoXMasOccurrencesInSmallMap(t *testing.T) {
 
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 0}))
 }
+
+func TestSingleXMasOccurrenceAtZeroZeroVertical(t *testing.T) {
+	var m CharactersMap = CharactersMap{
+		{"X", ".", ".", "."},
+		{"M", ".", ".", "."},
+		{"A", ".", ".", "."},
+		{"S", ".", ".", "."},
+	}
+
+	assert.Equal(t, 1, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 0}))
+	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 1, Y: 0}))
+	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 1}))
+}
