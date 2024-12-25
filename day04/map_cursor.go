@@ -15,11 +15,6 @@ type VerticalMapCursor struct{ c Coordinate }
 func (this *VerticalMapCursor) Increase()                { this.c.Y++ }
 func (this *VerticalMapCursor) ToCoordinate() Coordinate { return this.c }
 
-type DiagonalMapCursor struct{ c Coordinate }
-
-func (this *DiagonalMapCursor) Increase()                { this.c.X++; this.c.Y++ }
-func (this *DiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
-
 type InverseHorizontalMapCursor struct{ c Coordinate }
 
 func (this *InverseHorizontalMapCursor) Increase()                { this.c.X-- }
@@ -30,7 +25,22 @@ type InverseVerticalMapCursor struct{ c Coordinate }
 func (this *InverseVerticalMapCursor) Increase()                { this.c.Y-- }
 func (this *InverseVerticalMapCursor) ToCoordinate() Coordinate { return this.c }
 
-type InverseDiagonalMapCursor struct{ c Coordinate }
+type NorthDiagonalMapCursor struct{ c Coordinate }
 
-func (this *InverseDiagonalMapCursor) Increase()                { this.c.X--; this.c.Y-- }
-func (this *InverseDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
+func (this *NorthDiagonalMapCursor) Increase()                { this.c.X++; this.c.Y-- }
+func (this *NorthDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type SouthDiagonalMapCursor struct{ c Coordinate }
+
+func (this *SouthDiagonalMapCursor) Increase()                { this.c.X++; this.c.Y++ }
+func (this *SouthDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type NorthInverseDiagonalMapCursor struct{ c Coordinate }
+
+func (this *NorthInverseDiagonalMapCursor) Increase()                { this.c.X--; this.c.Y-- }
+func (this *NorthInverseDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type SouthInverseDiagonalMapCursor struct{ c Coordinate }
+
+func (this *SouthInverseDiagonalMapCursor) Increase()                { this.c.X--; this.c.Y++ }
+func (this *SouthInverseDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
