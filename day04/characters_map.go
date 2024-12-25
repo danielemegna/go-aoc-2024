@@ -1,5 +1,7 @@
 package day04
 
+import "github.com/samber/lo"
+
 type CharactersMap [][]string
 
 type Coordinate struct {
@@ -8,7 +10,7 @@ type Coordinate struct {
 }
 
 func (this CharactersMap) XMasOccurrencesAt(c Coordinate) int {
-	if this.IsOutOfBounds(c.Y) || this.IsOutOfBounds(c.X) {
+	if this.IsOutOfBounds(c) {
 		return 0
 	}
 
@@ -17,37 +19,37 @@ func (this CharactersMap) XMasOccurrencesAt(c Coordinate) int {
 	}
 
 	var neededParts = []string{"M", "A", "S"}
-	var horizontalCursor = c.X + 1
-	var verticalCursor = c.Y + 1
+	var horizontalCursor MapCursor = &HorizontalMapCursor{c}
+	var verticalCursor MapCursor = &VerticalMapCursor{c}
 
 	for _, neededPart := range neededParts {
-		if this.IsOutOfBounds(horizontalCursor) {
-			horizontalCursor = -1
-		} else {
-			if this[c.Y][horizontalCursor] != neededPart {
-				horizontalCursor = -1
-			}
-		}
-		if this.IsOutOfBounds(verticalCursor) {
-			verticalCursor = -1
-		} else {
-			if this[verticalCursor][c.X] != neededPart {
-				verticalCursor = -1
+
+		if horizontalCursor != nil {
+			horizontalCursor.Increase()
+			if this.IsOutOfBounds(horizontalCursor.ToCoordinate()) || this.At(horizontalCursor.ToCoordinate()) != neededPart {
+				horizontalCursor = nil
 			}
 		}
 
-		horizontalCursor++
-		verticalCursor++
+		if verticalCursor != nil {
+			verticalCursor.Increase()
+			if this.IsOutOfBounds(verticalCursor.ToCoordinate()) || this.At(verticalCursor.ToCoordinate()) != neededPart {
+				verticalCursor = nil
+			}
+		}
 
 	}
 
-	if horizontalCursor > 0 || verticalCursor > 0 {
-		return 1
-	}
-
-	return 0
+	var cursors = []MapCursor{horizontalCursor, verticalCursor}
+	return lo.CountBy(cursors, func(c MapCursor) bool {
+		return c != nil
+	})
 }
 
-func (this CharactersMap) IsOutOfBounds(i int) bool {
-	return i < 0 || i >= len(this)
+func (this CharactersMap) IsOutOfBounds(c Coordinate) bool {
+	return c.X < 0 || c.X >= len(this) || c.Y < 0 || c.Y >= len(this)
+}
+
+func (this CharactersMap) At(c Coordinate) string {
+	return this[c.Y][c.X]
 }
