@@ -21,7 +21,9 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 		&HorizontalMapCursor{startingCoordinate},
 		&InverseHorizontalMapCursor{startingCoordinate},
 		&VerticalMapCursor{startingCoordinate},
+		&InverseVerticalMapCursor{startingCoordinate},
 		&DiagonalMapCursor{startingCoordinate},
+		&InverseDiagonalMapCursor{startingCoordinate},
 	}
 
 	for _, neededChar := range neededChars {

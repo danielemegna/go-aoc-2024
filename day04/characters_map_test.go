@@ -110,3 +110,14 @@ func TestSingleInverseXMasOccurrence(t *testing.T) {
 
 	assert.Equal(t, 1, m.XMasOccurrencesAt(Coordinate{X: 3, Y: 3}))
 }
+
+func TestThreeInverseXMasOccurrenceFromSameCoordinate(t *testing.T) {
+	var m CharactersMap = CharactersMap{
+		{"S", ".", ".", "S"},
+		{".", "A", ".", "A"},
+		{".", ".", "M", "M"},
+		{"S", "A", "M", "X"},
+	}
+
+	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 3, Y: 3}))
+}

@@ -24,3 +24,13 @@ type InverseHorizontalMapCursor struct{ c Coordinate }
 
 func (this *InverseHorizontalMapCursor) Increase()                { this.c.X-- }
 func (this *InverseHorizontalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type InverseVerticalMapCursor struct{ c Coordinate }
+
+func (this *InverseVerticalMapCursor) Increase()                { this.c.Y-- }
+func (this *InverseVerticalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type InverseDiagonalMapCursor struct{ c Coordinate }
+
+func (this *InverseDiagonalMapCursor) Increase()                { this.c.X--; this.c.Y-- }
+func (this *InverseDiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
