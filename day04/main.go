@@ -1,7 +1,6 @@
 package day04
 
 import (
-	"fmt"
 	"github.com/samber/lo"
 	"strings"
 )
@@ -9,15 +8,18 @@ import (
 func CountXMasOccurrences(fileContent string) int {
 	var rows = rowsFrom(fileContent)
 
-	var matrix CharactersMap = lo.Map(rows, func(row string, _ int) []string {
+	var charactersMap CharactersMap = lo.Map(rows, func(row string, _ int) []string {
 		return strings.Split(row, "")
 	})
 
-	fmt.Println(matrix)
-	fmt.Println(matrix[0])
-	fmt.Println(matrix[1][1])
+	var result = 0
+	for y := 0; y < len(charactersMap); y++ {
+		for x := 0; x < len(charactersMap); x++ {
+			result += charactersMap.XMasOccurrencesAt(Coordinate{x, y})
+		}
+	}
 
-	return 18
+	return result
 }
 
 func rowsFrom(input string) []string {
