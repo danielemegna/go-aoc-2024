@@ -78,7 +78,7 @@ func TestSingleXMasOccurrenceAtZeroZeroVertical(t *testing.T) {
 	assert.Equal(t, 0, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 1}))
 }
 
-func TestTwoXMasOccurrenceAtZeroZero(t *testing.T) {
+func TestTwoXMasOccurrencesAtZeroZero(t *testing.T) {
 	var m CharactersMap = CharactersMap{
 		{"X", "M", "A", "S"},
 		{"M", ".", ".", "."},
@@ -111,7 +111,7 @@ func TestSingleInverseXMasOccurrence(t *testing.T) {
 	assert.Equal(t, 1, m.XMasOccurrencesAt(Coordinate{X: 3, Y: 3}))
 }
 
-func TestThreeInverseXMasOccurrenceFromSameCoordinate(t *testing.T) {
+func TestThreeInverseXMasOccurrencesFromSameCoordinate(t *testing.T) {
 	var m CharactersMap = CharactersMap{
 		{"S", ".", ".", "S"},
 		{".", "A", ".", "A"},
@@ -120,4 +120,18 @@ func TestThreeInverseXMasOccurrenceFromSameCoordinate(t *testing.T) {
 	}
 
 	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 3, Y: 3}))
+}
+
+func TestSomeXMasOccurrences(t *testing.T) {
+	var m CharactersMap = CharactersMap{
+		{"X", "M", "A", "S", ".", "."},
+		{"M", "M", "S", ".", ".", "S"},
+		{"A", ".", "A", "A", ".", "A"},
+		{"S", ".", ".", "S", "M", "M"},
+		{".", ".", "S", "A", "M", "X"},
+		{".", ".", ".", ".", ".", "."},
+	}
+
+	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 0}))
+	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 5, Y: 4}))
 }

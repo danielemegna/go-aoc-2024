@@ -49,6 +49,7 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 }
 
 func (this CharactersMap) IsOutOfBounds(c Coordinate) bool {
+	// assuming always square shape maps
 	return c.X < 0 || c.X >= len(this) || c.Y < 0 || c.Y >= len(this)
 }
 
