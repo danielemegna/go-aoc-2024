@@ -19,3 +19,8 @@ type DiagonalMapCursor struct{ c Coordinate }
 
 func (this *DiagonalMapCursor) Increase()                { this.c.X++; this.c.Y++ }
 func (this *DiagonalMapCursor) ToCoordinate() Coordinate { return this.c }
+
+type InverseHorizontalMapCursor struct{ c Coordinate }
+
+func (this *InverseHorizontalMapCursor) Increase()                { this.c.X-- }
+func (this *InverseHorizontalMapCursor) ToCoordinate() Coordinate { return this.c }
