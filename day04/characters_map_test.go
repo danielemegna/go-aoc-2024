@@ -168,49 +168,41 @@ func TestNoMasXInCenter(t *testing.T) {
 			{".", ".", "."},
 			{".", "A", "."},
 			{".", ".", "."},
-		},
-		{
+		}, {
 			{"M", ".", "."},
 			{".", "A", "."},
 			{".", ".", "S"},
-		},
-		{
+		}, {
 			{"M", ".", "."},
 			{".", "A", "."},
 			{"M", ".", "S"},
-		},
-		{
+		}, {
 			{".", ".", "S"},
 			{".", "A", "."},
 			{"M", ".", "S"},
-		},
-		{
+		}, {
 			{"M", ".", "S"},
 			{".", "A", "."},
 			{"S", ".", "S"},
-		},
-		{
+		}, {
 			{"M", ".", "S"},
 			{".", "A", "."},
 			{"S", ".", "S"},
-		},
-		{
+		}, {
 			{"M", ".", "S"},
 			{".", ".", "."},
 			{"M", ".", "S"},
-		},
-		{
+		}, {
 			{".", "."},
 			{".", "."},
-		},
-		{
+		}, {
 			{"."},
 		},
 	}
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			var actual = testCase.MasXAt(Coordinate{1, 1})
+			var actual = testCase.HasMasXAt(Coordinate{1, 1})
 			assert.False(t, actual)
 		})
 	}
@@ -239,7 +231,7 @@ func TestMasXInCenter(t *testing.T) {
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			var actual = testCase.MasXAt(Coordinate{1, 1})
+			var actual = testCase.HasMasXAt(Coordinate{1, 1})
 			assert.True(t, actual)
 		})
 	}

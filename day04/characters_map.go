@@ -50,7 +50,7 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 	return len(cursors)
 }
 
-func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
+func (this CharactersMap) HasMasXAt(coordinate Coordinate) bool {
 	var northOvest = coordinate.NorthOvest()
 	var northEast = coordinate.NorthEast()
 	var southOvest = coordinate.SouthOvest()
