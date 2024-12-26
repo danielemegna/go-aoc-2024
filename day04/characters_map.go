@@ -1,11 +1,8 @@
 package day04
 
-type CharactersMap [][]string
+import "github.com/samber/lo"
 
-type Coordinate struct {
-	X int
-	Y int
-}
+type CharactersMap [][]string
 
 func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 	if this.IsOutOfBounds(startingCoordinate) {
@@ -48,6 +45,35 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 	}
 
 	return len(cursors)
+}
+
+func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
+	var northOvest = coordinate.NorthOvest()
+	var northEast = coordinate.NorthEast()
+	var southOvest = coordinate.SouthOvest()
+	var southEast = coordinate.SouthEast()
+
+	var outOfBounds = lo.ContainsBy(
+		[]Coordinate{coordinate, northOvest, northEast, southOvest, southEast},
+		func(c Coordinate) bool { return this.IsOutOfBounds(c) },
+	)
+
+	if outOfBounds {
+		return false
+	}
+
+	if this.At(coordinate) != "A" {
+		return false
+	}
+
+	var first = this.At(northOvest) + this.At(southEast)
+	var second = this.At(southOvest) + this.At(northEast)
+
+	if first == "MS" && second == "MS" {
+		return true
+	}
+
+	return false
 }
 
 func (this CharactersMap) IsOutOfBounds(c Coordinate) bool {

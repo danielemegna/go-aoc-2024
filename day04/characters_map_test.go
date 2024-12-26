@@ -1,8 +1,10 @@
 package day04
 
 import (
-	"github.com/stretchr/testify/assert"
+	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEmptyMapHasNoXMasOccurrences(t *testing.T) {
@@ -158,4 +160,75 @@ func TestSomeXMasOccurrences(t *testing.T) {
 
 	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 0, Y: 0}))
 	assert.Equal(t, 3, m.XMasOccurrencesAt(Coordinate{X: 5, Y: 4}))
+}
+
+func TestNoMasXInCenter(t *testing.T) {
+	var testCases = []CharactersMap{
+		{
+			{".", ".", "."},
+			{".", "A", "."},
+			{".", ".", "."},
+		},
+		{
+			{"M", ".", "."},
+			{".", "A", "."},
+			{".", ".", "S"},
+		},
+		{
+			{"M", ".", "."},
+			{".", "A", "."},
+			{"M", ".", "S"},
+		},
+		{
+			{".", ".", "S"},
+			{".", "A", "."},
+			{"M", ".", "S"},
+		},
+		{
+			{"M", ".", "S"},
+			{".", "A", "."},
+			{"S", ".", "S"},
+		},
+		{
+			{"M", ".", "S"},
+			{".", "A", "."},
+			{"S", ".", "S"},
+		},
+		{
+			{"M", ".", "S"},
+			{".", ".", "."},
+			{"M", ".", "S"},
+		},
+		{
+			{".", "."},
+			{".", "."},
+		},
+		{
+			{"."},
+		},
+	}
+
+	for index, testCase := range testCases {
+		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
+			var actual = testCase.MasXAt(Coordinate{1, 1})
+			assert.False(t, actual)
+		})
+	}
+}
+
+func TestMasXInCenter(t *testing.T) {
+	var testCases = []CharactersMap{
+		{
+			{"M", ".", "S"},
+			{".", "A", "."},
+			{"M", ".", "S"},
+		},
+	}
+
+	for index, testCase := range testCases {
+		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
+			var actual = testCase.MasXAt(Coordinate{1, 1})
+			assert.True(t, actual)
+		})
+	}
 }
