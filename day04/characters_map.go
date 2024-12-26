@@ -1,5 +1,10 @@
 package day04
 
+import (
+	"sort"
+	"strings"
+)
+
 type CharactersMap [][]string
 
 func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
@@ -59,10 +64,12 @@ func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
 		return false
 	}
 
-	var first = this.At(northOvest) + this.At(southEast)
-	var second = this.At(southOvest) + this.At(northEast)
+	var first = []string{this.At(northOvest), this.At(southEast)}
+	var second = []string{this.At(southOvest), this.At(northEast)}
+	sort.Strings(first)
+	sort.Strings(second)
 
-	if first == "MS" && second == "MS" {
+	if strings.Join(first, "") == "MS" && strings.Join(second, "") == "MS" {
 		return true
 	}
 
