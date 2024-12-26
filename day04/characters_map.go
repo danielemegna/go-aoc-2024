@@ -1,7 +1,5 @@
 package day04
 
-import "github.com/samber/lo"
-
 type CharactersMap [][]string
 
 func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
@@ -53,12 +51,7 @@ func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
 	var southOvest = coordinate.SouthOvest()
 	var southEast = coordinate.SouthEast()
 
-	var outOfBounds = lo.ContainsBy(
-		[]Coordinate{coordinate, northOvest, northEast, southOvest, southEast},
-		func(c Coordinate) bool { return this.IsOutOfBounds(c) },
-	)
-
-	if outOfBounds {
+	if this.AnyOutOfBounds(coordinate, northOvest, northEast, southOvest, southEast) {
 		return false
 	}
 
@@ -79,6 +72,16 @@ func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
 func (this CharactersMap) IsOutOfBounds(c Coordinate) bool {
 	// assuming always square shape maps
 	return c.X < 0 || c.X >= len(this) || c.Y < 0 || c.Y >= len(this)
+}
+
+func (this CharactersMap) AnyOutOfBounds(coordinates ...Coordinate) bool {
+	for _, c := range coordinates {
+		if this.IsOutOfBounds(c) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (this CharactersMap) At(c Coordinate) string {
