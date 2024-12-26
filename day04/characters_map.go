@@ -64,12 +64,10 @@ func (this CharactersMap) MasXAt(coordinate Coordinate) bool {
 		return false
 	}
 
-	var first = []string{this.At(northOvest), this.At(southEast)}
-	var second = []string{this.At(southOvest), this.At(northEast)}
-	sort.Strings(first)
-	sort.Strings(second)
+	var first = strings.Join(Sorted(this.At(northOvest), this.At(southEast)), "")
+	var second = strings.Join(Sorted(this.At(southOvest), this.At(northEast)), "")
 
-	if strings.Join(first, "") == "MS" && strings.Join(second, "") == "MS" {
+	if first == "MS" && second == "MS" {
 		return true
 	}
 
@@ -93,4 +91,11 @@ func (this CharactersMap) AnyOutOfBounds(coordinates ...Coordinate) bool {
 
 func (this CharactersMap) At(c Coordinate) string {
 	return this[c.Y][c.X]
+}
+
+func Sorted(source ...string) []string {
+	var clone = make([]string, len(source))
+	copy(clone, source)
+	sort.Strings(clone)
+	return clone
 }
