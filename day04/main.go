@@ -23,7 +23,22 @@ func CountXMasOccurrences(fileContent string) int {
 }
 
 func CountMasOccurrencesAsX(fileContent string) int {
-	return 9
+	var rows = rowsFrom(fileContent)
+
+	var charactersMap CharactersMap = lo.Map(rows, func(row string, _ int) []string {
+		return strings.Split(row, "")
+	})
+
+	var result = 0
+	for y := 1; y < len(charactersMap)-1; y++ {
+		for x := 1; x < len(charactersMap)-1; x++ {
+			if charactersMap.HasMasXAt(Coordinate{x, y}) {
+				result++
+			}
+		}
+	}
+
+	return result
 }
 
 func rowsFrom(input string) []string {

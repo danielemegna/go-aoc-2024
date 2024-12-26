@@ -36,9 +36,8 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 9999, CountMasOccurrencesAsX(fileContent))
+	assert.Equal(t, 1982, CountMasOccurrencesAsX(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
