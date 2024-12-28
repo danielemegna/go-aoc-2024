@@ -16,17 +16,8 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 		return 0
 	}
 
+	var cursors = initStarCursorsWith(startingCoordinate)
 	var neededChars = []string{"M", "A", "S"}
-	var cursors = []MapCursor{
-		&HorizontalMapCursor{startingCoordinate},
-		&InverseHorizontalMapCursor{startingCoordinate},
-		&VerticalMapCursor{startingCoordinate},
-		&InverseVerticalMapCursor{startingCoordinate},
-		&NorthDiagonalMapCursor{startingCoordinate},
-		&SouthDiagonalMapCursor{startingCoordinate},
-		&NorthInverseDiagonalMapCursor{startingCoordinate},
-		&SouthInverseDiagonalMapCursor{startingCoordinate},
-	}
 
 	for _, neededChar := range neededChars {
 
@@ -40,7 +31,7 @@ func (this CharactersMap) XMasOccurrencesAt(startingCoordinate Coordinate) int {
 			cursors = cursors[1:]
 
 			cursor.Increase()
-			if !this.IsOutOfBounds(cursor.ToCoordinate()) && this.At(cursor.ToCoordinate()) == neededChar {
+			if !this.IsOutOfBounds(cursor.coordinate) && this.At(cursor.coordinate) == neededChar {
 				cursors = append(cursors, cursor)
 			}
 		}
@@ -72,6 +63,52 @@ func (this CharactersMap) HasMasXAt(coordinate Coordinate) bool {
 	}
 
 	return false
+}
+
+
+func initStarCursorsWith(startingCoordinate Coordinate) []MapCursor {
+	var horizontalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.East() },
+	}
+	var inverseHorizontalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.West() },
+	}
+	var verticalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.South() },
+	}
+	var inverseVerticalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.North() },
+	}
+	var northDiagonalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.NorthEast() },
+	}
+	var southDiagonalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.SouthEast() },
+	}
+	var northInverseDiagonalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.NorthOvest() },
+	}
+	var southInverseDiagonalMapCursor = MapCursor{
+		coordinate: startingCoordinate,
+		increaseFn: func(c Coordinate) Coordinate { return c.SouthOvest() },
+	}
+	return []MapCursor{
+		horizontalMapCursor,
+		inverseHorizontalMapCursor,
+		verticalMapCursor,
+		inverseVerticalMapCursor,
+		northDiagonalMapCursor,
+		southDiagonalMapCursor,
+		northInverseDiagonalMapCursor,
+		southInverseDiagonalMapCursor,
+	}
 }
 
 func (this CharactersMap) IsOutOfBounds(c Coordinate) bool {
