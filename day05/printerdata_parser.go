@@ -6,38 +6,44 @@ import (
 	"strings"
 )
 
-func ParsePrinterData(inputLines []string) ([]PageOrderingRule, []PagesToProduceInTheUpdate) {
+func ParsePrinterData(lines []string) ([]PageOrderingRule, []PagesToProduceInTheUpdate) {
 	var lineIndex = 0
 
-	var pageOrderingRule = []PageOrderingRule{}
+	var rules = []PageOrderingRule{}
 	for true {
-		var line = inputLines[lineIndex]
+		var line = lines[lineIndex]
 		if line == "" {
 			lineIndex++
 			break
 		}
 
-		var beforeString, afterString, _ = strings.Cut(line, "|")
-		pageOrderingRule = append(pageOrderingRule, PageOrderingRule{
-			before: toInt(beforeString),
-			after:  toInt(afterString),
-		})
+		var pageOrderingRule = parsePageOrderingRule(line)
+		rules = append(rules, pageOrderingRule)
 		lineIndex++
 	}
 
-	var pagesToProduceInTheUpdate = []PagesToProduceInTheUpdate{}
-	for lineIndex < len(inputLines) {
-		var numberStrings = strings.Split(inputLines[lineIndex], ",")
-		var numbers = toIntSlice(numberStrings)
-		pagesToProduceInTheUpdate = append(pagesToProduceInTheUpdate, numbers)
+	var updates = []PagesToProduceInTheUpdate{}
+	for lineIndex < len(lines) {
+		var line = lines[lineIndex]
+		var pagesToProduceInTheUpdate = parsePagesToProduceInTheUpdate(line)
+		updates = append(updates, pagesToProduceInTheUpdate)
 		lineIndex++
 	}
 
-	return pageOrderingRule, pagesToProduceInTheUpdate
+	return rules, updates
 }
 
-func toIntSlice(slice []string) []int {
-	return lo.Map(slice, func(s string, _ int) int {
+func parsePageOrderingRule(s string) PageOrderingRule {
+	var beforeString, afterString, _ = strings.Cut(s, "|")
+	return PageOrderingRule{
+		before: toInt(beforeString),
+		after:  toInt(afterString),
+	}
+}
+
+func parsePagesToProduceInTheUpdate(s string) PagesToProduceInTheUpdate {
+	var numberStrings = strings.Split(s, ",")
+	return lo.Map(numberStrings, func(s string, _ int) int {
 		return toInt(s)
 	})
 }
