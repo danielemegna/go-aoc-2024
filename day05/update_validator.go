@@ -11,9 +11,10 @@ func (this PagesToProduceInTheUpdate) IsValidFor(rules PageOrderingRules) bool {
 			continue
 		}
 
-		var rule = rulesForCurrentPage[0]
-		if slices.Contains(after, rule.before) {
-			return false
+		for _, rule := range rulesForCurrentPage {
+			if slices.Contains(after, rule.before) {
+				return false
+			}
 		}
 
 	}

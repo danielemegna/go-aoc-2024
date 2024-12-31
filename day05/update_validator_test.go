@@ -45,6 +45,13 @@ func TestThreeNumbersInvalidUpdate(t *testing.T) {
 			{before: 46, after: 19},
 		},
 		{{before: 90, after: 19}},
+		{
+			{before: 19, after: 99},
+			{before: 46, after: 99},
+			{before: 1, after: 19},
+			{before: 1, after: 46},
+			{before: 46, after: 19},
+		},
 	}
 
 	for index, rules := range setOfPageRules {
