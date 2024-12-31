@@ -9,10 +9,7 @@ import (
 func ParsePrinterData(inputLines []string) ([]PageOrderingRule, []PagesToProduceInTheUpdate) {
 	var lineIndex = 0
 
-	var pageOrderingRule = []PageOrderingRule{
-		{before: 47, after: 53},
-		{before: 53, after: 13},
-	}
+	var pageOrderingRule = []PageOrderingRule{}
 	for true {
 		var line = inputLines[lineIndex]
 		if line == "" {
@@ -20,7 +17,11 @@ func ParsePrinterData(inputLines []string) ([]PageOrderingRule, []PagesToProduce
 			break
 		}
 
-		// TODO parse the page ordering rule here
+		var beforeString, afterString, _ = strings.Cut(line, "|")
+		pageOrderingRule = append(pageOrderingRule, PageOrderingRule{
+			before: toInt(beforeString),
+			after:  toInt(afterString),
+		})
 		lineIndex++
 	}
 
@@ -37,7 +38,15 @@ func ParsePrinterData(inputLines []string) ([]PageOrderingRule, []PagesToProduce
 
 func toIntSlice(slice []string) []int {
 	return lo.Map(slice, func(s string, _ int) int {
-		var value, _ = strconv.Atoi(s)
-		return value
+		return toInt(s)
 	})
+}
+
+func toInt(s string) int {
+	var value, err = strconv.Atoi(s)
+	if err == nil {
+		return value
+	}
+
+	panic(err)
 }

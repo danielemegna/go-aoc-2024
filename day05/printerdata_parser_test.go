@@ -35,16 +35,19 @@ func TestSimpleExamplePageUpdatesParsing(t *testing.T) {
 
 func TestProvidedExamplePageOrderingRules(t *testing.T) {
 	var actual, _ = ParsePrinterData(PROVIDED_EXAMPLE_INPUT_LINES)
-	var expected = []PageOrderingRule{}
 
-	t.Skip("WIP")
-	assert.Equal(t, expected, actual)
+	assert.Equal(t, 21, len(actual))
+	assert.Equal(t, PageOrderingRule{47, 53}, actual[0])
+	assert.Equal(t, PageOrderingRule{97, 13}, actual[1])
+	assert.Equal(t, PageOrderingRule{53, 29}, actual[9])
+	assert.Equal(t, PageOrderingRule{53, 13}, actual[20])
 }
 
 func TestProvidedExamplePageUpdatesParsing(t *testing.T) {
 	var _, actual = ParsePrinterData(PROVIDED_EXAMPLE_INPUT_LINES)
-	var expected = []PagesToProduceInTheUpdate{}
 
-	t.Skip("WIP")
-	assert.Equal(t, expected, actual)
+	assert.Equal(t, 6, len(actual))
+	assert.Equal(t, PagesToProduceInTheUpdate{75, 47, 61, 53, 29}, actual[0])
+	assert.Equal(t, PagesToProduceInTheUpdate{75, 29, 13}, actual[2])
+	assert.Equal(t, PagesToProduceInTheUpdate{97, 13, 75, 29, 47}, actual[5])
 }
