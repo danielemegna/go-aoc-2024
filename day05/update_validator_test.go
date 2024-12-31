@@ -44,6 +44,9 @@ func TestThreeNumberNotValidUpdate(t *testing.T) {
 			{before: 10, after: 15},
 			{before: 46, after: 19},
 		},
+		{
+			{before: 90, after: 19},
+		},
 	}
 
 	for index, rules := range setOfPageRules {
