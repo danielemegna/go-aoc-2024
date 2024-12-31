@@ -16,7 +16,7 @@ var SIMPLE_EXAMPLE_INPUT_LINES = []string{
 func TestSimpleProvidedExamplePageOrderingRules(t *testing.T) {
 	var actual, _ = ParsePrinterData(SIMPLE_EXAMPLE_INPUT_LINES)
 
-	var expected = []PageOrderingRule{
+	var expected = PageOrderingRules{
 		{before: 47, after: 53},
 		{before: 53, after: 13},
 	}

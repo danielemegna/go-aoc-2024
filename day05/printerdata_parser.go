@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-func ParsePrinterData(lines []string) ([]PageOrderingRule, []PagesToProduceInTheUpdate) {
+func ParsePrinterData(lines []string) (PageOrderingRules, []PagesToProduceInTheUpdate) {
 	var lineIndex = 0
 
-	var rules = []PageOrderingRule{}
+	var rules = PageOrderingRules{}
 	for true {
 		var line = lines[lineIndex]
 		if line == "" {

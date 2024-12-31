@@ -5,4 +5,6 @@ type PageOrderingRule struct {
 	after  int
 }
 
+type PageOrderingRules []PageOrderingRule
+
 type PagesToProduceInTheUpdate []int
