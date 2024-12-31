@@ -29,24 +29,22 @@ func TestUpdateIsValidWithRulesUnrelatedToUpdatePages(t *testing.T) {
 	assert.True(t, isValid, fmt.Sprintf("%v should be valid!", update))
 }
 
-func TestThreeNumberNotValidUpdate(t *testing.T) {
+func TestThreeNumbersInvalidUpdate(t *testing.T) {
 	var update = PagesToProduceInTheUpdate{19, 46, 90}
 	var setOfPageRules = []PageOrderingRules{
 		{{before: 46, after: 19}},
 		{{before: 90, after: 46}},
 		{
-			{before: 8, after: 19},
+			{before: 1, after: 99},
 			{before: 90, after: 46},
-			{before: 10, after: 15},
+			{before: 2, after: 99},
 		},
 		{
-			{before: 8, after: 19},
-			{before: 10, after: 15},
+			{before: 1, after: 99},
+			{before: 2, after: 99},
 			{before: 46, after: 19},
 		},
-		{
-			{before: 90, after: 19},
-		},
+		{{before: 90, after: 19}},
 	}
 
 	for index, rules := range setOfPageRules {
