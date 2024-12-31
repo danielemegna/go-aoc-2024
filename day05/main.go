@@ -1,5 +1,24 @@
 package day05
 
+import "strings"
+
 func SumOfCorrectlyOrderedUpdatesMiddlePageNumbers(fileContent string) int {
-	return 143
+	var lines = linesFrom(fileContent)
+	var rules, updates = ParsePrinterData(lines)
+
+	var validUpdatesMiddlePageNumbersSum = 0
+	for _, update := range updates {
+		if(update.IsValidFor(rules)) {
+				validUpdatesMiddlePageNumbersSum += update.GetMiddlePageNumber()
+		}
+		
+	}
+
+	return validUpdatesMiddlePageNumbersSum
+}
+
+func linesFrom(input string) []string {
+	var lines = strings.Split(input, "\n")
+	lines = lines[:len(lines)-1]
+	return lines
 }
