@@ -173,3 +173,36 @@ func TestFixInvalidUpdateWithMultipleRules(t *testing.T) {
 
 	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3, 4, 5}, fixed)
 }
+
+func TestFixInvalidUpdateApplyingRulesAgainAfterSwap(t *testing.T) {
+	var update = PagesToProduceInTheUpdate{1, 5, 3, 2, 4}
+	var rules = PageOrderingRules{
+		{before: 2, after: 4},
+		{before: 3, after: 5},
+		{before: 2, after: 3},
+		{before: 4, after: 5},
+	}
+
+	var fixed = update.FixWith(rules)
+
+	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3, 4, 5}, fixed)
+}
+
+func TestFixInvalidUpdatesWithProvidedExample(t *testing.T) {
+	var rules, _ = ParsePrinterData(PROVIDED_EXAMPLE_INPUT_LINES)
+	var testCases = []struct {
+		invalid PagesToProduceInTheUpdate
+		fixed   PagesToProduceInTheUpdate
+	}{
+		{invalid: PagesToProduceInTheUpdate{75, 97, 47, 61, 53}, fixed: PagesToProduceInTheUpdate{97, 75, 47, 61, 53}},
+		{invalid: PagesToProduceInTheUpdate{61, 13, 29}, fixed: PagesToProduceInTheUpdate{61, 29, 13}},
+		{invalid: PagesToProduceInTheUpdate{97, 13, 75, 29, 47}, fixed: PagesToProduceInTheUpdate{97, 75, 47, 29, 13}},
+	}
+
+	for index, testCase := range testCases {
+		t.Run("TestCase #"+strconv.Itoa(index+1), func(t *testing.T) {
+			var actual = testCase.invalid.FixWith(rules)
+			assert.Equal(t, testCase.fixed, actual)
+		})
+	}
+}
