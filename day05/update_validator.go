@@ -6,7 +6,7 @@ func (this PagesToProduceInTheUpdate) IsValidFor(rules PageOrderingRules) bool {
 	for i := 0; i < len(this)-1; i++ {
 		var currentPageNumber, after = this[i], this[i+1:]
 
-		var rulesForCurrentPage = rules.RulesFor(currentPageNumber)
+		var rulesForCurrentPage = rules.RulesWithAfter(currentPageNumber)
 		if len(rulesForCurrentPage) == 0 {
 			continue
 		}

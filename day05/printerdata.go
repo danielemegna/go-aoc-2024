@@ -12,9 +12,9 @@ type PageOrderingRule struct {
 
 type PageOrderingRules []PageOrderingRule
 
-func (this PageOrderingRules) RulesFor(pageNumber int) PageOrderingRules {
+func (this PageOrderingRules) RulesWithAfter(pageNumber int) PageOrderingRules {
 	return lo.Filter(this, func(rule PageOrderingRule, _ int) bool {
-		return rule.before == pageNumber || rule.after == pageNumber
+		return rule.after == pageNumber
 	})
 }
 
