@@ -17,6 +17,14 @@ func SumOfCorrectlyOrderedUpdatesMiddlePageNumbers(fileContent string) int {
 	return validUpdatesMiddlePageNumbersSum
 }
 
+func SumOfIncorrectlyOrderedFixedUpdatesMiddlePageNumbers(fileContent string) int {
+	var lines = linesFrom(fileContent)
+	var _, _ = ParsePrinterData(lines)
+
+	return 123
+}
+
+
 func linesFrom(input string) []string {
 	var lines = strings.Split(input, "\n")
 	lines = lines[:len(lines)-1]

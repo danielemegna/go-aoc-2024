@@ -48,6 +48,17 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 5747, SumOfCorrectlyOrderedUpdatesMiddlePageNumbers(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 47+29+47, SumOfIncorrectlyOrderedFixedUpdatesMiddlePageNumbers(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	assert.Equal(t, 9999, SumOfIncorrectlyOrderedFixedUpdatesMiddlePageNumbers(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
