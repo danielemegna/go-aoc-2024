@@ -137,3 +137,15 @@ func TestFixThreeNumbersInvalidUpdate(t *testing.T) {
 	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3}, fixed)
 	assert.Equal(t, PagesToProduceInTheUpdate{1, 3, 2}, update) // original update should not change
 }
+
+func TestFixFiveNumbersInvalidUpdate(t *testing.T) {
+	var update = PagesToProduceInTheUpdate{4, 3, 5, 6, 7}
+	var rules = PageOrderingRules{
+		{before: 3, after: 4},
+	}
+
+	var fixed = update.FixWith(rules)
+
+	assert.Equal(t, PagesToProduceInTheUpdate{3, 4, 5, 6, 7}, fixed)
+	assert.Equal(t, PagesToProduceInTheUpdate{4, 3, 5, 6, 7}, update) // original update should not change
+}

@@ -25,7 +25,13 @@ func (this PagesToProduceInTheUpdate) FixWith(rules PageOrderingRules) PagesToPr
 	var clone = make(PagesToProduceInTheUpdate, len(this))
 	copy(clone, this)
 	for i := 0; i < len(this)-1; i++ {
-		if i == 1 {
+		var currentPageNumber = this[i]
+		var rulesForCurrentPage = rules.RulesWithAfter(currentPageNumber)
+		if len(rulesForCurrentPage) == 0 {
+			continue
+		}
+
+		if this[i+1] == rulesForCurrentPage[0].before {
 			clone[i], clone[i+1] = clone[i+1], clone[i]
 		}
 	}
