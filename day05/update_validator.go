@@ -26,21 +26,23 @@ func (this PagesToProduceInTheUpdate) FixWith(rules PageOrderingRules) PagesToPr
 	copy(clone, this)
 
 	for i := 0; i < len(this)-1; i++ {
-		var currentPageNumber, rest = this[i], this[i+1:]
+		var currentPageNumber, rest = clone[i], clone[i+1:]
 		var rulesForCurrentPage = rules.RulesWithAfter(currentPageNumber)
 
 		if len(rulesForCurrentPage) == 0 {
 			continue
 		}
 
-		var rule = rulesForCurrentPage[0]
-		var indexOf = slices.Index(rest, rule.before)
-		if indexOf == -1 {
-			continue
+		for _, rule := range rulesForCurrentPage {
+			var indexOf = slices.Index(rest, rule.before)
+			if indexOf == -1 {
+				continue
+			}
+
+			indexOf += i + 1
+			clone[i], clone[indexOf] = clone[indexOf], clone[i]
 		}
 
-		indexOf += i+1
-		clone[i], clone[indexOf] = clone[indexOf], clone[i]
 	}
 
 	return clone

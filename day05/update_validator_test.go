@@ -160,3 +160,16 @@ func TestFixThreeNumbersInvalidUpdateWithFarSwap(t *testing.T) {
 
 	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3}, fixed)
 }
+
+func TestFixInvalidUpdateWithMultipleRules(t *testing.T) {
+	var update = PagesToProduceInTheUpdate{1, 4, 3, 2, 5}
+	var rules = PageOrderingRules{
+		{before: 2, after: 3},
+		{before: 2, after: 5},
+		{before: 2, after: 4},
+	}
+
+	var fixed = update.FixWith(rules)
+
+	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3, 4, 5}, fixed)
+}
