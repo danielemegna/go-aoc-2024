@@ -24,16 +24,23 @@ func (this PagesToProduceInTheUpdate) IsValidFor(rules PageOrderingRules) bool {
 func (this PagesToProduceInTheUpdate) FixWith(rules PageOrderingRules) PagesToProduceInTheUpdate {
 	var clone = make(PagesToProduceInTheUpdate, len(this))
 	copy(clone, this)
+
 	for i := 0; i < len(this)-1; i++ {
-		var currentPageNumber = this[i]
+		var currentPageNumber, rest = this[i], this[i+1:]
 		var rulesForCurrentPage = rules.RulesWithAfter(currentPageNumber)
+
 		if len(rulesForCurrentPage) == 0 {
 			continue
 		}
 
-		if this[i+1] == rulesForCurrentPage[0].before {
-			clone[i], clone[i+1] = clone[i+1], clone[i]
+		var rule = rulesForCurrentPage[0]
+		var indexOf = slices.Index(rest, rule.before)
+		if indexOf == -1 {
+			continue
 		}
+
+		indexOf += i+1
+		clone[i], clone[indexOf] = clone[indexOf], clone[i]
 	}
 
 	return clone

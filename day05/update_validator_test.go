@@ -126,7 +126,7 @@ func TestFiveNumbersValidUpdate(t *testing.T) {
 	}
 }
 
-func TestFixThreeNumbersInvalidUpdate(t *testing.T) {
+func TestFixThreeNumbersInvalidUpdateWithCloseSwap(t *testing.T) {
 	var update = PagesToProduceInTheUpdate{1, 3, 2}
 	var rules = PageOrderingRules{
 		{before: 2, after: 3},
@@ -138,7 +138,7 @@ func TestFixThreeNumbersInvalidUpdate(t *testing.T) {
 	assert.Equal(t, PagesToProduceInTheUpdate{1, 3, 2}, update) // original update should not change
 }
 
-func TestFixFiveNumbersInvalidUpdate(t *testing.T) {
+func TestFixFiveNumbersInvalidUpdateWithCloseSwap(t *testing.T) {
 	var update = PagesToProduceInTheUpdate{4, 3, 5, 6, 7}
 	var rules = PageOrderingRules{
 		{before: 3, after: 4},
@@ -148,4 +148,15 @@ func TestFixFiveNumbersInvalidUpdate(t *testing.T) {
 
 	assert.Equal(t, PagesToProduceInTheUpdate{3, 4, 5, 6, 7}, fixed)
 	assert.Equal(t, PagesToProduceInTheUpdate{4, 3, 5, 6, 7}, update) // original update should not change
+}
+
+func TestFixThreeNumbersInvalidUpdateWithFarSwap(t *testing.T) {
+	var update = PagesToProduceInTheUpdate{3, 2, 1}
+	var rules = PageOrderingRules{
+		{before: 1, after: 3},
+	}
+
+	var fixed = update.FixWith(rules)
+
+	assert.Equal(t, PagesToProduceInTheUpdate{1, 2, 3}, fixed)
 }
