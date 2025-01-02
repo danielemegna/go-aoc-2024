@@ -19,9 +19,17 @@ func SumOfCorrectlyOrderedUpdatesMiddlePageNumbers(fileContent string) int {
 
 func SumOfIncorrectlyOrderedFixedUpdatesMiddlePageNumbers(fileContent string) int {
 	var lines = linesFrom(fileContent)
-	var _, _ = ParsePrinterData(lines)
+	var rules, updates = ParsePrinterData(lines)
 
-	return 123
+	var result = 0
+	for _, update := range updates {
+		if(!update.IsValidFor(rules)) {
+			var fixed = update.FixWith(rules)
+			result += fixed.GetMiddlePageNumber()
+		}
+	}
+
+	return result
 }
 
 
