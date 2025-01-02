@@ -20,3 +20,15 @@ func (this PagesToProduceInTheUpdate) IsValidFor(rules PageOrderingRules) bool {
 	}
 	return true
 }
+
+func (this PagesToProduceInTheUpdate) FixWith(rules PageOrderingRules) PagesToProduceInTheUpdate {
+	var clone = make(PagesToProduceInTheUpdate, len(this))
+	copy(clone, this)
+	for i := 0; i < len(this)-1; i++ {
+		if i == 1 {
+			clone[i], clone[i+1] = clone[i+1], clone[i]
+		}
+	}
+
+	return clone
+}
