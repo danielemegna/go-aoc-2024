@@ -4,15 +4,15 @@ import "slices"
 
 func (this PagesToProduceInTheUpdate) IsValidFor(rules PageOrderingRules) bool {
 	for i := 0; i < len(this)-1; i++ {
-		var currentPageNumber, after = this[i], this[i+1:]
-
+		var currentPageNumber, rest = this[i], this[i+1:]
 		var rulesForCurrentPage = rules.RulesWithAfter(currentPageNumber)
+
 		if len(rulesForCurrentPage) == 0 {
 			continue
 		}
 
 		for _, rule := range rulesForCurrentPage {
-			if slices.Contains(after, rule.before) {
+			if slices.Contains(rest, rule.before) {
 				return false
 			}
 		}
