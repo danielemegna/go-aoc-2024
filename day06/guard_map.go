@@ -6,27 +6,36 @@ import (
 )
 
 func ParseGuardMap(mapRows []string) GuardMap {
+	var guard *Guard = nil
+	var obstacles = []Coordinate{}
+
+	for rowIndex, mapRow := range mapRows {
+		if guard == nil {
+			guard = findGuardIn(mapRow, rowIndex)
+		}
+	}
+
+	if guard == nil {
+		panic("Cannot find any guard in map!")
+	}
+
 	return GuardMap{
 		size:      len(mapRows),
-		guard:     findGuardIn(mapRows),
-		obstacles: []Coordinate{},
+		guard:     *guard,
+		obstacles: obstacles,
 	}
 }
 
-func findGuardIn(mapRows []string) Guard {
-	for rowIndex, row := range mapRows {
-		var indexOfGuardInRow = strings.IndexAny(row, "^><v")
-		if indexOfGuardInRow == -1 {
-			continue
-		}
-
-		return Guard{
-			position:  Coordinate{x: indexOfGuardInRow, y: rowIndex},
-			direction: guardDirecionFromChar(row[indexOfGuardInRow]),
-		}
+func findGuardIn(mapRow string, rowIndex int) *Guard {
+	var indexOfGuardInRow = strings.IndexAny(mapRow, "^><v")
+	if indexOfGuardInRow == -1 {
+		return nil
 	}
 
-	panic("Cannot find any guard")
+	return &Guard{
+		position:  Coordinate{x: indexOfGuardInRow, y: rowIndex},
+		direction: guardDirecionFromChar(mapRow[indexOfGuardInRow]),
+	}
 }
 
 func guardDirecionFromChar(value byte) Direction {
