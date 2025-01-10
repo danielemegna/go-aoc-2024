@@ -13,6 +13,7 @@ func ParseGuardMap(mapRows []string) GuardMap {
 		if guard == nil {
 			guard = findGuardIn(mapRow, rowIndex)
 		}
+
 	}
 
 	if guard == nil {
@@ -44,6 +45,8 @@ func guardDirecionFromChar(value byte) Direction {
 		return North
 	case byte('>'):
 		return East
+	case byte('<'):
+		return West
 	}
 
 	panic(fmt.Sprintf("Cannot recognize guard direction from %c", value))
