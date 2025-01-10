@@ -5,6 +5,17 @@ import (
 	"testing"
 )
 
+func TestParseProducePanicWithoutAnyGuard(t *testing.T) {
+	var mapRows = []string{
+		"..",
+		"..",
+	}
+
+	assert.PanicsWithValue(t, "Cannot find any guard in map!", func() {
+		ParseGuardMap(mapRows)
+	})
+}
+
 func TestParseSimpleGuardMapWithoutObstacles(t *testing.T) {
 	var mapRows = []string{
 		"...",
