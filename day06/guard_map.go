@@ -12,8 +12,9 @@ type GuardMap struct {
 }
 
 type Guard struct {
-	position  Coordinate
-	direction Direction
+	position         Coordinate
+	direction        Direction
+	visitedPositions []Coordinate
 }
 
 type Coordinate struct {
@@ -49,9 +50,11 @@ func ParseGuardMap(mapRows []string) GuardMap {
 			}
 
 			if strings.ContainsRune("^><v", char) {
+				var guardPosition = Coordinate{x, y}
 				foundGuard = &Guard{
-					position:  Coordinate{x, y},
-					direction: guardDirecionFromChar(char),
+					position:         guardPosition,
+					direction:        guardDirecionFromChar(char),
+					visitedPositions: []Coordinate{guardPosition},
 				}
 			}
 		}

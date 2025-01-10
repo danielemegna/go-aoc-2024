@@ -28,8 +28,9 @@ func TestParseSimpleGuardMapWithoutObstacles(t *testing.T) {
 	var expected = GuardMap{
 		size: 3,
 		guard: Guard{
-			position:  Coordinate{x: 1, y: 1},
-			direction: East,
+			position:         Coordinate{x: 1, y: 1},
+			direction:        East,
+			visitedPositions: []Coordinate{{x: 1, y: 1}},
 		},
 		obstacles: []Coordinate{},
 	}
@@ -49,8 +50,9 @@ func TestParseGuardMapWithSomeObstaclesMap(t *testing.T) {
 	var expected = GuardMap{
 		size: 4,
 		guard: Guard{
-			position:  Coordinate{x: 1, y: 2},
-			direction: West,
+			position:         Coordinate{x: 1, y: 2},
+			direction:        West,
+			visitedPositions: []Coordinate{{x: 1, y: 2}},
 		},
 		obstacles: []Coordinate{
 			{x: 1, y: 0},
@@ -67,8 +69,9 @@ func TestParseProvidedExampleGuardMap(t *testing.T) {
 	var expected = GuardMap{
 		size: 10,
 		guard: Guard{
-			position:  Coordinate{x: 4, y: 6},
-			direction: North,
+			position:         Coordinate{x: 4, y: 6},
+			direction:        North,
+			visitedPositions: []Coordinate{{x: 4, y: 6}},
 		},
 		obstacles: []Coordinate{
 			{x: 4, y: 0},
