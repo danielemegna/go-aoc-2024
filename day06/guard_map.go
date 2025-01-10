@@ -72,6 +72,8 @@ func guardDirecionFromChar(value rune) Direction {
 	switch value {
 	case '^':
 		return North
+	case 'v':
+		return South
 	case '>':
 		return East
 	case '<':
