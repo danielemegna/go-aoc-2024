@@ -6,41 +6,40 @@ import (
 )
 
 func ParseGuardMap(mapRows []string) GuardMap {
-	var guard *Guard = nil
-	var obstacles = []Coordinate{}
+	var mapSize = len(mapRows)
+	var foundGuard *Guard = nil
+	var foundObstacles = []Coordinate{}
 
-	for rowIndex, mapRow := range mapRows {
-		if guard == nil {
-			guard = findGuardIn(mapRow, rowIndex)
-		}
+	for y := 0; y < mapSize; y++ {
+		for x := 0; x < mapSize; x++ {
+			var char = mapRows[y][x]
 
-		for index, c := range mapRow {
-			if(c == '#') {
-				obstacles = append(obstacles, Coordinate{x: index, y: rowIndex})
-			}	
+			if char == '#' {
+				foundObstacles = append(foundObstacles, Coordinate{x, y})
+				continue
+			}
+
+			if foundGuard != nil {
+				continue
+			}
+
+			if strings.Contains("^><v", string(char)) {
+				foundGuard = &Guard{
+					position:  Coordinate{x, y},
+					direction: guardDirecionFromChar(char),
+				}
+			}
 		}
 	}
 
-	if guard == nil {
+	if foundGuard == nil {
 		panic("Cannot find any guard in map!")
 	}
 
 	return GuardMap{
-		size:      len(mapRows),
-		guard:     *guard,
-		obstacles: obstacles,
-	}
-}
-
-func findGuardIn(mapRow string, rowIndex int) *Guard {
-	var indexOfGuardInRow = strings.IndexAny(mapRow, "^><v")
-	if indexOfGuardInRow == -1 {
-		return nil
-	}
-
-	return &Guard{
-		position:  Coordinate{x: indexOfGuardInRow, y: rowIndex},
-		direction: guardDirecionFromChar(mapRow[indexOfGuardInRow]),
+		size:      mapSize,
+		guard:     *foundGuard,
+		obstacles: foundObstacles,
 	}
 }
 
