@@ -5,7 +5,27 @@ import (
 	"testing"
 )
 
-func TestParseGuardMap(t *testing.T) {
+func TestParseSimpleGuardMapWithoutObstacles(t *testing.T) {
+	var mapRows = []string{
+		"...",
+		".>.",
+		"...",
+	}
+
+	var actual = ParseGuardMap(mapRows)
+
+	var expected = GuardMap{
+		size: 3,
+		guard: Guard{
+			position:  Coordinate{x: 1, y: 1},
+			direction: East,
+		},
+		obstacles: []Coordinate{},
+	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestParseProvidedExampleGuardMap(t *testing.T) {
 	var actual = ParseGuardMap(PROVIDED_EXAMPLE_INPUT_LINES)
 
 	var expected = GuardMap{

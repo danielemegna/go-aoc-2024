@@ -33,6 +33,8 @@ func guardDirecionFromChar(value byte) Direction {
 	switch value {
 	case byte('^'):
 		return North
+	case byte('>'):
+		return East
 	}
 
 	panic(fmt.Sprintf("Cannot recognize guard direction from %c", value))
