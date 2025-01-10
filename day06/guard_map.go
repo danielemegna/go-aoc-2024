@@ -1,14 +1,41 @@
 package day06
 
+import (
+	"fmt"
+	"strings"
+)
+
 func ParseGuardMap(mapRows []string) GuardMap {
 	return GuardMap{
-		size: len(mapRows),
-		guard: Guard{
-			position:  Coordinate{x: 4, y: 6},
-			direction: North,
-		},
+		size:      len(mapRows),
+		guard:     findGuardIn(mapRows),
 		obstacles: []Coordinate{},
 	}
+}
+
+func findGuardIn(mapRows []string) Guard {
+	for rowIndex, row := range mapRows {
+		var indexOfGuardInRow = strings.IndexAny(row, "^><v")
+		if indexOfGuardInRow == -1 {
+			continue
+		}
+
+		return Guard{
+			position:  Coordinate{x: indexOfGuardInRow, y: rowIndex},
+			direction: guardDirecionFromChar(row[indexOfGuardInRow]),
+		}
+	}
+
+	panic("Cannot find any guard")
+}
+
+func guardDirecionFromChar(value byte) Direction {
+	switch value {
+	case byte('^'):
+		return North
+	}
+
+	panic(fmt.Sprintf("Cannot recognize guard direction from %c", value))
 }
 
 type GuardMap struct {
