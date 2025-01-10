@@ -12,7 +12,7 @@ func ParseGuardMap(mapRows []string) GuardMap {
 
 	for y := 0; y < mapSize; y++ {
 		for x := 0; x < mapSize; x++ {
-			var char = mapRows[y][x]
+			var char = rune(mapRows[y][x])
 
 			if char == '#' {
 				foundObstacles = append(foundObstacles, Coordinate{x, y})
@@ -23,7 +23,7 @@ func ParseGuardMap(mapRows []string) GuardMap {
 				continue
 			}
 
-			if strings.Contains("^><v", string(char)) {
+			if strings.ContainsRune("^><v", char) {
 				foundGuard = &Guard{
 					position:  Coordinate{x, y},
 					direction: guardDirecionFromChar(char),
@@ -43,13 +43,13 @@ func ParseGuardMap(mapRows []string) GuardMap {
 	}
 }
 
-func guardDirecionFromChar(value byte) Direction {
+func guardDirecionFromChar(value rune) Direction {
 	switch value {
-	case byte('^'):
+	case '^':
 		return North
-	case byte('>'):
+	case '>':
 		return East
-	case byte('<'):
+	case '<':
 		return West
 	}
 
