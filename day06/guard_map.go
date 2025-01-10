@@ -5,6 +5,31 @@ import (
 	"strings"
 )
 
+type GuardMap struct {
+	size      int // assuming always-square maps here
+	guard     Guard
+	obstacles []Coordinate
+}
+
+type Guard struct {
+	position  Coordinate
+	direction Direction
+}
+
+type Coordinate struct {
+	x int
+	y int
+}
+
+type Direction int
+
+const (
+	North Direction = iota
+	South
+	East
+	West
+)
+
 func ParseGuardMap(mapRows []string) GuardMap {
 	var mapSize = len(mapRows)
 	var foundGuard *Guard = nil
@@ -54,29 +79,4 @@ func guardDirecionFromChar(value rune) Direction {
 	}
 
 	panic(fmt.Sprintf("Cannot recognize guard direction from %c", value))
-}
-
-type GuardMap struct {
-	size      int // assuming always-square maps here
-	guard     Guard
-	obstacles []Coordinate
-}
-
-type Guard struct {
-	position  Coordinate
-	direction Direction
-}
-
-type Direction int
-
-const (
-	North Direction = iota
-	South
-	East
-	West
-)
-
-type Coordinate struct {
-	x int
-	y int
 }
