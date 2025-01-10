@@ -14,6 +14,11 @@ func ParseGuardMap(mapRows []string) GuardMap {
 			guard = findGuardIn(mapRow, rowIndex)
 		}
 
+		for index, c := range mapRow {
+			if(c == '#') {
+				obstacles = append(obstacles, Coordinate{x: index, y: rowIndex})
+			}	
+		}
 	}
 
 	if guard == nil {
