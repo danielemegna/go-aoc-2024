@@ -86,3 +86,22 @@ func TestParseProvidedExampleGuardMap(t *testing.T) {
 	}
 	assert.Equal(t, expected, actual)
 }
+
+func TestGuardWalkStopOutOfMapBoundariesOnEast(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		"....",
+		".>..",
+		"....",
+		"....",
+	})
+
+	var newMap = guardMap.GuardWalk()
+
+	var expectedGuard = Guard{
+		position:         Coordinate{x: 4, y: 1},
+		direction:        East,
+		visitedPositions: []Coordinate{{x: 1, y: 1}, {x: 2, y: 1}, {x: 3, y: 1}},
+	}
+	assert.Equal(t, expectedGuard, newMap.guard)
+	assert.NotEqual(t, newMap.guard, guardMap.guard) // original map guard should not change
+}

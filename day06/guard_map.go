@@ -22,6 +22,8 @@ type Coordinate struct {
 	y int
 }
 
+func (this Coordinate) East() Coordinate  { return Coordinate{this.x + 1, this.y} }
+
 type Direction int
 
 const (
@@ -68,6 +70,30 @@ func ParseGuardMap(mapRows []string) GuardMap {
 		size:      mapSize,
 		guard:     *foundGuard,
 		obstacles: foundObstacles,
+	}
+}
+
+func (this GuardMap) GuardWalk() GuardMap {
+	var visitedPositions = this.guard.visitedPositions
+	var currentPosition = this.guard.position
+
+	for {
+		var nextPosition = currentPosition.East()
+		currentPosition = nextPosition
+		if currentPosition.x >= this.size {
+			break
+		}
+		visitedPositions = append(visitedPositions, nextPosition)
+	}
+
+	return GuardMap{
+		size: this.size,
+		guard: Guard{
+			direction:        this.guard.direction,
+			position:         currentPosition,
+			visitedPositions: visitedPositions,
+		},
+		obstacles: this.obstacles,
 	}
 }
 
