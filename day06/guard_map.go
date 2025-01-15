@@ -2,6 +2,7 @@ package day06
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -79,6 +80,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 
 	for {
 		var nextPosition = currentPosition.East()
+		if slices.Contains(this.obstacles, nextPosition) {
+			break
+		}
+
 		currentPosition = nextPosition
 		if currentPosition.x >= this.size {
 			break
