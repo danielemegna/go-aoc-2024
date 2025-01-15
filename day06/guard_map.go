@@ -23,6 +23,15 @@ type Coordinate struct {
 	y int
 }
 
+func (this Coordinate) NextFor(direction Direction) Coordinate {
+	if direction == North {
+		return this.North()
+	}
+
+	return this.East()
+}
+
+func (this Coordinate) North() Coordinate { return Coordinate{this.x, this.y - 1} }
 func (this Coordinate) East() Coordinate  { return Coordinate{this.x + 1, this.y} }
 
 type Direction int
@@ -79,13 +88,13 @@ func (this GuardMap) GuardWalk() GuardMap {
 	var currentPosition = this.guard.position
 
 	for {
-		var nextPosition = currentPosition.East()
+		var nextPosition = currentPosition.NextFor(this.guard.direction)
 		if slices.Contains(this.obstacles, nextPosition) {
 			break
 		}
 
 		currentPosition = nextPosition
-		if currentPosition.x >= this.size {
+		if currentPosition.x >= this.size || currentPosition.y < 0 {
 			break
 		}
 		visitedPositions = append(visitedPositions, nextPosition)
