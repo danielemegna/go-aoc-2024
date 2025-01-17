@@ -63,12 +63,11 @@ func (this GuardMap) GuardWalk() GuardMap {
 
 	for {
 		var nextPosition = currentPosition.NextFor(this.guard.direction)
-		if slices.Contains(this.obstacles, nextPosition) {
+		if this.IsAnObstacle(nextPosition) {
 			break
 		}
 
 		currentPosition = nextPosition
-
 		if this.IsOutOfBoundaries(currentPosition) {
 			break
 		}
@@ -87,6 +86,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 		},
 		obstacles: this.obstacles,
 	}
+}
+
+func (this GuardMap) IsAnObstacle(coordinate Coordinate) bool {
+	return slices.Contains(this.obstacles, coordinate)
 }
 
 func (this GuardMap) IsGuardOutOfBoundaries() bool {
