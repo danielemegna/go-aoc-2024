@@ -1,7 +1,6 @@
 package day06
 
 import (
-	"fmt"
 	"slices"
 	"strings"
 )
@@ -17,30 +16,6 @@ type Guard struct {
 	direction        Direction
 	visitedPositions []Coordinate
 }
-
-type Direction int
-
-func (this Direction) NextClockwise() Direction {
-	switch this {
-	case North:
-		return East
-	case East:
-		return South
-	case South:
-		return West
-	case West:
-		return North
-	default:
-		panic(fmt.Sprintf("Unexpected Direction: %#v", this))
-	}
-}
-
-const (
-	North Direction = iota
-	South
-	East
-	West
-)
 
 func ParseGuardMap(mapRows []string) GuardMap {
 	var mapSize = len(mapRows)
@@ -127,19 +102,4 @@ func (this GuardMap) IsOutOfBoundaries(currentPosition Coordinate) bool {
 
 func (this *GuardMap) TurnGuardClockwise() {
 	this.guard.direction = this.guard.direction.NextClockwise()
-}
-
-func guardDirecionFromChar(value rune) Direction {
-	switch value {
-	case '^':
-		return North
-	case 'v':
-		return South
-	case '>':
-		return East
-	case '<':
-		return West
-	}
-
-	panic(fmt.Sprintf("Cannot recognize guard direction from %c", value))
 }
