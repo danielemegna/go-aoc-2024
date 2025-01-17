@@ -12,6 +12,10 @@ type GuardMap struct {
 	obstacles []Coordinate
 }
 
+func (this GuardMap) IsGuardOutOfBoundaries() bool {
+	return true
+}
+
 type Guard struct {
 	position         Coordinate
 	direction        Direction

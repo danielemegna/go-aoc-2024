@@ -215,3 +215,10 @@ func TestTurnGuardClockwise(t *testing.T) {
 	guardMap.TurnGuardClockwise()
 	assert.Equal(t, East, guardMap.guard.direction)
 }
+
+func TestIsGuardOutOfBoundaries(t *testing.T) {
+	var guardMap = GuardMap{
+		guard: Guard{position: Coordinate{x: -1, y: 0}},
+	}
+	assert.True(t, guardMap.IsGuardOutOfBoundaries())
+}
