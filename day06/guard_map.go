@@ -97,7 +97,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 		}
 
 		currentPosition = nextPosition
-		if currentPosition.x >= this.size || currentPosition.y < 0 {
+		if currentPosition.x >= this.size ||
+			currentPosition.x < 0 ||
+			currentPosition.y >= this.size ||
+			currentPosition.y < 0 {
 			break
 		}
 

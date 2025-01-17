@@ -146,6 +146,30 @@ func TestGuardWalkStopOutOfMapBoundariesOnNorth(t *testing.T) {
 	assert.Equal(t, expectedGuard, newMap.guard)
 }
 
+func TestGuardWalkStopOutOfMapBoundariesOnWest(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		"...",
+		"..<",
+		"...",
+	})
+
+	var newMap = guardMap.GuardWalk()
+
+	assert.Equal(t, Coordinate{x: -1, y: 1}, newMap.guard.position)
+}
+
+func TestGuardWalkStopOutOfMapBoundariesOnSouth(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		"..v",
+		"...",
+		"...",
+	})
+
+	var newMap = guardMap.GuardWalk()
+
+	assert.Equal(t, Coordinate{x: 2, y: 3}, newMap.guard.position)
+}
+
 func TestGuardWalkStopReachingAnObstacleGoingSouth(t *testing.T) {
 	var guardMap = ParseGuardMap([]string{
 		"..v.",
