@@ -106,7 +106,7 @@ func TestGuardWalkStopOutOfMapBoundariesOnEast(t *testing.T) {
 	assert.NotEqual(t, newMap.guard, guardMap.guard) // original map guard should not change
 }
 
-func TestGuardWalkStopReachingAnObstacle(t *testing.T) {
+func TestGuardWalkStopReachingAnObstacleGoingEast(t *testing.T) {
 	var guardMap = ParseGuardMap([]string{
 		".....",
 		">..#.",
@@ -141,6 +141,27 @@ func TestGuardWalkStopOutOfMapBoundariesOnNorth(t *testing.T) {
 		visitedPositions: []Coordinate{
 			{x: 2, y: 3}, {x: 2, y: 2},
 			{x: 2, y: 1}, {x: 2, y: 0},
+		},
+	}
+	assert.Equal(t, expectedGuard, newMap.guard)
+}
+
+func TestGuardWalkStopReachingAnObstacleGoingSouth(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		"..v.",
+		"....",
+		"....",
+		"..#.",
+	})
+
+	var newMap = guardMap.GuardWalk()
+
+	var expectedGuard = Guard{
+		position:         Coordinate{x: 2, y: 2},
+		direction:        South,
+		visitedPositions: []Coordinate{
+			{x: 2, y: 0}, {x: 2, y: 1},
+			{x: 2, y: 2},
 		},
 	}
 	assert.Equal(t, expectedGuard, newMap.guard)
