@@ -12,10 +12,6 @@ type GuardMap struct {
 	obstacles []Coordinate
 }
 
-func (this GuardMap) IsGuardOutOfBoundaries() bool {
-	return true
-}
-
 type Guard struct {
 	position         Coordinate
 	direction        Direction
@@ -116,6 +112,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 		},
 		obstacles: this.obstacles,
 	}
+}
+
+func (this GuardMap) IsGuardOutOfBoundaries() bool {
+	return this.IsOutOfBoundaries(this.guard.position)
 }
 
 func (this GuardMap) IsOutOfBoundaries(currentPosition Coordinate) bool {

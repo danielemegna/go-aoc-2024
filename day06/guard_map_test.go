@@ -2,6 +2,7 @@ package day06
 
 import (
 	"github.com/stretchr/testify/assert"
+	"strconv"
 	"testing"
 )
 
@@ -241,8 +242,26 @@ func TestTurnGuardClockwise(t *testing.T) {
 }
 
 func TestIsGuardOutOfBoundaries(t *testing.T) {
-	var guardMap = GuardMap{
-		guard: Guard{position: Coordinate{x: -1, y: 0}},
+	var testCases = []struct {
+		guardPosition     Coordinate
+		isOutOfBoundaries bool
+	}{
+		{Coordinate{x: -1, y: 0}, true},
+		{Coordinate{x: -1, y: -1}, true},
+		{Coordinate{x: 0, y: 0}, false},
+		{Coordinate{x: 1, y: 1}, false},
+		{Coordinate{x: 2, y: 2}, false},
+		{Coordinate{x: 3, y: 2}, true},
+		{Coordinate{x: 2, y: 3}, true},
 	}
-	assert.True(t, guardMap.IsGuardOutOfBoundaries())
+
+	for index, testCase := range testCases {
+		t.Run("TestCase #"+strconv.Itoa(index+1), func(t *testing.T) {
+			var guardMap = GuardMap{
+				size:  3,
+				guard: Guard{position: testCase.guardPosition},
+			}
+			assert.Equal(t, testCase.isOutOfBoundaries, guardMap.IsGuardOutOfBoundaries())
+		})
+	}
 }
