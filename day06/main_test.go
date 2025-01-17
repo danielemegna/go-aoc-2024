@@ -26,9 +26,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 999, DistinctPositionsVisitedByGuardCount(fileContent))
+	assert.Equal(t, 5409, DistinctPositionsVisitedByGuardCount(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {

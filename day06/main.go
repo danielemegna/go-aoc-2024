@@ -3,9 +3,20 @@ package day06
 import "strings"
 
 func DistinctPositionsVisitedByGuardCount(fileContent string) int {
-	return 41
-}
+	var mapRows = linesFrom(fileContent)
+	var guardMap = ParseGuardMap(mapRows)
 
+	for {
+		guardMap = guardMap.GuardWalk()
+		if guardMap.IsGuardOutOfBoundaries() {
+			break
+		}
+
+		guardMap.TurnGuardClockwise()
+	}
+
+	return len(guardMap.guard.visitedPositions)
+}
 
 func linesFrom(input string) []string {
 	var lines = strings.Split(input, "\n")
