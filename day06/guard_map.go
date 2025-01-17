@@ -81,7 +81,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 		if currentPosition.x >= this.size || currentPosition.y < 0 {
 			break
 		}
-		visitedPositions = append(visitedPositions, nextPosition)
+
+		if !slices.Contains(visitedPositions, nextPosition) {
+			visitedPositions = append(visitedPositions, nextPosition)
+		}
 	}
 
 	return GuardMap{

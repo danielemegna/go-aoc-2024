@@ -136,8 +136,8 @@ func TestGuardWalkStopOutOfMapBoundariesOnNorth(t *testing.T) {
 	var newMap = guardMap.GuardWalk()
 
 	var expectedGuard = Guard{
-		position:         Coordinate{x: 2, y: -1},
-		direction:        North,
+		position:  Coordinate{x: 2, y: -1},
+		direction: North,
 		visitedPositions: []Coordinate{
 			{x: 2, y: 3}, {x: 2, y: 2},
 			{x: 2, y: 1}, {x: 2, y: 0},
@@ -157,12 +157,50 @@ func TestGuardWalkStopReachingAnObstacleGoingSouth(t *testing.T) {
 	var newMap = guardMap.GuardWalk()
 
 	var expectedGuard = Guard{
-		position:         Coordinate{x: 2, y: 2},
-		direction:        South,
+		position:  Coordinate{x: 2, y: 2},
+		direction: South,
 		visitedPositions: []Coordinate{
 			{x: 2, y: 0}, {x: 2, y: 1},
 			{x: 2, y: 2},
 		},
 	}
 	assert.Equal(t, expectedGuard, newMap.guard)
+}
+
+func TestAlreadyVisitedPositionsShouldNotBeIncludedTwice(t *testing.T) {
+	var guardMap = buildMapWith(
+		[]string{
+			".......",
+			"...v...",
+			".......",
+			".......",
+			".......",
+			"...#...",
+			".......",
+		},
+		[]Coordinate{
+			{x: 1, y: 3}, {x: 2, y: 3},
+			{x: 3, y: 3}, {x: 4, y: 3},
+		},
+	)
+
+	var newMap = guardMap.GuardWalk()
+
+	var visitedPositions = newMap.guard.visitedPositions
+	assert.ElementsMatch(t,
+		visitedPositions,
+		[]Coordinate{
+			// already visted positions
+			{x: 1, y: 3}, {x: 2, y: 3},
+			{x: 3, y: 3}, {x: 4, y: 3},
+			// new visited positions
+			{x: 3, y: 2}, {x: 3, y: 4}, // { x: 3, y: 3 } not included again
+		},
+	)
+}
+
+func buildMapWith(mapRows []string, visitedPositions []Coordinate) GuardMap {
+	var guardMap = ParseGuardMap(mapRows)
+	guardMap.guard.visitedPositions = visitedPositions
+	return guardMap
 }
