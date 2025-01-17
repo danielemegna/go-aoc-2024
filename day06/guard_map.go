@@ -20,6 +20,21 @@ type Guard struct {
 
 type Direction int
 
+func (this Direction) NextClockwise() Direction {
+	switch this {
+	case North:
+		return East
+	case East:
+		return South
+	case South:
+		return West
+	case West:
+		return North
+	default:
+		panic(fmt.Sprintf("Unexpected Direction: %#v", this))
+	}
+}
+
 const (
 	North Direction = iota
 	South
@@ -96,6 +111,10 @@ func (this GuardMap) GuardWalk() GuardMap {
 		},
 		obstacles: this.obstacles,
 	}
+}
+
+func (this *GuardMap) TurnGuardClockwise() {
+	this.guard.direction = this.guard.direction.NextClockwise()
 }
 
 func guardDirecionFromChar(value rune) Direction {

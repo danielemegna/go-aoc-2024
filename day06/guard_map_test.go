@@ -199,6 +199,24 @@ func TestAlreadyVisitedPositionsShouldNotBeIncludedTwice(t *testing.T) {
 	)
 }
 
+func TestTurnGuardClockwise(t *testing.T) {
+	var guardMap = GuardMap{
+		guard: Guard{direction: East},
+	}
+
+	guardMap.TurnGuardClockwise()
+	assert.Equal(t, South, guardMap.guard.direction)
+
+	guardMap.TurnGuardClockwise()
+	assert.Equal(t, West, guardMap.guard.direction)
+
+	guardMap.TurnGuardClockwise()
+	assert.Equal(t, North, guardMap.guard.direction)
+
+	guardMap.TurnGuardClockwise()
+	assert.Equal(t, East, guardMap.guard.direction)
+}
+
 func buildMapWith(mapRows []string, visitedPositions []Coordinate) GuardMap {
 	var guardMap = ParseGuardMap(mapRows)
 	guardMap.guard.visitedPositions = visitedPositions
