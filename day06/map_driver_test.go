@@ -18,3 +18,19 @@ func TestRunSimpleGuardWalkWithoutLoop(t *testing.T) {
 	assert.Len(t, newGuardMap.guard.visitedPositions, 6)
 	assert.True(t, newGuardMap.IsGuardOutOfBoundaries())
 }
+
+func TestRunGuardWalkWithLoop(t *testing.T) {
+	t.Skip("WIP loop recognition")
+	var guardMap = ParseGuardMap([]string{
+		".#...",
+		"....#",
+		".....",
+		"#^...",
+		"...#.",
+	})
+
+	var newGuardMap = RunGuardWalk(guardMap)
+
+	assert.Len(t, newGuardMap.guard.visitedPositions, 8)
+	assert.False(t, newGuardMap.IsGuardOutOfBoundaries())
+}
