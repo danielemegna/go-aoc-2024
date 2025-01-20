@@ -106,3 +106,7 @@ func (this GuardMap) IsOutOfBoundaries(currentPosition Coordinate) bool {
 func (this *GuardMap) TurnGuardClockwise() {
 	this.guard.direction = this.guard.direction.NextClockwise()
 }
+
+func (this *GuardMap) AddObstacle(obstacleCoordinate Coordinate) {
+	this.obstacles = append(this.obstacles, obstacleCoordinate)
+}

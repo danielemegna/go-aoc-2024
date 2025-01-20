@@ -6,14 +6,7 @@ func DistinctPositionsVisitedByGuardCount(fileContent string) int {
 	var mapRows = linesFrom(fileContent)
 	var guardMap = ParseGuardMap(mapRows)
 
-	for {
-		guardMap = guardMap.GuardWalk()
-		if guardMap.IsGuardOutOfBoundaries() {
-			break
-		}
-
-		guardMap.TurnGuardClockwise()
-	}
+	guardMap = RunGuardWalk(guardMap)
 
 	return len(guardMap.guard.visitedPositions)
 }
