@@ -20,7 +20,6 @@ func TestRunSimpleGuardWalkWithoutLoop(t *testing.T) {
 }
 
 func TestRunGuardWalkWithLoop(t *testing.T) {
-	t.Skip("WIP loop recognition")
 	var guardMap = ParseGuardMap([]string{
 		".#...",
 		"....#",
