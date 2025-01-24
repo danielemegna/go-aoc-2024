@@ -30,6 +30,17 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 5409, DistinctPositionsVisitedByGuardCount(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 6, PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	assert.Equal(t, 99, PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
