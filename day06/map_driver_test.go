@@ -66,3 +66,34 @@ func TestRunGuardWalkOfProvidedExampleAddingAnExtraObstacleCreatingALoop(t *test
 		})
 	}
 }
+
+func TestRunGuardWithTurnBackOnDoubleTurn(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		".#..",
+		"..#.",
+		"....",
+		".^..",
+	})
+
+	var newGuardMap = RunGuardWalk(guardMap)
+
+	assert.Len(t, newGuardMap.guard.visitedPositions, 3)
+	assert.True(t, newGuardMap.IsGuardOutOfBoundaries())
+	assert.Equal(t, Coordinate{x: 1, y: 4}, newGuardMap.guard.position)
+	assert.Equal(t, newGuardMap.guard.direction, South)
+}
+
+func TestRunGuardWalkWithLoopBackAndForward(t *testing.T) {
+	var guardMap = ParseGuardMap([]string{
+		".#...",
+		"..#..",
+		".....",
+		"#^...",
+		".#...",
+	})
+
+	var newGuardMap = RunGuardWalk(guardMap)
+
+	assert.Len(t, newGuardMap.guard.visitedPositions, 3)
+	assert.False(t, newGuardMap.IsGuardOutOfBoundaries())
+}
