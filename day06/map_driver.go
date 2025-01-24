@@ -21,5 +21,9 @@ func RunGuardWalk(guardMap GuardMap) GuardMap {
 	}
 
 	return guardMap
+}
 
+func RunGuardWalkWithExtraObstacle(guardMap GuardMap, obstacleCoordinate Coordinate) GuardMap {
+	guardMap.AddObstacle(obstacleCoordinate)
+	return RunGuardWalk(guardMap)
 }
