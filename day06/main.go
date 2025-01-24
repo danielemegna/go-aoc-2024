@@ -1,6 +1,9 @@
 package day06
 
-import "strings"
+import (
+	"github.com/samber/lo"
+	"strings"
+)
 
 func DistinctPositionsVisitedByGuardCount(fileContent string) int {
 	var mapRows = linesFrom(fileContent)
@@ -17,17 +20,17 @@ func PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent string) int {
 
 	var normalWalkMap = RunGuardWalk(guardMap)
 	var possibleWaysToCreateLoopWithAnExtraObstacle = 0
-	for _, visitedPosition := range normalWalkMap.guard.visitedPositions {
+	var possiblePlacesToPutExtraObstacle = lo.Without(normalWalkMap.guard.visitedPositions, guardMap.guard.position)
+	for _, visitedPosition := range possiblePlacesToPutExtraObstacle {
 		var guardWalkWithExtraObstacle = RunGuardWalkWithExtraObstacle(guardMap, visitedPosition)
-		if(guardWalkWithExtraObstacle.IsGuardOutOfBoundaries()) {
+		if guardWalkWithExtraObstacle.IsGuardOutOfBoundaries() {
 			continue
 		}
 		possibleWaysToCreateLoopWithAnExtraObstacle++
 	}
 
-	return 6
+	return possibleWaysToCreateLoopWithAnExtraObstacle
 }
-
 
 func linesFrom(input string) []string {
 	var lines = strings.Split(input, "\n")

@@ -36,9 +36,8 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 99, PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent))
+	assert.Equal(t, 2022, PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
