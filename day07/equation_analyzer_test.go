@@ -31,3 +31,21 @@ func TestRecognizeFalseANotSolvableEquation(t *testing.T) {
 
 	assert.False(t, CanBeTrue(equation))
 }
+
+func TestRecognizeTrueTheProductOfTwoOperands(t *testing.T) {
+	var equation = Equation{
+		operands: []int{5, 4},
+		total:    5 * 4,
+	}
+
+	assert.True(t, CanBeTrue(equation))
+}
+
+func TestRecognizeTrueTheProductOfManyOperands(t *testing.T) {
+	var equation = Equation{
+		operands: []int{5, 4, 2, 9, 1},
+		total:    1 * 2 * 4 * 5 * 9,
+	}
+
+	assert.True(t, CanBeTrue(equation))
+}
