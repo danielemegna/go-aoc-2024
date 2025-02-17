@@ -25,9 +25,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, TotalCalibrationResultOfPossiblyTrueEquations(fileContent))
+	assert.Equal(t, 6231007345478, TotalCalibrationResultOfPossiblyTrueEquations(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
