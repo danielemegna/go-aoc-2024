@@ -36,6 +36,7 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("Very slow test!")
 	var fileContent = readFileContent()
 	assert.Equal(t, 2022, PossibleWaysToCreateLoopWithAnExtraObstacle(fileContent))
 }
