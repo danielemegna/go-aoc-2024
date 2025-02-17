@@ -1,11 +1,26 @@
 package day07
 
-import "github.com/samber/lo"
-
 func CanBeTrue(equation Equation) bool {
-	var sum = lo.Sum(equation.operands)
-	var product = lo.Reduce(equation.operands, func(product int, current int, index int) int {
-		return product * current
-	}, 1)
-	return sum == equation.total || product == equation.total
+	var firstOperand = equation.operands[0]
+	var remainingOperands = equation.operands[1:]
+	return CheckEquationTruthfulWith(remainingOperands, firstOperand, equation.total)
+}
+
+func CheckEquationTruthfulWith(remainingOperands []int, total int, targetTotal int) bool {
+	if total > targetTotal {
+		return false
+	}
+
+	if len(remainingOperands) == 0 {
+		return total == targetTotal
+	}
+
+	var firstNumber = remainingOperands[0]
+	remainingOperands = remainingOperands[1:]
+
+	var newTotalWithSum = total + firstNumber
+	var newTotalWithProduct = total * firstNumber
+
+	return CheckEquationTruthfulWith(remainingOperands, newTotalWithSum, targetTotal) ||
+		CheckEquationTruthfulWith(remainingOperands, newTotalWithProduct, targetTotal)
 }
