@@ -12,7 +12,7 @@ func TotalCalibrationResultOfPossiblyTrueEquations(fileContent string) int {
 	})
 
 	var trueEquations = lo.Filter(equations, func(equation Equation, _ int) bool {
-		return CanBeTrue(equation)
+		return CanBeTrue(equation, SUM_AND_PRODUCT)
 	})
 
 	return lo.SumBy(trueEquations, func(equation Equation) int {

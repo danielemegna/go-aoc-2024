@@ -12,7 +12,7 @@ func TestRecognizeTrueTheSumOfTwoOperands(t *testing.T) {
 		total:    1 + 2,
 	}
 
-	assert.True(t, CanBeTrue(equation))
+	assert.True(t, CanBeTrue(equation, SUM_AND_PRODUCT))
 }
 
 func TestRecognizeTrueTheSumOfManyOperands(t *testing.T) {
@@ -21,16 +21,17 @@ func TestRecognizeTrueTheSumOfManyOperands(t *testing.T) {
 		total:    1 + 4 + 6 + 10,
 	}
 
-	assert.True(t, CanBeTrue(equation))
+	assert.True(t, CanBeTrue(equation, SUM_AND_PRODUCT))
 }
 
 func TestRecognizeFalseANotSolvableEquation(t *testing.T) {
 	var equation = Equation{
 		operands: []int{10, 50},
-		total:    8,
+		total:    11,
 	}
 
-	assert.False(t, CanBeTrue(equation))
+	assert.False(t, CanBeTrue(equation, SUM_AND_PRODUCT))
+	assert.False(t, CanBeTrue(equation, ALL_OPERATOR))
 }
 
 func TestRecognizeTrueTheProductOfTwoOperands(t *testing.T) {
@@ -39,7 +40,7 @@ func TestRecognizeTrueTheProductOfTwoOperands(t *testing.T) {
 		total:    5 * 4,
 	}
 
-	assert.True(t, CanBeTrue(equation))
+	assert.True(t, CanBeTrue(equation, SUM_AND_PRODUCT))
 }
 
 func TestRecognizeTrueTheProductOfManyOperands(t *testing.T) {
@@ -48,10 +49,10 @@ func TestRecognizeTrueTheProductOfManyOperands(t *testing.T) {
 		total:    1 * 2 * 4 * 5 * 9,
 	}
 
-	assert.True(t, CanBeTrue(equation))
+	assert.True(t, CanBeTrue(equation, SUM_AND_PRODUCT))
 }
 
-func TestProvidedExamples(t *testing.T) {
+func TestProvidedExamplesWithOnlySumAndProductOperators(t *testing.T) {
 	var testCases = []struct {
 		equation     Equation
 		shouldBeTrue bool
@@ -69,10 +70,14 @@ func TestProvidedExamples(t *testing.T) {
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			assert.Equal(t, testCase.shouldBeTrue, CanBeTrue(testCase.equation))
+			if testCase.shouldBeTrue {
+				assert.True(t, CanBeTrue(testCase.equation, SUM_AND_PRODUCT))
+				assert.True(t, CanBeTrue(testCase.equation, ALL_OPERATOR))
+			} else {
+				assert.False(t, CanBeTrue(testCase.equation, SUM_AND_PRODUCT))
+			}
 		})
 	}
-
 }
 
 func TestRecognizeFalseSpecialCase(t *testing.T) {
@@ -80,8 +85,26 @@ func TestRecognizeFalseSpecialCase(t *testing.T) {
 	// become true but it is originally false
 
 	var equation = Equation{operands: []int{3, 4}, total: 8}
-	assert.False(t, CanBeTrue(equation))
+	assert.False(t, CanBeTrue(equation, SUM_AND_PRODUCT))
+	assert.False(t, CanBeTrue(equation, ALL_OPERATOR))
 
 	equation = Equation{operands: []int{3, 4}, total: 16}
-	assert.False(t, CanBeTrue(equation))
+	assert.False(t, CanBeTrue(equation, SUM_AND_PRODUCT))
+	assert.False(t, CanBeTrue(equation, ALL_OPERATOR))
+}
+
+func TestEquationBecomeTrueWithConcatenationOperator(t *testing.T) {
+	t.Skip("WIP")
+	var equations = []Equation{
+		{operands: []int{15, 6}, total: 156},
+		{operands: []int{6, 8, 6, 15}, total: 6 * 86 * 15},
+		{operands: []int{17, 8, 14}, total: 178 + 14},
+	}
+
+	for index, equation := range equations {
+		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
+			assert.True(t, CanBeTrue(equation, ALL_OPERATOR))
+			assert.False(t, CanBeTrue(equation, SUM_AND_PRODUCT))
+		})
+	}
 }

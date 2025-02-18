@@ -1,6 +1,6 @@
 package day07
 
-func CanBeTrue(equation Equation) bool {
+func CanBeTrue(equation Equation, operatorsMode OperatorsMode) bool {
 	var firstOperand = equation.operands[0]
 	var remainingOperands = equation.operands[1:]
 	return CheckEquationTruthfulWith(remainingOperands, firstOperand, equation.total)
@@ -24,3 +24,10 @@ func CheckEquationTruthfulWith(remainingOperands []int, total int, targetTotal i
 	return CheckEquationTruthfulWith(remainingOperands, newTotalWithSum, targetTotal) ||
 		CheckEquationTruthfulWith(remainingOperands, newTotalWithProduct, targetTotal)
 }
+
+type OperatorsMode int
+
+const (
+	SUM_AND_PRODUCT OperatorsMode = iota
+	ALL_OPERATOR
+)
