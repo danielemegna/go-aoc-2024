@@ -56,69 +56,15 @@ func TestProvidedExamples(t *testing.T) {
 		equation     Equation
 		shouldBeTrue bool
 	}{
-		{
-			equation: Equation{
-				operands: []int{10, 19},
-				total:    190,
-			},
-			shouldBeTrue: true,
-		},
-		{
-			equation: Equation{
-				operands: []int{81, 40, 27},
-				total:    3267,
-			},
-			shouldBeTrue: true,
-		},
-		{
-			equation: Equation{
-				operands: []int{17, 5},
-				total:    83,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{15, 6},
-				total:    156,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{6, 8, 6, 15},
-				total:    7290,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{16, 10, 13},
-				total:    161011,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{17, 8, 14},
-				total:    192,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{9, 7, 18, 13},
-				total:    21037,
-			},
-			shouldBeTrue: false,
-		},
-		{
-			equation: Equation{
-				operands: []int{11, 6, 16, 20},
-				total:    292,
-			},
-			shouldBeTrue: true,
-		},
+		{equation: Equation{operands: []int{10, 19}, total: 190}, shouldBeTrue: true},
+		{equation: Equation{operands: []int{81, 40, 27}, total: 3267}, shouldBeTrue: true},
+		{equation: Equation{operands: []int{17, 5}, total: 83}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{15, 6}, total: 156}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{6, 8, 6, 15}, total: 7290}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{16, 10, 13}, total: 161011}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{17, 8, 14}, total: 192}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{9, 7, 18, 13}, total: 21037}, shouldBeTrue: false},
+		{equation: Equation{operands: []int{11, 6, 16, 20}, total: 292}, shouldBeTrue: true},
 	}
 
 	for index, testCase := range testCases {
