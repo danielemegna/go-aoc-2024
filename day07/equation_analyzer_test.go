@@ -94,10 +94,10 @@ func TestRecognizeFalseSpecialCase(t *testing.T) {
 }
 
 func TestEquationBecomeTrueWithConcatenationOperator(t *testing.T) {
-	t.Skip("WIP")
 	var equations = []Equation{
 		{operands: []int{15, 6}, total: 156},
-		{operands: []int{6, 8, 6, 15}, total: 6 * 86 * 15},
+		{operands: []int{1, 2, 3}, total: 123},
+		{operands: []int{6, 8, 6, 15}, total: 486 * 15},
 		{operands: []int{17, 8, 14}, total: 178 + 14},
 	}
 
