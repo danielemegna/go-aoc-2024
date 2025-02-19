@@ -30,17 +30,15 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 }
 
 func TestSolveSecondPartWithProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
 	var actual = TotalCalibrationResultOfPossiblyTrueEquationsWithConcatenationOperator(fileContent)
 	assert.Equal(t, (292 + 190 + 3267 + 156 + 7290 + 192), actual)
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	var actual = TotalCalibrationResultOfPossiblyTrueEquationsWithConcatenationOperator(fileContent)
-	assert.Equal(t, -1, actual)
+	assert.Equal(t, 333027885676693, actual)
 }
 
 func simulateFileContent(inputLines []string) string {
