@@ -6,31 +6,34 @@ import (
 )
 
 func TotalCalibrationResultOfPossiblyTrueEquations(fileContent string) int {
-	var inputLines = linesFrom(fileContent)
-	var equations = lo.Map(inputLines, func(line string, _ int) Equation {
-		return ParseEquation(line)
-	})
+	var equations = parseEquationsFrom(fileContent)
 
 	var trueEquations = lo.Filter(equations, func(equation Equation, _ int) bool {
 		return CanBeTrue(equation, SUM_AND_PRODUCT)
 	})
 
-	return lo.SumBy(trueEquations, func(equation Equation) int {
-		return equation.total
-	})
+	return sumTotalsOf(trueEquations)
 }
 
 func TotalCalibrationResultOfPossiblyTrueEquationsWithConcatenationOperator(fileContent string) int {
-	var inputLines = linesFrom(fileContent)
-	var equations = lo.Map(inputLines, func(line string, _ int) Equation {
-		return ParseEquation(line)
-	})
+	var equations = parseEquationsFrom(fileContent)
 
 	var trueEquations = lo.Filter(equations, func(equation Equation, _ int) bool {
 		return CanBeTrue(equation, ALL_OPERATOR)
 	})
 
-	return lo.SumBy(trueEquations, func(equation Equation) int {
+	return sumTotalsOf(trueEquations)
+}
+
+func parseEquationsFrom(fileContent string) []Equation {
+	var inputLines = linesFrom(fileContent)
+	return lo.Map(inputLines, func(line string, _ int) Equation {
+		return ParseEquation(line)
+	})
+}
+
+func sumTotalsOf(equations []Equation) int {
+	return lo.SumBy(equations, func(equation Equation) int {
 		return equation.total
 	})
 }
