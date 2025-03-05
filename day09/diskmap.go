@@ -18,8 +18,8 @@ func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
 	return DenseDiskMap{data: diskMapData}
 }
 
-func ToExpandedDiskMap(denseDiskMap DenseDiskMap) ExpandedDiskMap {
-	return ExpandedDiskMap{data: repeatInSlice(0, denseDiskMap.data[0])}
+func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
+	return ExpandedDiskMap{data: repeatInSlice(0, this.data[0])}
 }
 
 func repeatInSlice(value int, length int) []int {

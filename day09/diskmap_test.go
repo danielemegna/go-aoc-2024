@@ -14,7 +14,7 @@ func TestParseDenseDiskMap(t *testing.T) {
 func TestSingleFileDenseDiskMapToExpanded(t *testing.T) {
 	var denseDiskMap = DenseDiskMap{data: []int{3}}
 
-	var actual = ToExpandedDiskMap(denseDiskMap)
+	var actual = denseDiskMap.ToExpandedDiskMap()
 
 	var expected = ExpandedDiskMap{data: []int{0, 0, 0}}
 	assert.Equal(t, expected, actual)
