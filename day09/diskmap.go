@@ -19,12 +19,26 @@ func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
 }
 
 func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
-	return ExpandedDiskMap{data: repeatInSlice(0, this.data[0])}
+	var expandedDiskMapData = []int{}
+
+	var fileIndex = 0
+	for index, digit := range this.data {
+		var isFile bool = index%2 == 0
+		var valueToWrite int
+		if isFile {
+			valueToWrite = fileIndex
+			fileIndex++
+		} else {
+			valueToWrite = -1
+		}
+		expandedDiskMapData = append(expandedDiskMapData, repeatInSlice(valueToWrite, digit)...)
+	}
+	return ExpandedDiskMap{data: expandedDiskMapData}
 }
 
 func repeatInSlice(value int, length int) []int {
 	var diskMapData = []int{}
-	for i := 0; i < length; i++ {
+	for range length {
 		diskMapData = append(diskMapData, value)
 	}
 	return diskMapData
