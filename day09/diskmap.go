@@ -22,14 +22,12 @@ func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
 	var expandedDiskMapData = []int{}
 
 	var fileIndex = 0
-	for index, digit := range this.data {
-		var isFile bool = index%2 == 0
-		var valueToWrite int
+	for digitIndex, digit := range this.data {
+		var isFile bool = digitIndex%2 == 0
+		var valueToWrite = -1
 		if isFile {
 			valueToWrite = fileIndex
 			fileIndex++
-		} else {
-			valueToWrite = -1
 		}
 		expandedDiskMapData = append(expandedDiskMapData, repeatInSlice(valueToWrite, digit)...)
 	}
