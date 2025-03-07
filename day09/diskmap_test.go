@@ -43,3 +43,25 @@ func TestProvidedExampleDenseDiskMapToExpanded(t *testing.T) {
 	}}
 	assert.Equal(t, expected, actual)
 }
+
+func TestSimpleExpanededDiskMapChecksum(t *testing.T) {
+	var expandedDiskMap = ExpandedDiskMap{data: []int{
+		0, 2, 2, 1, 1, 1, 2, 2, 2,
+	}}
+
+	var checksum = expandedDiskMap.Checksum()
+
+	assert.Equal(t, 2+4+3+4+5+12+14+16, checksum)
+}
+
+func TestProvidedExampleExpanededDiskMapChecksum(t *testing.T) {
+	var expandedDiskMap = ExpandedDiskMap{data: []int{
+		0, 0, 9, 9, 8, 1, 1, 1, 8, 8, 8, 2, 7, 7, 7,
+		3, 3, 3, 6, 4, 4, 6, 5, 5, 5, 5, 6, 6,
+		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	}}
+
+	var checksum = expandedDiskMap.Checksum()
+
+	assert.Equal(t, 1928, checksum)
+}
