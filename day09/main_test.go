@@ -15,6 +15,10 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 6340197768906, FilesystemChecksumAfterDefrag(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	assert.Equal(t, 2858, FilesystemChecksumAfterDefragWholeFiles("2333133121414131402"))
+}
+
 func readFileContent() string {
 	var fileBytes, err = os.ReadFile("input.txt")
 	if err != nil {
