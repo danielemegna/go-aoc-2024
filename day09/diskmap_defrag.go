@@ -1,23 +1,22 @@
 package day09
 
-import (
-	"github.com/samber/lo"
-)
-
 func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 	var newData = diskMap.data
 
+	var topCursor int = 0
+	var bottomCursor int = len(diskMap.data) - 1
+
 	for {
-		var found bool
 		var firstEmptySpaceIndex int
 		var lastNotEmptyDigitIndex int
+		var found bool
 
-		_, firstEmptySpaceIndex, found = lo.FindIndexOf(newData, func(digit int) bool { return digit == -1 })
+		firstEmptySpaceIndex, found = findIndexOf(newData, func(digit int) bool { return digit == -1 }, topCursor, false)
 		if !found {
 			break
 		}
 
-		_, lastNotEmptyDigitIndex, found = lo.FindLastIndexOf(newData, func(digit int) bool { return digit != -1 })
+		lastNotEmptyDigitIndex, found = findIndexOf(newData, func(digit int) bool { return digit != -1 }, bottomCursor, true)
 		if !found {
 			break
 		}
@@ -28,7 +27,29 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 
 		newData[firstEmptySpaceIndex] = newData[lastNotEmptyDigitIndex]
 		newData[lastNotEmptyDigitIndex] = -1
+		topCursor = firstEmptySpaceIndex
+		bottomCursor = lastNotEmptyDigitIndex
 	}
 
 	return ExpandedDiskMap{data: newData}
+}
+
+func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
+	if reverse {
+		for i := startIndex; i >= 0; i-- {
+			if predicate(collection[i]) {
+				return i, true
+			}
+		}
+
+		return -1, false
+	}
+
+	for i := startIndex; i < len(collection); i++ {
+		if predicate(collection[i]) {
+			return i, true
+		}
+	}
+
+	return -1, false
 }
