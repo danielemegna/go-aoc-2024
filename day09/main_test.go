@@ -3,22 +3,16 @@ package day09
 import (
 	"github.com/stretchr/testify/assert"
 	"os"
-	"strings"
 	"testing"
 )
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
-	assert.Equal(t, 1928, FilesystemChecksumAfterCompact("2333133121414131402"))
+	assert.Equal(t, 1928, FilesystemChecksumAfterDefrag("2333133121414131402"))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, FilesystemChecksumAfterCompact(fileContent))
-}
-
-func simulateFileContent(inputLines []string) string {
-	return strings.Join(inputLines, "\n") + "\n"
+	assert.Equal(t, 6340197768906, FilesystemChecksumAfterDefrag(fileContent))
 }
 
 func readFileContent() string {

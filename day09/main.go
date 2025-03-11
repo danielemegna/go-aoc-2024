@@ -1,5 +1,8 @@
 package day09
 
-func FilesystemChecksumAfterCompact(fileContent string) int {
-	return 1928
+func FilesystemChecksumAfterDefrag(denseDiskMapString string) int {
+	var denseDiskMap = ParseDenseDiskMap(denseDiskMapString)
+	var expandedDiskMap = denseDiskMap.ToExpandedDiskMap()
+	var defraggedDiskMap = Defrag(expandedDiskMap)
+	return defraggedDiskMap.Checksum()
 }
