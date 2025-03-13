@@ -11,6 +11,23 @@ func TestParseDenseDiskMap(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestParseDenseDiskMapEvo(t *testing.T) {
+	var actual = ParseDenseDiskMapEvo("2333133121414131402")
+	var expected = DenseDiskMapEvo{data: []any{
+		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 3},
+		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 3},
+		FileBlock{size: 1, fileIndex: 2}, EmptyBlock{size: 3},
+		FileBlock{size: 3, fileIndex: 3}, EmptyBlock{size: 1},
+		FileBlock{size: 2, fileIndex: 4}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 5}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 6}, EmptyBlock{size: 1},
+		FileBlock{size: 3, fileIndex: 7}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 8}, EmptyBlock{size: 0},
+		FileBlock{size: 2, fileIndex: 9},
+	}}
+	assert.Equal(t, expected, actual)
+}
+
 func TestSingleFileDenseDiskMapToExpanded(t *testing.T) {
 	var denseDiskMap = DenseDiskMap{data: []int{3}}
 

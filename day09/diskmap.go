@@ -8,7 +8,33 @@ type DenseDiskMap struct {
 	data []int
 }
 
+type DenseDiskMapEvo struct {
+	data []any
+}
+
+type FileBlock struct {
+	size      int
+	fileIndex int
+}
+
+type EmptyBlock struct {
+	size int
+}
+
 type ExpandedDiskMap = DenseDiskMap
+
+func ParseDenseDiskMapEvo(diskMapString string) DenseDiskMapEvo {
+	var diskMapRunes = []rune(diskMapString)
+	var diskMapData = lo.Map(diskMapRunes, func(digit rune, index int) any {
+		var blockSize = int(digit - '0')
+		var isFile bool = index%2 == 0
+		if isFile {
+			return FileBlock{size: blockSize, fileIndex: index / 2}
+		}
+		return EmptyBlock{size: blockSize}
+	})
+	return DenseDiskMapEvo{data: diskMapData}
+}
 
 func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
 	var diskMapRunes = []rune(diskMapString)
@@ -39,7 +65,9 @@ func (this ExpandedDiskMap) Checksum() int {
 		return digit == -1
 	})
 	return lo.Sum(lo.Map(sliceOfDigits, func(digitIndex int, index int) int {
-		if(digitIndex == -1) { return 0 }
+		if digitIndex == -1 {
+			return 0
+		}
 		return index * digitIndex
 	}))
 }
