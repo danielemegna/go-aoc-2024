@@ -37,6 +37,21 @@ func TestSingleFileDenseDiskMapToExpanded(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestSimpleDenseDiskMapEvoToExpanded(t *testing.T) {
+	var denseDiskMap = DenseDiskMapEvo{data: []any{
+		FileBlock{size: 1, fileIndex: 0}, EmptyBlock{size: 2},
+		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 4},
+		FileBlock{size: 5, fileIndex: 2},
+	}}
+
+	var actual = denseDiskMap.ToExpandedDiskMap()
+
+	var expected = ExpandedDiskMap{data: []int{
+		0, -1, -1, 1, 1, 1, -1, -1, -1, -1, 2, 2, 2, 2, 2,
+	}}
+	assert.Equal(t, expected, actual)
+}
+
 func TestSimpleDenseDiskMapToExpanded(t *testing.T) {
 	var denseDiskMap = DenseDiskMap{data: []int{1, 2, 3, 4, 5}}
 

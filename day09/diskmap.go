@@ -44,6 +44,26 @@ func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
 	return DenseDiskMap{data: diskMapData}
 }
 
+func (this DenseDiskMapEvo) ToExpandedDiskMap() ExpandedDiskMap {
+	var expandedDiskMapData = []int{}
+
+	for _, block := range this.data {
+		var fileBlock, isFile = block.(FileBlock)
+		var valueToWrite int
+		var blockSize int
+		if isFile {
+			valueToWrite = fileBlock.fileIndex
+			blockSize = fileBlock.size
+		} else {
+			var emptyBlock, _ = block.(EmptyBlock)
+			valueToWrite = -1
+			blockSize = emptyBlock.size
+		}
+		expandedDiskMapData = append(expandedDiskMapData, repeatInSlice(valueToWrite, blockSize)...)
+	}
+	return ExpandedDiskMap{data: expandedDiskMapData}
+}
+
 func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
 	var expandedDiskMapData = []int{}
 
