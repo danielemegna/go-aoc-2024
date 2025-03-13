@@ -34,6 +34,11 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 	return ExpandedDiskMap{data: newData}
 }
 
+func DefragWholeFiles(diskMap ExpandedDiskMap) ExpandedDiskMap {
+	// WIP
+	return diskMap
+}
+
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
 	if reverse {
 		for i := startIndex; i >= 0; i-- {
