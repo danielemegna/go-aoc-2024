@@ -31,6 +31,19 @@ func TestSimpleDenseDiskMapToExpanded(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestParseAndExpandDenseMap(t *testing.T) {
+	// 233111113 -> 00...111.2.3.444
+	var parsed = ParseDenseDiskMap("233111113")
+	var expanded = parsed.ToExpandedDiskMap()
+
+	var expectedParsed = DenseDiskMap{data: []int{2, 3, 3, 1, 1, 1, 1, 1, 3}}
+	var expectedExpanded = ExpandedDiskMap{data: []int{
+		0, 0, -1, -1, -1, 1, 1, 1, -1, 2, -1, 3, -1, 4, 4, 4,
+	}}
+	assert.Equal(t, expectedParsed, parsed)
+	assert.Equal(t, expectedExpanded, expanded)
+}
+
 func TestProvidedExampleDenseDiskMapToExpanded(t *testing.T) {
 	var denseDiskMap = DenseDiskMap{data: []int{2, 3, 3, 3, 1, 3, 3, 1, 2, 1, 4, 1, 4, 1, 3, 1, 4, 0, 2}}
 
