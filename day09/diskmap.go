@@ -5,10 +5,6 @@ import (
 )
 
 type DenseDiskMap struct {
-	data []int
-}
-
-type DenseDiskMapEvo struct {
 	data []any
 }
 
@@ -21,9 +17,11 @@ type EmptyBlock struct {
 	size int
 }
 
-type ExpandedDiskMap = DenseDiskMap
+type ExpandedDiskMap struct {
+	data []int
+}
 
-func ParseDenseDiskMapEvo(diskMapString string) DenseDiskMapEvo {
+func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
 	var diskMapRunes = []rune(diskMapString)
 	var diskMapData = lo.Map(diskMapRunes, func(digit rune, index int) any {
 		var blockSize = int(digit - '0')
@@ -33,18 +31,10 @@ func ParseDenseDiskMapEvo(diskMapString string) DenseDiskMapEvo {
 		}
 		return EmptyBlock{size: blockSize}
 	})
-	return DenseDiskMapEvo{data: diskMapData}
-}
-
-func ParseDenseDiskMap(diskMapString string) DenseDiskMap {
-	var diskMapRunes = []rune(diskMapString)
-	var diskMapData = lo.Map(diskMapRunes, func(value rune, _ int) int {
-		return int(value - '0')
-	})
 	return DenseDiskMap{data: diskMapData}
 }
 
-func (this DenseDiskMapEvo) ToExpandedDiskMap() ExpandedDiskMap {
+func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
 	var expandedDiskMapData = []int{}
 
 	for _, block := range this.data {
@@ -60,22 +50,6 @@ func (this DenseDiskMapEvo) ToExpandedDiskMap() ExpandedDiskMap {
 			blockSize = emptyBlock.size
 		}
 		expandedDiskMapData = append(expandedDiskMapData, repeatInSlice(valueToWrite, blockSize)...)
-	}
-	return ExpandedDiskMap{data: expandedDiskMapData}
-}
-
-func (this DenseDiskMap) ToExpandedDiskMap() ExpandedDiskMap {
-	var expandedDiskMapData = []int{}
-
-	var fileIndex = 0
-	for digitIndex, digit := range this.data {
-		var isFile bool = digitIndex%2 == 0
-		var valueToWrite = -1
-		if isFile {
-			valueToWrite = fileIndex
-			fileIndex++
-		}
-		expandedDiskMapData = append(expandedDiskMapData, repeatInSlice(valueToWrite, digit)...)
 	}
 	return ExpandedDiskMap{data: expandedDiskMapData}
 }

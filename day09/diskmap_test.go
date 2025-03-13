@@ -7,13 +7,7 @@ import (
 
 func TestParseDenseDiskMap(t *testing.T) {
 	var actual = ParseDenseDiskMap("2333133121414131402")
-	var expected = DenseDiskMap{data: []int{2, 3, 3, 3, 1, 3, 3, 1, 2, 1, 4, 1, 4, 1, 3, 1, 4, 0, 2}}
-	assert.Equal(t, expected, actual)
-}
-
-func TestParseDenseDiskMapEvo(t *testing.T) {
-	var actual = ParseDenseDiskMapEvo("2333133121414131402")
-	var expected = DenseDiskMapEvo{data: []any{
+	var expected = DenseDiskMap{data: []any{
 		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 3},
 		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 3},
 		FileBlock{size: 1, fileIndex: 2}, EmptyBlock{size: 3},
@@ -29,7 +23,7 @@ func TestParseDenseDiskMapEvo(t *testing.T) {
 }
 
 func TestSingleFileDenseDiskMapToExpanded(t *testing.T) {
-	var denseDiskMap = DenseDiskMap{data: []int{3}}
+	var denseDiskMap = DenseDiskMap{data: []any{FileBlock{size: 3, fileIndex: 0}}}
 
 	var actual = denseDiskMap.ToExpandedDiskMap()
 
@@ -37,23 +31,12 @@ func TestSingleFileDenseDiskMapToExpanded(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestSimpleDenseDiskMapEvoToExpanded(t *testing.T) {
-	var denseDiskMap = DenseDiskMapEvo{data: []any{
-		FileBlock{size: 1, fileIndex: 0}, EmptyBlock{size: 2},
-		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 4},
+func TestSimpleDenseDiskMapToExpanded(t *testing.T) {
+	var denseDiskMap = DenseDiskMap{data: []any{
+		FileBlock{size: 1, fileIndex: 0}, EmptyBlock{size: 2}, 
+		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 4}, 
 		FileBlock{size: 5, fileIndex: 2},
 	}}
-
-	var actual = denseDiskMap.ToExpandedDiskMap()
-
-	var expected = ExpandedDiskMap{data: []int{
-		0, -1, -1, 1, 1, 1, -1, -1, -1, -1, 2, 2, 2, 2, 2,
-	}}
-	assert.Equal(t, expected, actual)
-}
-
-func TestSimpleDenseDiskMapToExpanded(t *testing.T) {
-	var denseDiskMap = DenseDiskMap{data: []int{1, 2, 3, 4, 5}}
 
 	var actual = denseDiskMap.ToExpandedDiskMap()
 
@@ -68,7 +51,13 @@ func TestParseAndExpandDenseMap(t *testing.T) {
 	var parsed = ParseDenseDiskMap("233111113")
 	var expanded = parsed.ToExpandedDiskMap()
 
-	var expectedParsed = DenseDiskMap{data: []int{2, 3, 3, 1, 1, 1, 1, 1, 3}}
+	var expectedParsed = DenseDiskMap{data: []any{
+		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 3},
+		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 1},
+		FileBlock{size: 1, fileIndex: 2}, EmptyBlock{size: 1},
+		FileBlock{size: 1, fileIndex: 3}, EmptyBlock{size: 1},
+		FileBlock{size: 3, fileIndex: 4},
+	}}
 	var expectedExpanded = ExpandedDiskMap{data: []int{
 		0, 0, -1, -1, -1, 1, 1, 1, -1, 2, -1, 3, -1, 4, 4, 4,
 	}}
@@ -77,7 +66,18 @@ func TestParseAndExpandDenseMap(t *testing.T) {
 }
 
 func TestProvidedExampleDenseDiskMapToExpanded(t *testing.T) {
-	var denseDiskMap = DenseDiskMap{data: []int{2, 3, 3, 3, 1, 3, 3, 1, 2, 1, 4, 1, 4, 1, 3, 1, 4, 0, 2}}
+	var denseDiskMap = DenseDiskMap{data: []any{
+		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 3},
+		FileBlock{size: 3, fileIndex: 1}, EmptyBlock{size: 3},
+		FileBlock{size: 1, fileIndex: 2}, EmptyBlock{size: 3},
+		FileBlock{size: 3, fileIndex: 3}, EmptyBlock{size: 1},
+		FileBlock{size: 2, fileIndex: 4}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 5}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 6}, EmptyBlock{size: 1},
+		FileBlock{size: 3, fileIndex: 7}, EmptyBlock{size: 1},
+		FileBlock{size: 4, fileIndex: 8}, EmptyBlock{size: 0},
+		FileBlock{size: 2, fileIndex: 9},
+	}}
 
 	var actual = denseDiskMap.ToExpandedDiskMap()
 
