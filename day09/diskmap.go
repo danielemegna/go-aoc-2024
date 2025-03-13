@@ -39,6 +39,7 @@ func (this ExpandedDiskMap) Checksum() int {
 		return digit == -1
 	})
 	return lo.Sum(lo.Map(sliceOfDigits, func(digitIndex int, index int) int {
+		if(digitIndex == -1) { return 0 }
 		return index * digitIndex
 	}))
 }
