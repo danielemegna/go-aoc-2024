@@ -66,6 +66,21 @@ func (this ExpandedDiskMap) Checksum() int {
 	}))
 }
 
+func (this DenseDiskMap) FirstEmptyBlockIndexWith(minimumSize int) int {
+	for i := 0; i < len(this.data); i++ {
+		var block = this.data[i]
+		var emptyBlock, found = block.(EmptyBlock)
+		if !found {
+			continue
+		}
+		if emptyBlock.size >= minimumSize {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func repeatInSlice(value int, length int) []int {
 	var diskMapData = []int{}
 	for range length {
