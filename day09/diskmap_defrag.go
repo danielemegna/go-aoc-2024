@@ -35,9 +35,17 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 }
 
 func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
+	var defragged = diskMap
+
+	var diskMapLength = len(defragged.data)
+	var lastFile = defragged.data[diskMapLength-1].(FileBlock)
+	
+	var _ = diskMap.FirstEmptyBlockIndexWith(lastFile.size)
 	// WIP
-	return diskMap
+
+	return defragged
 }
+
 
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
 	if reverse {
