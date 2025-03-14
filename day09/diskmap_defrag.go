@@ -34,7 +34,7 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 	return ExpandedDiskMap{data: newData}
 }
 
-func DefragWholeFiles(diskMap ExpandedDiskMap) ExpandedDiskMap {
+func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
 	// WIP
 	return diskMap
 }
