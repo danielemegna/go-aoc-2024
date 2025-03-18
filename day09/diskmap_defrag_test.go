@@ -81,7 +81,6 @@ func TestDefragFileDenseMapWithThreeFiles(t *testing.T) {
 }
 
 func TestDefragFileSimpleDenseMap(t *testing.T) {
-	t.Skip("WIP")
 	// 233111113 = 00...111.2.3.444 -> 0044411132......
 	var diskMap = DenseDiskMap{data: []any{
 		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 3},

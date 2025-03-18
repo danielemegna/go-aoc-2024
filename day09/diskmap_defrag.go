@@ -54,7 +54,13 @@ func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
 	}
 
 	var middleRest = diskData[firstEmptyBlockIndex+1 : lastFileBlockIndex-1]
-	var newLastEmptyBlock = EmptyBlock{size: lastFileBlock.size + diskData[lastFileBlockIndex-1].(EmptyBlock).size}
+
+	var newLastEmptyBlockSize = diskData[lastFileBlockIndex-1].(EmptyBlock).size + lastFileBlock.size
+	if lastFileBlockIndex+1 < len(diskData) {
+		newLastEmptyBlockSize += diskData[lastFileBlockIndex+1].(EmptyBlock).size
+	}
+
+	var newLastEmptyBlock = EmptyBlock{size: newLastEmptyBlockSize}
 
 	diskData = append(diskData[:firstEmptyBlockIndex],
 		append(movedFileBlockAndCloseSpaces,
