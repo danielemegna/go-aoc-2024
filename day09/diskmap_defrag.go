@@ -40,25 +40,29 @@ func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
 	var lastFileBlockIndex = diskMap.LastFileBlockIndex()
 	var lastFileBlock = diskData[lastFileBlockIndex].(FileBlock)
 
-	var emptyBlockIndex = diskMap.FirstEmptyBlockIndexWith(lastFileBlock.size)
-	var emptyBlock = diskData[emptyBlockIndex].(EmptyBlock)
+	var firstEmptyBlockIndex = diskMap.FirstEmptyBlockIndexWith(lastFileBlock.size)
+	var firstEmptyBlock = diskData[firstEmptyBlockIndex].(EmptyBlock)
+
+	if firstEmptyBlockIndex > lastFileBlockIndex {
+		return diskMap
+	}
 
 	var movedFileBlockAndCloseSpaces = []any{
 		EmptyBlock{size: 0},
 		lastFileBlock,
-		EmptyBlock{size: emptyBlock.size - lastFileBlock.size},
+		EmptyBlock{size: firstEmptyBlock.size - lastFileBlock.size},
 	}
 
-	var middleRest = diskData[emptyBlockIndex+1 : lastFileBlockIndex-1]
+	var middleRest = diskData[firstEmptyBlockIndex+1 : lastFileBlockIndex-1]
 	var newLastEmptyBlock = EmptyBlock{size: lastFileBlock.size + diskData[lastFileBlockIndex-1].(EmptyBlock).size}
 
-	diskData = append(diskData[:emptyBlockIndex],
+	diskData = append(diskData[:firstEmptyBlockIndex],
 		append(movedFileBlockAndCloseSpaces,
 			append(middleRest, newLastEmptyBlock)...,
 		)...,
 	)
 
-	return DenseDiskMap{data: diskData}
+	return DefragWholeFiles(DenseDiskMap{data: diskData})
 }
 
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
