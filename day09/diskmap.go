@@ -66,6 +66,11 @@ func (this ExpandedDiskMap) Checksum() int {
 	}))
 }
 
+func (this DenseDiskMap) LastFileBlockIndex() int {
+	// TODO
+	return len(this.data) - 1
+}
+
 func (this DenseDiskMap) FirstEmptyBlockIndexWith(minimumSize int) int {
 	for i := 0; i < len(this.data); i++ {
 		var block = this.data[i]

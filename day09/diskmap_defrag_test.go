@@ -46,8 +46,8 @@ func TestDefragMapWithoutEmptySpacesDoesNothing(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestDefragFilDenseMapWithTwoFiles(t *testing.T) {
-	t.Skip("WIP")
+func TestDefragFileDenseMapWithTwoFiles(t *testing.T) {
+	t.Skip("Special case with close last file and first empty block")
 	var diskMap = DenseDiskMap{data: []any{
 		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 2},
 		FileBlock{size: 2, fileIndex: 1},
@@ -57,6 +57,24 @@ func TestDefragFilDenseMapWithTwoFiles(t *testing.T) {
 
 	var expected = DenseDiskMap{data: []any{
 		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 0},
+		FileBlock{size: 2, fileIndex: 1}, EmptyBlock{size: 2},
+	}}
+	assert.Equal(t, expected, actual)
+}
+
+func TestDefragFileDenseMapWithThreeFiles(t *testing.T) {
+	// 00..1122 -> 002211..
+	var diskMap = DenseDiskMap{data: []any{
+		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 2},
+		FileBlock{size: 2, fileIndex: 1}, EmptyBlock{size: 0},
+		FileBlock{size: 2, fileIndex: 2},
+	}}
+
+	var actual = DefragWholeFiles(diskMap)
+
+	var expected = DenseDiskMap{data: []any{
+		FileBlock{size: 2, fileIndex: 0}, EmptyBlock{size: 0},
+		FileBlock{size: 2, fileIndex: 2}, EmptyBlock{size: 0},
 		FileBlock{size: 2, fileIndex: 1}, EmptyBlock{size: 2},
 	}}
 	assert.Equal(t, expected, actual)

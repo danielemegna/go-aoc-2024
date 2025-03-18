@@ -35,17 +35,30 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 }
 
 func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
-	var defraggedData = diskMap.data
+	var diskData = diskMap.data
 
-	var diskMapLength = len(defraggedData)
-	var lastFile = defraggedData[diskMapLength-1].(FileBlock)
+	var lastFileBlockIndex = diskMap.LastFileBlockIndex()
+	var lastFileBlock = diskData[lastFileBlockIndex].(FileBlock)
 
-	var emptyBlockIndex = diskMap.FirstEmptyBlockIndexWith(lastFile.size)
-	var emptyBlock = defraggedData[emptyBlockIndex].(EmptyBlock)
-	defraggedData[emptyBlockIndex] = EmptyBlock{size: emptyBlock.size - lastFile.size}
-	// WIP
+	var emptyBlockIndex = diskMap.FirstEmptyBlockIndexWith(lastFileBlock.size)
+	var emptyBlock = diskData[emptyBlockIndex].(EmptyBlock)
 
-	return DenseDiskMap{data: defraggedData}
+	var movedFileBlockAndCloseSpaces = []any{
+		EmptyBlock{size: 0},
+		lastFileBlock,
+		EmptyBlock{size: emptyBlock.size - lastFileBlock.size},
+	}
+
+	var middleRest = diskData[emptyBlockIndex+1 : lastFileBlockIndex-1]
+	var newLastEmptyBlock = EmptyBlock{size: lastFileBlock.size + diskData[lastFileBlockIndex-1].(EmptyBlock).size}
+
+	diskData = append(diskData[:emptyBlockIndex],
+		append(movedFileBlockAndCloseSpaces,
+			append(middleRest, newLastEmptyBlock)...,
+		)...,
+	)
+
+	return DenseDiskMap{data: diskData}
 }
 
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
