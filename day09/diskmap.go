@@ -67,9 +67,12 @@ func (this ExpandedDiskMap) Checksum() int {
 }
 
 func (this DenseDiskMap) LastFileBlockIndex() int {
-	// optmiziation opportunity starting from something < len(this.data)
-	for i := len(this.data) - 1; i >= 0; i-- {
-		var block = this.data[i]
+	return LastFileBlockIndexIn(this.data, len(this.data)-1)
+}
+
+func LastFileBlockIndexIn(data []any, bottomLimitIndex int) int {
+	for i := bottomLimitIndex; i >= 0; i-- {
+		var block = data[i]
 		var _, found = block.(FileBlock)
 		if !found {
 			continue
@@ -81,9 +84,13 @@ func (this DenseDiskMap) LastFileBlockIndex() int {
 }
 
 func (this DenseDiskMap) FirstEmptyBlockIndexWith(minimumSize int) int {
+	return FirstEmptyBlockIndexWith(minimumSize, this.data)
+}
+
+func FirstEmptyBlockIndexWith(minimumSize int, data []any) int {
 	// optmiziation opportunity starting from something > 0
-	for i := 0; i < len(this.data); i++ {
-		var block = this.data[i]
+	for i := 0; i < len(data); i++ {
+		var block = data[i]
 		var emptyBlock, found = block.(EmptyBlock)
 		if !found {
 			continue
