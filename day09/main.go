@@ -8,5 +8,7 @@ func FilesystemChecksumAfterDefrag(denseDiskMapString string) int {
 }
 
 func FilesystemChecksumAfterDefragWholeFiles(denseDiskMapString string) int {
-	return 2858
+	var denseDiskMap = ParseDenseDiskMap(denseDiskMapString)
+	var defraggedDiskMap = DefragWholeFiles(denseDiskMap)
+	return defraggedDiskMap.ToExpandedDiskMap().Checksum()
 }
