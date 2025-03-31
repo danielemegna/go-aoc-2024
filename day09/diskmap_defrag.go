@@ -35,39 +35,73 @@ func Defrag(diskMap ExpandedDiskMap) ExpandedDiskMap {
 }
 
 func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
-	var diskData = diskMap.data
+	var diskData = defragData(diskMap.data, len(diskMap.data)-1)
+	return DenseDiskMap{data: diskData}
+}
 
-	var selectedFileBlockIndex = diskMap.LastFileBlockIndex()
+func defragData(diskData []any, bottomCursor int) []any {
+	var selectedFileBlockIndex = LastFileBlockIndexIn(diskData, bottomCursor)
+	if selectedFileBlockIndex == -1 {
+		return diskData
+	}
+
 	var selectedFileBlock = diskData[selectedFileBlockIndex].(FileBlock)
 
-	var selectedEmptyBlockIndex = diskMap.FirstEmptyBlockIndexWith(selectedFileBlock.size)
+	var selectedEmptyBlockIndex = FirstEmptyBlockIndexWith(selectedFileBlock.size, diskData)
+	if selectedEmptyBlockIndex == -1 {
+		return defragData(diskData, selectedFileBlockIndex-1)
+	}
 	if selectedEmptyBlockIndex > selectedFileBlockIndex {
-		return diskMap
+		return defragData(diskData, selectedFileBlockIndex-1)
 	}
 
 	var selectedEmptyBlock = diskData[selectedEmptyBlockIndex].(EmptyBlock)
-	var movedFileBlockAndCloseSpaces = []any{
-		EmptyBlock{size: 0},
-		selectedFileBlock,
-		EmptyBlock{size: selectedEmptyBlock.size - selectedFileBlock.size},
+	var head = diskData[:selectedEmptyBlockIndex]
+
+	var tail = []any{}
+	if selectedFileBlockIndex < (len(diskData) - 2) {
+		tail = diskData[selectedFileBlockIndex+2:]
 	}
 
-	var middleRest = diskData[selectedEmptyBlockIndex+1 : selectedFileBlockIndex-1]
+	var middleRest = []any{}
+	var areBlocksClose = selectedFileBlockIndex-selectedEmptyBlockIndex < 2
+	if !areBlocksClose {
+		middleRest = diskData[selectedEmptyBlockIndex+1 : selectedFileBlockIndex-1]
+	}
 
-	var newLastEmptyBlockSize = diskData[selectedFileBlockIndex-1].(EmptyBlock).size + selectedFileBlock.size
+	var newLastEmptyBlockSize = selectedFileBlock.size
+	if !areBlocksClose {
+		newLastEmptyBlockSize += diskData[selectedFileBlockIndex-1].(EmptyBlock).size
+	}
+
 	if selectedFileBlockIndex+1 < len(diskData) {
 		newLastEmptyBlockSize += diskData[selectedFileBlockIndex+1].(EmptyBlock).size
 	}
 
-	var newLastEmptyBlock = EmptyBlock{size: newLastEmptyBlockSize}
+	var movedFileBlockAndCloseSpaces = []any{
+		EmptyBlock{size: 0},
+		selectedFileBlock,
+	}
 
-	diskData = append(diskData[:selectedEmptyBlockIndex],
+	if !areBlocksClose {
+		movedFileBlockAndCloseSpaces = append(
+			movedFileBlockAndCloseSpaces,
+			EmptyBlock{size: selectedEmptyBlock.size - selectedFileBlock.size},
+		)
+	}
+
+	var newLastEmptyBlock = EmptyBlock{size: newLastEmptyBlockSize}
+	middleRest = append(middleRest, newLastEmptyBlock)
+
+	diskData = append(head,
 		append(movedFileBlockAndCloseSpaces,
-			append(middleRest, newLastEmptyBlock)...,
+			append(middleRest,
+				tail...,
+			)...,
 		)...,
 	)
 
-	return DefragWholeFiles(DenseDiskMap{data: diskData})
+	return defragData(diskData, selectedFileBlockIndex)
 }
 
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
