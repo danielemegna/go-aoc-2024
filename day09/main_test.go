@@ -20,9 +20,8 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, FilesystemChecksumAfterDefragWholeFiles(fileContent))
+	assert.Equal(t, 6_363_913_128_533, FilesystemChecksumAfterDefragWholeFiles(fileContent))
 }
 
 func readFileContent() string {
