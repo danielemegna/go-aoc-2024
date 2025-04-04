@@ -40,68 +40,69 @@ func DefragWholeFiles(diskMap DenseDiskMap) DenseDiskMap {
 }
 
 func defragData(diskData []any, bottomCursor int) []any {
-	var selectedFileBlockIndex = LastFileBlockIndexIn(diskData, bottomCursor)
-	if selectedFileBlockIndex == -1 {
+	var fileBlockToMoveIndex = LastFileBlockIndexIn(diskData, bottomCursor)
+	var thereAreNoMoreFileBlockToCheck = fileBlockToMoveIndex == -1
+	if thereAreNoMoreFileBlockToCheck {
 		return diskData
 	}
 
-	var selectedFileBlock = diskData[selectedFileBlockIndex].(FileBlock)
+	var fileBlockToMove = diskData[fileBlockToMoveIndex].(FileBlock)
 
-	var selectedEmptyBlockIndex = FirstEmptyBlockIndexWith(selectedFileBlock.size, diskData)
-	if selectedEmptyBlockIndex == -1 {
-		return defragData(diskData, selectedFileBlockIndex-1)
+	var selectedEmptyBlockIndex = FirstEmptyBlockIndexIn(diskData, fileBlockToMove.size)
+	var thereAreNoBigEnoughEmptyBlock = selectedEmptyBlockIndex == -1
+	if thereAreNoBigEnoughEmptyBlock {
+		return defragData(diskData, fileBlockToMoveIndex-1)
 	}
-	if selectedEmptyBlockIndex > selectedFileBlockIndex {
-		return defragData(diskData, selectedFileBlockIndex-1)
+	var isTheEmptyBlockBlockBeforeTheFileBlock = selectedEmptyBlockIndex < fileBlockToMoveIndex
+	if !isTheEmptyBlockBlockBeforeTheFileBlock {
+		return defragData(diskData, fileBlockToMoveIndex-1)
 	}
 
-	var selectedEmptyBlock = diskData[selectedEmptyBlockIndex].(EmptyBlock)
+	var selectedEmptyBlockSize = diskData[selectedEmptyBlockIndex].(EmptyBlock).size
+	var areSelectedBlocksCloseBlocks = fileBlockToMoveIndex == selectedEmptyBlockIndex+1
+	var isFileBlockToMoveLastBlock = fileBlockToMoveIndex == len(diskData)-1
+
+	// ================ HEAD
 	var head = diskData[:selectedEmptyBlockIndex]
 
-	var tail = []any{}
-	if selectedFileBlockIndex < (len(diskData) - 2) {
-		tail = diskData[selectedFileBlockIndex+2:]
-	}
-
-	var middleRest = []any{}
-	var areBlocksClose = selectedFileBlockIndex-selectedEmptyBlockIndex < 2
-	if !areBlocksClose {
-		middleRest = diskData[selectedEmptyBlockIndex+1 : selectedFileBlockIndex-1]
-	}
-
-	var newLastEmptyBlockSize = selectedFileBlock.size
-	if !areBlocksClose {
-		newLastEmptyBlockSize += diskData[selectedFileBlockIndex-1].(EmptyBlock).size
-	}
-
-	if selectedFileBlockIndex+1 < len(diskData) {
-		newLastEmptyBlockSize += diskData[selectedFileBlockIndex+1].(EmptyBlock).size
-	}
-
+	// ================ MOVED FILE
 	var movedFileBlockAndCloseSpaces = []any{
 		EmptyBlock{size: 0},
-		selectedFileBlock,
+		fileBlockToMove,
 	}
 
-	if !areBlocksClose {
+	if !areSelectedBlocksCloseBlocks {
 		movedFileBlockAndCloseSpaces = append(
 			movedFileBlockAndCloseSpaces,
-			EmptyBlock{size: selectedEmptyBlock.size - selectedFileBlock.size},
+			EmptyBlock{size: selectedEmptyBlockSize - fileBlockToMove.size},
 		)
 	}
 
-	var newLastEmptyBlock = EmptyBlock{size: newLastEmptyBlockSize}
-	middleRest = append(middleRest, newLastEmptyBlock)
+	// ================ MIDDLE REST
+	var middleRest = []any{}
+	if !areSelectedBlocksCloseBlocks {
+		middleRest = diskData[selectedEmptyBlockIndex+1 : fileBlockToMoveIndex-1]
+	}
 
-	diskData = append(head,
-		append(movedFileBlockAndCloseSpaces,
-			append(middleRest,
-				tail...,
-			)...,
-		)...,
-	)
+	var newFreedEmptyBlockSize = fileBlockToMove.size
+	if !isFileBlockToMoveLastBlock {
+		newFreedEmptyBlockSize += diskData[fileBlockToMoveIndex+1].(EmptyBlock).size
+	}
+	if !areSelectedBlocksCloseBlocks {
+		newFreedEmptyBlockSize += diskData[fileBlockToMoveIndex-1].(EmptyBlock).size
+	}
+	var newFreedEmptyBlock = EmptyBlock{size: newFreedEmptyBlockSize}
+	middleRest = append(middleRest, newFreedEmptyBlock)
 
-	return defragData(diskData, selectedFileBlockIndex)
+	// ================ TAIL
+	var tail = []any{}
+	if fileBlockToMoveIndex < (len(diskData) - 2) {
+		tail = diskData[fileBlockToMoveIndex+2:]
+	}
+
+	// ================ COMPOSE
+	diskData = append(head, append(movedFileBlockAndCloseSpaces, append(middleRest, tail...)...)...)
+	return defragData(diskData, fileBlockToMoveIndex)
 }
 
 func findIndexOf(collection []int, predicate func(item int) bool, startIndex int, reverse bool) (int, bool) {
