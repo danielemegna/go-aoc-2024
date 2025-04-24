@@ -1,5 +1,5 @@
 package day11
 
-func StonesCountAfterTwentyFiveBlinks(fileContent string) int {
+func StonesCountAfterTwentyfiveBlinks(fileContent string) int {
 	return 55312
 }

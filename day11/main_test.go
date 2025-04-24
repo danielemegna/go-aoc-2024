@@ -7,13 +7,13 @@ import (
 )
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
-	assert.Equal(t, 55312, StonesCountAfterTwentyFiveBlinks("125 17"))
+	assert.Equal(t, 55312, StonesCountAfterTwentyfiveBlinks("125 17"))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
 	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, StonesCountAfterTwentyFiveBlinks(fileContent))
+	assert.Equal(t, -1, StonesCountAfterTwentyfiveBlinks(fileContent))
 }
 
 func readFileContent() string {
