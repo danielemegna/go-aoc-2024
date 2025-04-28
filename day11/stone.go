@@ -12,10 +12,13 @@ func (this Stone) OnBlink() (Stone, *Stone) {
 	}
 
 	var engravedNumberString = strconv.Itoa(int(this.engravedNumber))
-	var length = len(engravedNumberString)
-	var lengthHalf = length / 2
+	var numberOfDigits = len(engravedNumberString)
+	if numberOfDigits%2 != 0 {
+		return Stone{engravedNumber: this.engravedNumber * 2024}, nil
+	}
 
-	var left, _ = strconv.ParseInt(engravedNumberString[:lengthHalf], 10, 64)
-	var right, _ = strconv.ParseInt(engravedNumberString[lengthHalf:], 10, 64)
+	var halfNumberOfDigits = numberOfDigits / 2
+	var left, _ = strconv.ParseInt(engravedNumberString[:halfNumberOfDigits], 10, 64)
+	var right, _ = strconv.ParseInt(engravedNumberString[halfNumberOfDigits:], 10, 64)
 	return Stone{engravedNumber: left}, &Stone{engravedNumber: right}
 }
