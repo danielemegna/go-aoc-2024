@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestZeroEngravedStoneBlink(t *testing.T) {
+func TestZeroEngravedStoneOnBlink(t *testing.T) {
 	var stone = Stone{engravedNumber: 0}
 
 	var leftStone, rightStone = stone.OnBlink()
@@ -15,7 +15,7 @@ func TestZeroEngravedStoneBlink(t *testing.T) {
 	assert.Nil(t, rightStone)
 }
 
-func TestEvenNumberOfDigitsEngravedStoneBlink(t *testing.T) {
+func TestEvenNumberOfDigitsEngravedStoneOnBlink(t *testing.T) {
 	var testCases = []struct {
 		engravedNumber int64
 		expectedLeft   int64
@@ -38,7 +38,7 @@ func TestEvenNumberOfDigitsEngravedStoneBlink(t *testing.T) {
 	}
 }
 
-func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroes(t *testing.T) {
+func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroesOnBlink(t *testing.T) {
 	var stone = Stone{engravedNumber: 1001}
 
 	var leftStone, rightStone = stone.OnBlink()
@@ -47,7 +47,7 @@ func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroes(t *testing.T) {
 	assert.Equal(t, Stone{engravedNumber: 1}, *rightStone)
 }
 
-func TestMultiplyBy2024OddNumberOfDigits(t *testing.T) {
+func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
 	var testCases = []struct {
 		engravedNumber int64
 		expectedLeft   int64
