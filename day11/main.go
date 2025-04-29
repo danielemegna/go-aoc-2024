@@ -6,16 +6,18 @@ import (
 	"strings"
 )
 
-func StonesCountAfterTwentyfiveBlinks(fileContent string) int {
-	var _ = lo.Map(
-		strings.Split(fileContent, " "),
+func StonesCountAfterTwentyfiveBlinks(fileLine string) int {
+	var stones = lo.Map(
+		strings.Split(fileLine, " "),
 		func(numberString string, index int) Stone {
 			var engravedNumber, _ = strconv.ParseInt(numberString, 10, 64)
 			return Stone{engravedNumber: engravedNumber}
 		},
 	)
 
-	// TODO continue ...
+	for range 25 {
+		stones = StonesOnBlink(stones)
+	}
 
-	return 55312
+	return len(stones)
 }

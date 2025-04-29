@@ -3,6 +3,7 @@ package day11
 import (
 	"github.com/stretchr/testify/assert"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -11,15 +12,16 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
-	var fileContent = readFileContent()
-	assert.Equal(t, -1, StonesCountAfterTwentyfiveBlinks(fileContent))
+	var fileContent = readFirstFileLine()
+	assert.Equal(t, 186996, StonesCountAfterTwentyfiveBlinks(fileContent))
 }
 
-func readFileContent() string {
+func readFirstFileLine() string {
 	var fileBytes, err = os.ReadFile("input.txt")
 	if err != nil {
 		panic("Cannot find input.txt file to solve with file")
 	}
-	return string(fileBytes)
+	var fileContent = string(fileBytes)
+	var lines = strings.Split(fileContent, "\n")
+	return lines[0]
 }
