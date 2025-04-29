@@ -1,6 +1,6 @@
 module danielemegna/go-aoc-2024
 
-go 1.23.3
+go 1.24.1
 
 require (
 	github.com/samber/lo v1.47.0

@@ -20,7 +20,7 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 Use temporary container with current directory volume:
 
 ```
-$ docker run --rm -it -v $PWD:/app -w /app golang:1.23.3 bash
+$ docker run --rm -it -v $PWD:/app -w /app golang:1.24.1 bash
 # go install github.com/mfridman/tparse@latest
 ```
 
