@@ -6,8 +6,8 @@ Challenge solutions are in tests as assertions:
 
 ```go
 func TestSolveFirstPartWithFile(t *testing.T) {
-	var fileBytes, _ = os.ReadFile("input.txt")
-	var actual = TotalDistanceBetweenListsElements(string(fileBytes))
+	var fileContent = readFileContent()
+	var actual = TotalDistanceBetweenListsElements(fileContent)
 	assert.Equal(t, 1530215, actual)
 }
 ```
