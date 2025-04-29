@@ -87,3 +87,16 @@ func TestSliceOfOddDigitsNumbersStonesOnBlink(t *testing.T) {
 	var expected = []Stone{{engravedNumber: 2024}, {engravedNumber: 9 * 2024}, {engravedNumber: 146 * 2024}}
 	assert.Equal(t, expected, actual)
 }
+
+func TestSliceOfEvenDigitsNumbersStonesOnBlink(t *testing.T) {
+	var stones = []Stone{{engravedNumber: 10}, {engravedNumber: 46}, {engravedNumber: 2823}}
+
+	var actual = StonesOnBlink(stones)
+
+	var expected = []Stone{
+		{engravedNumber: 1}, {engravedNumber: 0},
+		{engravedNumber: 4}, {engravedNumber: 6},
+		{engravedNumber: 28}, {engravedNumber: 23},
+	}
+	assert.Equal(t, expected, actual)
+}

@@ -27,8 +27,11 @@ func (this Stone) OnBlink() (Stone, *Stone) {
 }
 
 func StonesOnBlink(stones []Stone) []Stone {
-	return lo.Map(stones, func(stone Stone, index int) Stone {
-		var left, _ = stone.OnBlink()
-		return left
+	return lo.FlatMap(stones, func(stone Stone, index int) []Stone {
+		var left, right = stone.OnBlink()
+		if right != nil {
+			return []Stone{left, *right}
+		}
+		return []Stone{left}
 	})
 }
