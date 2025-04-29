@@ -69,3 +69,21 @@ func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
 		})
 	}
 }
+
+func TestSliceOfZeroStonesOnBlink(t *testing.T) {
+	var stones = []Stone{{engravedNumber: 0}, {engravedNumber: 0}, {engravedNumber: 0}}
+
+	var actual = StonesOnBlink(stones)
+
+	var expected = []Stone{{engravedNumber: 1}, {engravedNumber: 1}, {engravedNumber: 1}}
+	assert.Equal(t, expected, actual)
+}
+
+func TestSliceOfOddDigitsNumbersStonesOnBlink(t *testing.T) {
+	var stones = []Stone{{engravedNumber: 1}, {engravedNumber: 9}, {engravedNumber: 146}}
+
+	var actual = StonesOnBlink(stones)
+
+	var expected = []Stone{{engravedNumber: 2024}, {engravedNumber: 9 * 2024}, {engravedNumber: 146 * 2024}}
+	assert.Equal(t, expected, actual)
+}
