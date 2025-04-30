@@ -16,6 +16,11 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 186996, StonesCountAfterTwentyfiveBlinks(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	t.Skip("WIP")
+	assert.Equal(t, -1, StonesCountAfterSeventyfiveBlinks("125 17"))
+}
+
 func readFirstFileLine() string {
 	var fileBytes, err = os.ReadFile("input.txt")
 	if err != nil {
