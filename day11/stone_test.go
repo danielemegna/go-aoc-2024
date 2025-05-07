@@ -7,11 +7,11 @@ import (
 )
 
 func TestZeroEngravedStoneOnBlink(t *testing.T) {
-	var stone = Stone{engravedNumber: 0}
+	var stone = Stone(0)
 
 	var leftStone, rightStone = stone.OnBlink()
 
-	assert.Equal(t, Stone{engravedNumber: 1}, leftStone)
+	assert.Equal(t, Stone(1), leftStone)
 	assert.Nil(t, rightStone)
 }
 
@@ -28,29 +28,29 @@ func TestEvenNumberOfDigitsEngravedStoneOnBlink(t *testing.T) {
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			var stone = Stone{engravedNumber: testCase.engravedNumber}
+			var stone = Stone(testCase.engravedNumber)
 
 			var leftStone, rightStone = stone.OnBlink()
 
-			assert.Equal(t, Stone{engravedNumber: testCase.expectedLeft}, leftStone)
-			assert.Equal(t, Stone{engravedNumber: testCase.expectedRight}, *rightStone)
+			assert.Equal(t, Stone(testCase.expectedLeft), leftStone)
+			assert.Equal(t, Stone(testCase.expectedRight), *rightStone)
 		})
 	}
 }
 
 func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroesOnBlink(t *testing.T) {
-	var stone = Stone{engravedNumber: 1001}
+	var stone = Stone(1001)
 
 	var leftStone, rightStone = stone.OnBlink()
 
-	assert.Equal(t, Stone{engravedNumber: 10}, leftStone)
-	assert.Equal(t, Stone{engravedNumber: 1}, *rightStone)
+	assert.Equal(t, Stone(10), leftStone)
+	assert.Equal(t, Stone(1), *rightStone)
 }
 
 func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
 	var testCases = []struct {
-		engravedNumber int64
-		expectedLeft   int64
+		stone Stone
+		expectedLeft   Stone
 	}{
 		{1, 1 * 2024},
 		{2, 2 * 2024},
@@ -60,43 +60,41 @@ func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			var stone = Stone{engravedNumber: testCase.engravedNumber}
+			var leftStone, rightStone = testCase.stone.OnBlink()
 
-			var leftStone, rightStone = stone.OnBlink()
-
-			assert.Equal(t, Stone{engravedNumber: testCase.expectedLeft}, leftStone)
+			assert.Equal(t, testCase.expectedLeft, leftStone)
 			assert.Nil(t, rightStone)
 		})
 	}
 }
 
 func TestSliceOfZeroStonesOnBlink(t *testing.T) {
-	var stones = []Stone{{engravedNumber: 0}, {engravedNumber: 0}, {engravedNumber: 0}}
+	var stones = []Stone{0, 0, 0}
 
 	var actual = StonesOnBlink(stones)
 
-	var expected = []Stone{{engravedNumber: 1}, {engravedNumber: 1}, {engravedNumber: 1}}
+	var expected = []Stone{1, 1, 1}
 	assert.Equal(t, expected, actual)
 }
 
 func TestSliceOfOddDigitsNumbersStonesOnBlink(t *testing.T) {
-	var stones = []Stone{{engravedNumber: 1}, {engravedNumber: 9}, {engravedNumber: 146}}
+	var stones = []Stone{1, 9, 146}
 
 	var actual = StonesOnBlink(stones)
 
-	var expected = []Stone{{engravedNumber: 2024}, {engravedNumber: 9 * 2024}, {engravedNumber: 146 * 2024}}
+	var expected = []Stone{2024, 9 * 2024, 146 * 2024}
 	assert.Equal(t, expected, actual)
 }
 
 func TestSliceOfEvenDigitsNumbersStonesOnBlink(t *testing.T) {
-	var stones = []Stone{{engravedNumber: 10}, {engravedNumber: 46}, {engravedNumber: 2823}}
+	var stones = []Stone{10, 46, 2823}
 
 	var actual = StonesOnBlink(stones)
 
 	var expected = []Stone{
-		{engravedNumber: 1}, {engravedNumber: 0},
-		{engravedNumber: 4}, {engravedNumber: 6},
-		{engravedNumber: 28}, {engravedNumber: 23},
+		1, 0,
+		4, 6,
+		28, 23,
 	}
 	assert.Equal(t, expected, actual)
 }

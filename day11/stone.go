@@ -5,25 +5,25 @@ import (
 	"strconv"
 )
 
-type Stone struct {
-	engravedNumber int64
-}
+type Stone int64
 
 func (this Stone) OnBlink() (Stone, *Stone) {
-	if this.engravedNumber == 0 {
-		return Stone{engravedNumber: 1}, nil
+	if this == 0 {
+		return 1, nil
 	}
 
-	var engravedNumberString = strconv.Itoa(int(this.engravedNumber))
+	var engravedNumberString = strconv.Itoa(int(this))
 	var numberOfDigits = len(engravedNumberString)
 	if numberOfDigits%2 != 0 {
-		return Stone{engravedNumber: this.engravedNumber * 2024}, nil
+		return this * 2024, nil
 	}
 
 	var halfNumberOfDigits = numberOfDigits / 2
 	var left, _ = strconv.ParseInt(engravedNumberString[:halfNumberOfDigits], 10, 64)
 	var right, _ = strconv.ParseInt(engravedNumberString[halfNumberOfDigits:], 10, 64)
-	return Stone{engravedNumber: left}, &Stone{engravedNumber: right}
+	var leftStone = Stone(left)
+	var rightStone = Stone(right)
+	return leftStone, &rightStone
 }
 
 func StonesOnBlink(stones []Stone) []Stone {
