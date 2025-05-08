@@ -30,7 +30,7 @@ func parseStones(fileLine string) []iStone {
 	return lo.Map(
 		strings.Split(fileLine, " "),
 		func(numberString string, index int) iStone {
-			var engravedNumber, _ = strconv.ParseInt(numberString, 10, 64)
+			var engravedNumber, _ = strconv.Atoi(numberString)
 			return engravedNumber
 		},
 	)

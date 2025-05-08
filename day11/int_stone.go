@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-type iStone = int64
+type iStone = int
 
 func OnBlink(stone iStone) (iStone, *iStone) {
 	if stone == 0 {
@@ -19,8 +19,8 @@ func OnBlink(stone iStone) (iStone, *iStone) {
 	}
 
 	var halfNumberOfDigits = numberOfDigits / 2
-	var left, _ = strconv.ParseInt(engravedNumberString[:halfNumberOfDigits], 10, 64)
-	var right, _ = strconv.ParseInt(engravedNumberString[halfNumberOfDigits:], 10, 64)
+	var left, _ = strconv.Atoi(engravedNumberString[:halfNumberOfDigits])
+	var right, _ = strconv.Atoi(engravedNumberString[halfNumberOfDigits:])
 	return left, &right
 }
 
