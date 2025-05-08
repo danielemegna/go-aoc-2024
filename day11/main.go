@@ -1,7 +1,6 @@
 package day11
 
 import (
-	"github.com/samber/lo"
 	"strconv"
 	"strings"
 )
@@ -10,28 +9,27 @@ func StonesCountAfterTwentyfiveBlinks(fileLine string) int {
 	var stones = parseStones(fileLine)
 
 	for range 25 {
-		stones = iStonesOnBlink(stones)
+		stones = stones.OnBlink()
 	}
 
-	return len(stones)
+	return stones.Size()
 }
 
 func StonesCountAfterSeventyfiveBlinks(fileLine string) int {
 	var stones = parseStones(fileLine)
 
 	for range 75 {
-		stones = iStonesOnBlink(stones)
+		stones = stones.OnBlink()
 	}
 
-	return len(stones)
+	return stones.Size()
 }
 
-func parseStones(fileLine string) []iStone {
-	return lo.Map(
-		strings.Split(fileLine, " "),
-		func(numberString string, index int) iStone {
-			var engravedNumber, _ = strconv.Atoi(numberString)
-			return engravedNumber
-		},
-	)
+func parseStones(fileLine string) LineOfStones {
+	var lineOfStones = LineOfStones{}
+	for numberString := range strings.SplitSeq(fileLine, " ") {
+		var engravedNumber, _ = strconv.Atoi(numberString)
+		lineOfStones.Add(engravedNumber, 1)
+	}
+	return lineOfStones
 }
