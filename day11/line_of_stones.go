@@ -4,9 +4,9 @@ import "github.com/samber/lo"
 
 type LineOfStones map[Stone]int
 
-func (this LineOfStones) Add(engravedNumber Stone, occurences int) {
-	var currentOccurrencesCount, _ = this[engravedNumber]
-	this[engravedNumber] = currentOccurrencesCount + occurences
+func (this LineOfStones) Add(stone Stone, newOccurences int) {
+	var currentOccurrences, _ = this[stone]
+	this[stone] = currentOccurrences + newOccurences
 }
 
 func (this LineOfStones) Size() int {
@@ -15,8 +15,8 @@ func (this LineOfStones) Size() int {
 
 func (this LineOfStones) OnBlink() LineOfStones {
 	var newLine = LineOfStones{}
-	for engravedNumber, occurrences := range this {
-		var left, right = engravedNumber.OnBlink()
+	for stone, occurrences := range this {
+		var left, right = stone.OnBlink()
 		newLine.Add(left, occurrences)
 		if right != nil {
 			newLine.Add(*right, occurrences)
