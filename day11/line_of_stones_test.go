@@ -52,3 +52,27 @@ func TestPreserveDuplicatedStonesOnBlink(t *testing.T) {
 	}
 	assert.Equal(t, expected, actual)
 }
+
+func TestSizeIsSumOfOccurrences(t *testing.T) {
+	var stones = LineOfStones{1: 6, 9: 4, 146: 2}
+	var actual = stones.Size()
+	assert.Equal(t, 6+4+2, actual)
+}
+
+func TestAddNonPresentStones(t *testing.T) {
+	var stones = LineOfStones{}
+	stones.Add(Stone(1), 6)
+	assert.Equal(t, LineOfStones{1: 6}, stones)
+	stones.Add(Stone(146), 2)
+	assert.Equal(t, LineOfStones{1: 6, 146: 2}, stones)
+	stones.Add(Stone(19), 2)
+	assert.Equal(t, LineOfStones{1: 6, 146: 2, 19: 2}, stones)
+}
+
+func TestAddAlreadyPresentStonesIncreaseOccurrences(t *testing.T) {
+	var stones = LineOfStones{1: 6, 9: 4, 146: 2}
+	stones.Add(Stone(9), 2)
+	assert.Equal(t, LineOfStones{1: 6, 9: 4 + 2, 146: 2}, stones)
+	stones.Add(Stone(146), 3)
+	assert.Equal(t, LineOfStones{1: 6, 9: 4 + 2, 146: 2 + 3}, stones)
+}
