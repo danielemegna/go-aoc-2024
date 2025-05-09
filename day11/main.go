@@ -29,7 +29,7 @@ func parseStones(fileLine string) LineOfStones {
 	var lineOfStones = LineOfStones{}
 	for numberString := range strings.SplitSeq(fileLine, " ") {
 		var engravedNumber, _ = strconv.Atoi(numberString)
-		lineOfStones.Add(Stone(engravedNumber), 1)
+		lineOfStones[Stone(engravedNumber)] = 1
 	}
 	return lineOfStones
 }
