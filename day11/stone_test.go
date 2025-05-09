@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestZeroEngravedStoneOnBlink(t *testing.T) {
+func TestStoneWithEngravedZeroOnBlink(t *testing.T) {
 	var stone = Stone(0)
 
 	var leftStone, rightStone = stone.OnBlink()
@@ -15,11 +15,11 @@ func TestZeroEngravedStoneOnBlink(t *testing.T) {
 	assert.Nil(t, rightStone)
 }
 
-func TestEvenNumberOfDigitsEngravedStoneOnBlink(t *testing.T) {
+func TestStoneWithEvenEngravedNumberOfDigitsOnBlink(t *testing.T) {
 	var testCases = []struct {
-		engravedNumber int64
-		expectedLeft   int64
-		expectedRight  int64
+		stone         Stone
+		expectedLeft  Stone
+		expectedRight Stone
 	}{
 		{2024, 20, 24},
 		{96, 9, 6},
@@ -28,17 +28,15 @@ func TestEvenNumberOfDigitsEngravedStoneOnBlink(t *testing.T) {
 
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
-			var stone = Stone(testCase.engravedNumber)
+			var leftStone, rightStone = testCase.stone.OnBlink()
 
-			var leftStone, rightStone = stone.OnBlink()
-
-			assert.Equal(t, Stone(testCase.expectedLeft), leftStone)
-			assert.Equal(t, Stone(testCase.expectedRight), *rightStone)
+			assert.Equal(t, testCase.expectedLeft, leftStone)
+			assert.Equal(t, testCase.expectedRight, *rightStone)
 		})
 	}
 }
 
-func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroesOnBlink(t *testing.T) {
+func TestStoneWithEvenNumberOfDigitsDoNotKeepExtraLeadingZeroesOnBlink(t *testing.T) {
 	var stone = Stone(1001)
 
 	var leftStone, rightStone = stone.OnBlink()
@@ -47,10 +45,10 @@ func TestEvenNumberOfDigitsDoNotKeepExtraLeadingZeroesOnBlink(t *testing.T) {
 	assert.Equal(t, Stone(1), *rightStone)
 }
 
-func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
+func TestMultiplyBy2024OddEngravedNumberOfDigitsOnBlink(t *testing.T) {
 	var testCases = []struct {
-		stone Stone
-		expectedLeft   Stone
+		stone        Stone
+		expectedLeft Stone
 	}{
 		{1, 1 * 2024},
 		{2, 2 * 2024},
