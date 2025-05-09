@@ -68,6 +68,10 @@ func TestMultiplyBy2024OddNumberOfDigitsOnBlink(t *testing.T) {
 	}
 }
 
+/*
+
+TODO move and convert these as LineOfStones tests
+
 func TestSliceOfZeroStonesOnBlink(t *testing.T) {
 	var stones = []Stone{0, 0, 0}
 
@@ -98,3 +102,5 @@ func TestSliceOfEvenDigitsNumbersStonesOnBlink(t *testing.T) {
 	}
 	assert.Equal(t, expected, actual)
 }
+
+*/

@@ -1,11 +1,10 @@
 package day11
 
 import (
-	"github.com/samber/lo"
 	"strconv"
 )
 
-type Stone int64
+type Stone int
 
 func (this Stone) OnBlink() (Stone, *Stone) {
 	if this == 0 {
@@ -19,19 +18,8 @@ func (this Stone) OnBlink() (Stone, *Stone) {
 	}
 
 	var halfNumberOfDigits = numberOfDigits / 2
-	var left, _ = strconv.ParseInt(engravedNumberString[:halfNumberOfDigits], 10, 64)
-	var right, _ = strconv.ParseInt(engravedNumberString[halfNumberOfDigits:], 10, 64)
-	var leftStone = Stone(left)
+	var left, _ = strconv.Atoi(engravedNumberString[:halfNumberOfDigits])
+	var right, _ = strconv.Atoi(engravedNumberString[halfNumberOfDigits:])
 	var rightStone = Stone(right)
-	return leftStone, &rightStone
-}
-
-func StonesOnBlink(stones []Stone) []Stone {
-	return lo.FlatMap(stones, func(stone Stone, index int) []Stone {
-		var left, right = stone.OnBlink()
-		if right != nil {
-			return []Stone{left, *right}
-		}
-		return []Stone{left}
-	})
+	return Stone(left), &rightStone
 }
