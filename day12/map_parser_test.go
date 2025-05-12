@@ -5,11 +5,36 @@ import (
 	"testing"
 )
 
-func TestSimplestGardenMap(t *testing.T) {
-	var actual = ParseGardenMap("A")
+func TestParseSinglePlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap("A\n")
 
 	var expected = GardenMap{
 		'A': { area: 1, perimeter: 4},
+	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestTwoDifferentPlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap("AB\n")
+
+	var expected = GardenMap{
+		'A': { area: 1, perimeter: 4},
+		'B': { area: 1, perimeter: 4},
+	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestFounrDifferentPlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(
+		"AB\n" +
+		"CD\n",
+	)
+
+	var expected = GardenMap{
+		'A': { area: 1, perimeter: 4},
+		'B': { area: 1, perimeter: 4},
+		'C': { area: 1, perimeter: 4},
+		'D': { area: 1, perimeter: 4},
 	}
 	assert.Equal(t, expected, actual)
 }
