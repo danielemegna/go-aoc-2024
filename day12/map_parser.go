@@ -8,14 +8,22 @@ func ParseGardenMap(fileContent string) GardenMap {
 	var rows = rowsFrom(fileContent)
 	for y, row := range rows {
 		for x, char := range row {
-			var perimeter = perimeterFor(x, y, rows)
-			result[char] = GardenRegion{area: 1, perimeter: perimeter}
+			var plantPerimeter = plantPerimeterFor(x, y, rows)
+			var gardenRegion, isPresent = result[char]
+			if !isPresent {
+				result[char] = GardenRegion{area: 1, perimeter: plantPerimeter}
+				continue
+			}
+
+			gardenRegion.area++
+			gardenRegion.perimeter += plantPerimeter
+			result[char] = gardenRegion
 		}
 	}
 	return result
 }
 
-func perimeterFor(x, y int, rows []string) int {
+func plantPerimeterFor(x, y int, rows []string) int {
 	return 4
 }
 
