@@ -27,7 +27,7 @@ func TestTwoDifferentPlantGardenMap(t *testing.T) {
 func TestFounrDifferentPlantGardenMap(t *testing.T) {
 	var actual = ParseGardenMap(
 		"AB\n" +
-			"CD\n",
+		"CD\n",
 	)
 
 	var expected = GardenMap{
@@ -46,13 +46,12 @@ func Test2x2RegionOfSamePlant(t *testing.T) {
 	)
 
 	var expected = GardenMap{
-		'A': {area: 4, perimeter: /*8*/ 16},
+		'A': {area: 4, perimeter: 8},
 	}
 	assert.Equal(t, expected, actual)
 }
 
 func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
-	t.Skip("WIP")
 	var actual = ParseGardenMap(simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES))
 
 	var expected = GardenMap{

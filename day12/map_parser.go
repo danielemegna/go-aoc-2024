@@ -23,8 +23,40 @@ func ParseGardenMap(fileContent string) GardenMap {
 	return result
 }
 
-func plantPerimeterFor(x, y int, rows []string) int {
-	return 4
+func plantPerimeterFor(x int, y int, rows []string) int {
+	var perimeter = 0
+	var plantType = rows[y][x]
+
+	if y > 0 {
+		if rows[y-1][x] != plantType {
+			perimeter++
+		}
+	} else {
+		perimeter++
+	}
+
+	if x > 0 {
+		if rows[y][x-1] != plantType {
+			perimeter++
+		}
+	} else {
+		perimeter++
+	}
+	if x < len(rows[y])-1 {
+		if rows[y][x+1] != plantType {
+			perimeter++
+		}
+	} else {
+		perimeter++
+	}
+	if y < len(rows)-1 {
+		if rows[y+1][x] != plantType {
+			perimeter++
+		}
+	} else {
+		perimeter++
+	}
+	return perimeter
 }
 
 func rowsFrom(input string) []string {
