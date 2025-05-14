@@ -40,7 +40,6 @@ func TestFourDifferentPlantGardenMap(t *testing.T) {
 }
 
 func Test2x2RegionOfSamePlant(t *testing.T) {
-	t.Skip("refactoring")
 	var actual = ParseGardenMap(
 		"AA\n" +
 		"AA\n",
@@ -53,7 +52,6 @@ func Test2x2RegionOfSamePlant(t *testing.T) {
 }
 
 func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
-	t.Skip("refactoring")
 	var actual = ParseGardenMap(simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES))
 
 	var expected = GardenMap{
