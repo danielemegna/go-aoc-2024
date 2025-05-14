@@ -1,8 +1,9 @@
 package day12
 
-type GardenMap map[rune]GardenRegion
+type GardenMap []GardenRegion
 
 type GardenRegion struct {
+	plant rune
 	area int
 	perimeter int
 }

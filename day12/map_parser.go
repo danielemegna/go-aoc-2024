@@ -9,15 +9,7 @@ func ParseGardenMap(fileContent string) GardenMap {
 	for y, row := range rows {
 		for x, char := range row {
 			var plantPerimeter = plantPerimeterFor(x, y, rows)
-			var gardenRegion, isPresent = result[char]
-			if !isPresent {
-				result[char] = GardenRegion{area: 1, perimeter: plantPerimeter}
-				continue
-			}
-
-			gardenRegion.area++
-			gardenRegion.perimeter += plantPerimeter
-			result[char] = gardenRegion
+			result = append(result, GardenRegion{plant: char, area: 1, perimeter: plantPerimeter})
 		}
 	}
 	return result
