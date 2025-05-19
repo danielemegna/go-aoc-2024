@@ -11,7 +11,7 @@ func TestParseSinglePlantGardenMap(t *testing.T) {
 	var expected = GardenMap{
 		{plant: 'A', area: 1, perimeter: 4},
 	}
-	assert.Equal(t, expected, actual)
+	assert.ElementsMatch(t, expected, actual)
 }
 
 func TestTwoDifferentPlantGardenMap(t *testing.T) {
@@ -21,7 +21,7 @@ func TestTwoDifferentPlantGardenMap(t *testing.T) {
 		{plant: 'A', area: 1, perimeter: 4},
 		{plant: 'B', area: 1, perimeter: 4},
 	}
-	assert.Equal(t, expected, actual)
+	assert.ElementsMatch(t, expected, actual)
 }
 
 func TestFourDifferentPlantGardenMap(t *testing.T) {
@@ -36,7 +36,7 @@ func TestFourDifferentPlantGardenMap(t *testing.T) {
 		{plant: 'C', area: 1, perimeter: 4},
 		{plant: 'D', area: 1, perimeter: 4},
 	}
-	assert.Equal(t, expected, actual)
+	assert.ElementsMatch(t, expected, actual)
 }
 
 func Test2x2RegionOfSamePlant(t *testing.T) {
@@ -48,7 +48,7 @@ func Test2x2RegionOfSamePlant(t *testing.T) {
 	var expected = GardenMap{
 		{plant: 'A', area: 4, perimeter: 8},
 	}
-	assert.Equal(t, expected, actual)
+	assert.ElementsMatch(t, expected, actual)
 }
 
 func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
@@ -61,5 +61,37 @@ func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
 		{plant: 'D', area: 1, perimeter: 4},
 		{plant: 'E', area: 3, perimeter: 8},
 	}
-	assert.Equal(t, expected, actual)
+	assert.ElementsMatch(t, expected, actual)
+}
+
+func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES))
+
+	var expected = GardenMap{
+		{plant: 'X', area: 1, perimeter: 4},
+		{plant: 'X', area: 1, perimeter: 4},
+		{plant: 'X', area: 1, perimeter: 4},
+		{plant: 'O', area: 21, perimeter: 36},
+		{plant: 'X', area: 1, perimeter: 4},
+	}
+	assert.ElementsMatch(t, expected, actual)
+}
+
+func TestParseLargeProvidedExampleGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(simulateFileContent(LARGE_PROVIDED_EXAMPLE_INPUT_LINES))
+
+	var expected = GardenMap{
+		{plant: 'R', area: 12, perimeter: 18},
+		{plant: 'I', area: 4, perimeter: 8},
+		{plant: 'C', area: 14, perimeter: 28},
+		{plant: 'F', area: 10, perimeter: 18},
+		{plant: 'V', area: 13, perimeter: 20},
+		{plant: 'J', area: 11, perimeter: 20},
+		{plant: 'C', area: 1, perimeter: 4},
+		{plant: 'E', area: 13, perimeter: 18},
+		{plant: 'I', area: 14, perimeter: 22},
+		{plant: 'M', area: 5, perimeter: 12},
+		{plant: 'S', area: 3, perimeter: 8},
+	}
+	assert.ElementsMatch(t, expected, actual)
 }
