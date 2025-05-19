@@ -36,77 +36,55 @@ func completeRegionVisit(
 	rows []string,
 	visitedCoordinates *[]Coordinate,
 ) GardenRegion {
-	if slices.Contains(*visitedCoordinates, currentCoordinate) {
-		return partialRegion
-	}
-
-	var x, y = currentCoordinate.X, currentCoordinate.Y
-	var plantTypeInByte = rows[y][x]
-
 	*visitedCoordinates = append(*visitedCoordinates, currentCoordinate)
 	partialRegion.area++
 
 	var currentCoordinatePerimeter = 0
-	if y > 0 {
-		if rows[y-1][x] != plantTypeInByte {
-			currentCoordinatePerimeter++
-		} else {
-			partialRegion = completeRegionVisit(
-				partialRegion,
-				Coordinate{x, y - 1},
-				rows,
-				visitedCoordinates,
-			)
-		}
-	} else {
-		currentCoordinatePerimeter++
-	}
+	var closeCoordinates = closePlantsFor(currentCoordinate, rows)
+	currentCoordinatePerimeter += 4 - len(closeCoordinates)
 
-	if x > 0 {
-		if rows[y][x-1] != plantTypeInByte {
+	for _, closeCoordinate := range closeCoordinates {
+		if !samePlantIn(currentCoordinate, closeCoordinate, rows) {
 			currentCoordinatePerimeter++
-		} else {
-			partialRegion = completeRegionVisit(
-				partialRegion,
-				Coordinate{x - 1, y},
-				rows,
-				visitedCoordinates,
-			)
+			continue
 		}
-	} else {
-		currentCoordinatePerimeter++
-	}
-	if x < len(rows[y])-1 {
-		if rows[y][x+1] != plantTypeInByte {
-			currentCoordinatePerimeter++
-		} else {
-			partialRegion = completeRegionVisit(
-				partialRegion,
-				Coordinate{x + 1, y},
-				rows,
-				visitedCoordinates,
-			)
+
+		if slices.Contains(*visitedCoordinates, closeCoordinate) {
+			continue
 		}
-	} else {
-		currentCoordinatePerimeter++
-	}
-	if y < len(rows)-1 {
-		if rows[y+1][x] != plantTypeInByte {
-			currentCoordinatePerimeter++
-		} else {
-			partialRegion = completeRegionVisit(
-				partialRegion,
-				Coordinate{x, y + 1},
-				rows,
-				visitedCoordinates,
-			)
-		}
-	} else {
-		currentCoordinatePerimeter++
+
+		partialRegion = completeRegionVisit(
+			partialRegion,
+			closeCoordinate,
+			rows,
+			visitedCoordinates,
+		)
 	}
 
 	partialRegion.perimeter += currentCoordinatePerimeter
 	return partialRegion
+}
+
+func samePlantIn(c1 Coordinate, c2 Coordinate, rows []string) bool {
+	return rows[c1.Y][c1.X] == rows[c2.Y][c2.X]
+}
+
+func closePlantsFor(c Coordinate, rows []string) []Coordinate {
+	var x, y = c.X, c.Y
+	var closeCoordinates = []Coordinate{}
+	if x > 0 {
+		closeCoordinates = append(closeCoordinates, Coordinate{x - 1, y})
+	}
+	if y > 0 {
+		closeCoordinates = append(closeCoordinates, Coordinate{x, y - 1})
+	}
+	if x < len(rows[y])-1 {
+		closeCoordinates = append(closeCoordinates, Coordinate{x + 1, y})
+	}
+	if y < len(rows)-1 {
+		closeCoordinates = append(closeCoordinates, Coordinate{x, y + 1})
+	}
+	return closeCoordinates
 }
 
 func rowsFrom(input string) []string {
