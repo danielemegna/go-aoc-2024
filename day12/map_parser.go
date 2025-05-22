@@ -10,7 +10,7 @@ type Coordinate struct {
 	Y int
 }
 
-type RawGardenMap = []string
+type RawGardenMap []string
 
 func ParseGardenMap(fileContent string) GardenMap {
 	var visitedCoordinates = []Coordinate{}
@@ -42,52 +42,45 @@ func completeRegionVisit(
 	partialRegion.area++
 
 	var currentCoordinatePerimeter = 0
-	var closeCoordinates = closeCoordinatesFor(currentCoordinate, rawMap)
-	var outOfMapBorders = 4 - len(closeCoordinates)
-	currentCoordinatePerimeter += outOfMapBorders
-
-	for _, closeCoordinate := range closeCoordinates {
-		if !samePlantIn(currentCoordinate, closeCoordinate, rawMap) {
+	for _, closeCoordinate := range currentCoordinate.closeCoordinates() {
+		if !rawMap.samePlantIn(currentCoordinate, closeCoordinate) {
 			currentCoordinatePerimeter++
 			continue
 		}
 
-		if slices.Contains(*visitedCoordinates, closeCoordinate) {
-			continue
+		if !slices.Contains(*visitedCoordinates, closeCoordinate) {
+			partialRegion = completeRegionVisit(
+				partialRegion,
+				closeCoordinate,
+				rawMap,
+				visitedCoordinates,
+			)
 		}
-
-		partialRegion = completeRegionVisit(
-			partialRegion,
-			closeCoordinate,
-			rawMap,
-			visitedCoordinates,
-		)
 	}
 
 	partialRegion.perimeter += currentCoordinatePerimeter
 	return partialRegion
 }
 
-func samePlantIn(c1 Coordinate, c2 Coordinate, rawMap RawGardenMap) bool {
+func (rawMap RawGardenMap) samePlantIn(c1 Coordinate, c2 Coordinate) bool {
+	if c1.isOutOfBoundsOf(rawMap) || c2.isOutOfBoundsOf(rawMap) {
+		return false
+	}
+
 	return rawMap[c1.Y][c1.X] == rawMap[c2.Y][c2.X]
 }
 
-func closeCoordinatesFor(c Coordinate, rawMap RawGardenMap) []Coordinate {
-	// check performance initializing with the four coordinates and applying a filter later
-	var closeCoordinates = []Coordinate{}
-	if c.X > 0 {
-		closeCoordinates = append(closeCoordinates, Coordinate{c.X - 1, c.Y})
+func (c Coordinate) closeCoordinates() []Coordinate {
+	return []Coordinate{
+		{c.X - 1, c.Y},
+		{c.X, c.Y - 1},
+		{c.X + 1, c.Y},
+		{c.X, c.Y + 1},
 	}
-	if c.Y > 0 {
-		closeCoordinates = append(closeCoordinates, Coordinate{c.X, c.Y - 1})
-	}
-	if c.X < len(rawMap[c.Y])-1 {
-		closeCoordinates = append(closeCoordinates, Coordinate{c.X + 1, c.Y})
-	}
-	if c.Y < len(rawMap)-1 {
-		closeCoordinates = append(closeCoordinates, Coordinate{c.X, c.Y + 1})
-	}
-	return closeCoordinates
+}
+
+func (c Coordinate) isOutOfBoundsOf(rawMap RawGardenMap) bool {
+	return c.X < 0 || c.Y < 0 || c.X >= len(rawMap) || c.Y >= len(rawMap)
 }
 
 func rawGardenMapFrom(input string) RawGardenMap {
