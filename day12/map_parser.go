@@ -42,8 +42,9 @@ func completeRegionVisit(
 	partialRegion.area++
 
 	var currentCoordinatePerimeter = 0
-	var closeCoordinates = closePlantsFor(currentCoordinate, rawMap)
-	currentCoordinatePerimeter += 4 - len(closeCoordinates)
+	var closeCoordinates = closeCoordinatesFor(currentCoordinate, rawMap)
+	var outOfMapBorders = 4 - len(closeCoordinates)
+	currentCoordinatePerimeter += outOfMapBorders
 
 	for _, closeCoordinate := range closeCoordinates {
 		if !samePlantIn(currentCoordinate, closeCoordinate, rawMap) {
@@ -71,7 +72,7 @@ func samePlantIn(c1 Coordinate, c2 Coordinate, rawMap RawGardenMap) bool {
 	return rawMap[c1.Y][c1.X] == rawMap[c2.Y][c2.X]
 }
 
-func closePlantsFor(c Coordinate, rawMap RawGardenMap) []Coordinate {
+func closeCoordinatesFor(c Coordinate, rawMap RawGardenMap) []Coordinate {
 	// check performance initializing with the four coordinates and applying a filter later
 	var closeCoordinates = []Coordinate{}
 	if c.X > 0 {
