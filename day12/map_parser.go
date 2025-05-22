@@ -5,10 +5,6 @@ import (
 	"strings"
 )
 
-type Coordinate struct {
-	X int
-	Y int
-}
 
 type RawGardenMap []string
 
@@ -70,18 +66,6 @@ func (rawMap RawGardenMap) samePlantIn(c1 Coordinate, c2 Coordinate) bool {
 	return rawMap[c1.Y][c1.X] == rawMap[c2.Y][c2.X]
 }
 
-func (c Coordinate) closeCoordinates() []Coordinate {
-	return []Coordinate{
-		{c.X - 1, c.Y},
-		{c.X, c.Y - 1},
-		{c.X + 1, c.Y},
-		{c.X, c.Y + 1},
-	}
-}
-
-func (c Coordinate) isOutOfBoundsOf(rawMap RawGardenMap) bool {
-	return c.X < 0 || c.Y < 0 || c.X >= len(rawMap) || c.Y >= len(rawMap)
-}
 
 func rawGardenMapFrom(input string) RawGardenMap {
 	var rows = strings.Split(input, "\n")
