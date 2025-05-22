@@ -1,5 +1,12 @@
 package day12
 
+import "github.com/samber/lo"
+
+
 func TotalFencePrice(fileContent string) int {
-	return 140
+	var gardenMap = ParseGardenMap(fileContent)
+
+	return lo.SumBy(gardenMap, func(r GardenRegion) int {
+		return r.area * r.perimeter
+	})
 }

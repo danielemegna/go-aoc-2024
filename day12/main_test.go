@@ -41,21 +41,18 @@ func TestSolveFirstPartWithSimpleProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithAnotherProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 772, TotalFencePrice(fileContent))
 }
 
 func TestSolveFirstPartWithLargeProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(LARGE_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 1930, TotalFencePrice(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, TotalFencePrice(fileContent))
+	assert.Equal(t, 1518548, TotalFencePrice(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
