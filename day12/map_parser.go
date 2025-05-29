@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-
 type RawGardenMap []string
 
 func ParseGardenMap(fileContent string) GardenMap {
@@ -44,14 +43,16 @@ func completeRegionVisit(
 			continue
 		}
 
-		if !slices.Contains(*visitedCoordinates, closeCoordinate) {
-			partialRegion = completeRegionVisit(
-				partialRegion,
-				closeCoordinate,
-				rawMap,
-				visitedCoordinates,
-			)
+		if slices.Contains(*visitedCoordinates, closeCoordinate) {
+			continue
 		}
+
+		partialRegion = completeRegionVisit(
+			partialRegion,
+			closeCoordinate,
+			rawMap,
+			visitedCoordinates,
+		)
 	}
 
 	partialRegion.perimeter += currentCoordinatePerimeter
@@ -65,7 +66,6 @@ func (rawMap RawGardenMap) samePlantIn(c1 Coordinate, c2 Coordinate) bool {
 
 	return rawMap[c1.Y][c1.X] == rawMap[c2.Y][c2.X]
 }
-
 
 func rawGardenMapFrom(input string) RawGardenMap {
 	var rows = strings.Split(input, "\n")
