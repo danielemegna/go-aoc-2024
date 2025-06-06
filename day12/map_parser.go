@@ -19,8 +19,8 @@ func ParseGardenMap(fileContent string) GardenMap {
 				continue
 			}
 
-			var partialRegion = GardenRegion{plant: char, area: 0, perimeter: 0}
-			var gardenRegion = completeRegionVisit(partialRegion, coordinate, rawMap, &visitedCoordinates)
+			var newGardenRegion = NewGardenRegion(char)
+			var gardenRegion = completeRegionVisit(newGardenRegion, coordinate, rawMap, &visitedCoordinates)
 			result = append(result, gardenRegion)
 		}
 	}
@@ -36,10 +36,9 @@ func completeRegionVisit(
 	*visitedCoordinates = append(*visitedCoordinates, currentCoordinate)
 	partialRegion.area++
 
-	var currentCoordinatePerimeter = 0
 	for _, closeCoordinate := range currentCoordinate.closeCoordinates() {
 		if !rawMap.samePlantIn(currentCoordinate, closeCoordinate) {
-			currentCoordinatePerimeter++
+			partialRegion.perimeter.Add(closeCoordinate, currentCoordinate)
 			continue
 		}
 
@@ -55,7 +54,6 @@ func completeRegionVisit(
 		)
 	}
 
-	partialRegion.perimeter += currentCoordinatePerimeter
 	return partialRegion
 }
 
