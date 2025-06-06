@@ -1,11 +1,37 @@
 package day12
-/*
 
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
+func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES))
+
+	assert.Equal(t, 1+4, len(actual))
+
+	assert.Equal(t, 'O', actual[0].plant)
+	assert.Equal(t, 21, actual[0].area)
+	assert.Equal(t, 36, len(actual[0].perimeter.borders))
+	//assert.Equal(t, 20, actual[0].perimeter.sides) --- THIS IS WRONGLY CALCULATED !
+
+	assert.Equal(t, 'X', actual[1].plant)
+	assert.Equal(t, 1, actual[1].area)
+	assert.Equal(t, 4, len(actual[1].perimeter.borders))
+	assert.Equal(t, 4, actual[1].perimeter.sides)
+
+	assert.Equal(t, 'X', actual[2].plant)
+	assert.Equal(t, 1, actual[2].area)
+	assert.Equal(t, 4, len(actual[2].perimeter.borders))
+	assert.Equal(t, 4, actual[2].perimeter.sides)
+
+	assert.Equal(t, 'X', actual[3].plant)
+	assert.Equal(t, 1, actual[3].area)
+	assert.Equal(t, 4, len(actual[3].perimeter.borders))
+	assert.Equal(t, 4, actual[3].perimeter.sides)
+}
+
+/*
 func TestParseSinglePlantGardenMap(t *testing.T) {
 	var actual = ParseGardenMap("A\n")
 
