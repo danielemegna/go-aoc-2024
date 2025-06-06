@@ -44,7 +44,21 @@ func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 	case EAST:
 		fallthrough
 	case WEST:
-		fallthrough
+		if (this.contains(
+			Border{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
+			})) {
+			return true
+		}
+		if (this.contains(
+			Border{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
+			})) {
+			return true
+		}
+		return false
 	case NORTH:
 		fallthrough
 	case SOUTH:
@@ -62,7 +76,7 @@ func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 			})) {
 			return true
 		}
-		fallthrough
+		return false
 	default:
 		return false
 	}
@@ -76,5 +90,15 @@ func cardinalDirectionFor(outsideCoordinate Coordinate, insideCoordinate Coordin
 	if outsideCoordinate.Y < insideCoordinate.Y {
 		return SOUTH
 	}
-	return NORTH
+	if outsideCoordinate.Y > insideCoordinate.Y {
+		return NORTH
+	}
+	if outsideCoordinate.X < insideCoordinate.X {
+		return WEST
+	}
+	if outsideCoordinate.X > insideCoordinate.X {
+		return EAST
+	}
+
+	panic("Unexpected cardinalDirectionFor two identical coordinates")
 }
