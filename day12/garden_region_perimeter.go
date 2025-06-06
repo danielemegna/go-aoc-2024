@@ -35,11 +35,12 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 func (this *GardenRegionPerimeter) Add(outsideCoordinate Coordinate, insideCoordinate Coordinate) {
 	var direction = cardinalDirectionFor(outsideCoordinate, insideCoordinate)
 	var border = Border{direction: direction, coordinate: insideCoordinate}
-	this.borders = append(this.borders, border)
 
 	if !this.isSideAlreadyCounted(border) {
 		this.sides++
 	}
+
+	this.borders = append(this.borders, border)
 }
 
 func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
