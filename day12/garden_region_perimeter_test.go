@@ -26,7 +26,6 @@ func TestSomeFarElements(t *testing.T) {
 	assert.Equal(t, 2, perimeter.Length())
 }
 
-// WIP
 func TestSomeDifferentSideCloseElements(t *testing.T) {
 	var perimeter = GardenRegionPerimeter{}
 
@@ -35,19 +34,19 @@ func TestSomeDifferentSideCloseElements(t *testing.T) {
 	perimeter.Add(Coordinate{X: 3, Y: 1}, Coordinate{X: 3, Y: 2})
 
 	assert.Equal(t, 3, perimeter.Length())
-	//assert.Equal(t, 3, perimeter.NumberOfSides())
+	assert.Equal(t, 3, perimeter.NumberOfSides())
 
 	perimeter.Add(Coordinate{X: 6, Y: 7}, Coordinate{X: 6, Y: 6})
 	perimeter.Add(Coordinate{X: 5, Y: 6}, Coordinate{X: 6, Y: 6})
 
 	assert.Equal(t, 5, perimeter.Length())
-	//assert.Equal(t, 5, perimeter.NumberOfSides())
+	assert.Equal(t, 5, perimeter.NumberOfSides())
 
 	perimeter.Add(Coordinate{X: 9, Y: 8}, Coordinate{X: 9, Y: 9})
 	perimeter.Add(Coordinate{X: 10, Y: 10}, Coordinate{X: 10, Y: 9})
 
 	assert.Equal(t, 7, perimeter.Length())
-	//assert.Equal(t, 7, perimeter.NumberOfSides())
+	assert.Equal(t, 7, perimeter.NumberOfSides())
 }
 
 func TestTwoCloseSouthBorderShouldNotIncreaseSideCount(t *testing.T) {

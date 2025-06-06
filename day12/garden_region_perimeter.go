@@ -43,9 +43,9 @@ func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 	switch border.direction {
 	case EAST:
 		fallthrough
-	case NORTH:
-		fallthrough
 	case WEST:
+		fallthrough
+	case NORTH:
 		fallthrough
 	case SOUTH:
 		if (this.contains(
@@ -72,6 +72,9 @@ func (this GardenRegionPerimeter) contains(border Border) bool {
 	return slices.Contains(this.borders, border)
 }
 
-func cardinalDirectionFor(outsideCoordinate, insideCoordinate Coordinate) CardinalDirection {
-	return SOUTH
+func cardinalDirectionFor(outsideCoordinate Coordinate, insideCoordinate Coordinate) CardinalDirection {
+	if outsideCoordinate.Y < insideCoordinate.Y {
+		return SOUTH
+	}
+	return NORTH
 }
