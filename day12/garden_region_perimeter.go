@@ -1,6 +1,9 @@
 package day12
 
-import "slices"
+import (
+	"fmt"
+	"slices"
+)
 
 type GardenRegionPerimeter struct {
 	borders []Border
@@ -41,9 +44,7 @@ func (this *GardenRegionPerimeter) Add(outsideCoordinate Coordinate, insideCoord
 
 func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 	switch border.direction {
-	case EAST:
-		fallthrough
-	case WEST:
+	case EAST, WEST:
 		if (this.contains(
 			Border{
 				direction:  border.direction,
@@ -59,9 +60,7 @@ func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 			return true
 		}
 		return false
-	case NORTH:
-		fallthrough
-	case SOUTH:
+	case NORTH, SOUTH:
 		if (this.contains(
 			Border{
 				direction:  border.direction,
@@ -77,9 +76,9 @@ func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
 			return true
 		}
 		return false
-	default:
-		return false
 	}
+
+	panic(fmt.Sprintf("Unexpected isSideAlreadyCounted with border direction: [%v]", border))
 }
 
 func (this GardenRegionPerimeter) contains(border Border) bool {
@@ -100,5 +99,5 @@ func cardinalDirectionFor(outsideCoordinate Coordinate, insideCoordinate Coordin
 		return EAST
 	}
 
-	panic("Unexpected cardinalDirectionFor two identical coordinates")
+	panic(fmt.Sprintf("Unexpected cardinalDirectionFor two identical coordinates: [%v]", outsideCoordinate))
 }
