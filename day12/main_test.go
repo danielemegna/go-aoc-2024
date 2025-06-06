@@ -22,6 +22,14 @@ var ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES = []string{
 	"OOOOO",
 }
 
+var E_SHAPED_PROVIDED_EXAMPLE_INPUT_LINES = []string{
+	"EEEEE",
+	"EXXXX",
+	"EEEEE",
+	"EXXXX",
+	"EEEEE",
+}
+
 var LARGE_PROVIDED_EXAMPLE_INPUT_LINES = []string{
 	"RRRRIICCFF",
 	"RRRRIICCCF",
@@ -53,6 +61,16 @@ func TestSolveFirstPartWithLargeProvidedExample(t *testing.T) {
 func TestSolveFirstPartWithFile(t *testing.T) {
 	var fileContent = readFileContent()
 	assert.Equal(t, 1518548, TotalFencePrice(fileContent))
+}
+
+func TestSolveSecondPartWithSimpleProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 80, TotalFencePriceWithBulkDiscount(fileContent))
+}
+
+func TestSolveSecondPartWithEShapedProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(E_SHAPED_PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 236, TotalFencePriceWithBulkDiscount(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
