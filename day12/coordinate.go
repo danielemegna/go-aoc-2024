@@ -15,6 +15,5 @@ func (c Coordinate) closeCoordinates() []Coordinate {
 }
 
 func (c Coordinate) isOutOfBoundsOf(rawMap RawGardenMap) bool {
-	// assuming always square maps here
-	return c.X < 0 || c.Y < 0 || c.X >= len(rawMap) || c.Y >= len(rawMap)
+	return c.X < 0 || c.Y < 0 || c.Y >= len(rawMap) || c.X >= len(rawMap[c.Y])
 }
