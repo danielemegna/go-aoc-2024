@@ -80,3 +80,24 @@ func TestTwoCloseNouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 }
+
+func TestSinglePlant(t *testing.T) {
+	var perimeter = GardenRegionPerimeter{}
+	var singlePlantCoordinate = Coordinate{X: 3, Y: 3}
+
+	perimeter.Add(Coordinate{X: 3, Y: 2}, singlePlantCoordinate)
+	assert.Equal(t, 1, perimeter.Length())
+	assert.Equal(t, 1, perimeter.NumberOfSides())
+
+	perimeter.Add(Coordinate{X: 3, Y: 4}, singlePlantCoordinate)
+	assert.Equal(t, 2, perimeter.Length())
+	assert.Equal(t, 2, perimeter.NumberOfSides())
+
+	perimeter.Add(Coordinate{X: 2, Y: 3}, singlePlantCoordinate)
+	assert.Equal(t, 3, perimeter.Length())
+	assert.Equal(t, 3, perimeter.NumberOfSides())
+
+	perimeter.Add(Coordinate{X: 4, Y: 3}, singlePlantCoordinate)
+	assert.Equal(t, 4, perimeter.Length())
+	assert.Equal(t, 4, perimeter.NumberOfSides())
+}
