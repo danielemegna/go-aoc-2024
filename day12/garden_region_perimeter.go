@@ -5,10 +5,7 @@ import (
 	"slices"
 )
 
-type GardenRegionPerimeter struct {
-	borders []Border
-	sides   int
-}
+type GardenRegionPerimeter []Border
 
 type Border struct {
 	direction  CardinalDirection
@@ -25,68 +22,62 @@ const (
 )
 
 func (this GardenRegionPerimeter) Length() int {
-	return len(this.borders)
+	return len(this)
 }
 
 func (this GardenRegionPerimeter) NumberOfSides() int {
-	return this.sides
-}
+	var computed = []Border{}
+	var sides = 0
 
-func (this *GardenRegionPerimeter) Add(outsideCoordinate Coordinate, insideCoordinate Coordinate) {
-	var direction = cardinalDirectionFor(outsideCoordinate, insideCoordinate)
-	var border = Border{direction: direction, coordinate: insideCoordinate}
+	// we have to sort this before ! at least two times !!
+	for _, border := range this {
+		computed = append(computed, border)
 
-	if !this.isSideAlreadyCounted(border) {
-		this.sides++
+		if (slices.Contains(computed, Border{
+			direction:  border.direction,
+			coordinate: Coordinate{X: border.coordinate.X - 1, Y: border.coordinate.Y},
+		})) {
+			continue
+		}
+
+		if (slices.Contains(computed, Border{
+			direction:  border.direction,
+			coordinate: Coordinate{X: border.coordinate.X + 1, Y: border.coordinate.Y},
+		})) {
+			continue
+		}
+
+		if (slices.Contains(computed, Border{
+			direction:  border.direction,
+			coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
+		})) {
+			continue
+		}
+
+		if (slices.Contains(computed, Border{
+			direction:  border.direction,
+			coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
+		})) {
+			continue
+		}
+
+		sides++
 	}
 
-	this.borders = append(this.borders, border)
+	return sides
 }
 
-func (this GardenRegionPerimeter) isSideAlreadyCounted(border Border) bool {
-	switch border.direction {
-	case EAST, WEST:
-		if (this.contains(
-			Border{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
-			})) {
-			return true
-		}
-		if (this.contains(
-			Border{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
-			})) {
-			return true
-		}
-		return false
-	case NORTH, SOUTH:
-		if (this.contains(
-			Border{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X - 1, Y: border.coordinate.Y},
-			})) {
-			return true
-		}
-		if (this.contains(
-			Border{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X + 1, Y: border.coordinate.Y},
-			})) {
-			return true
-		}
-		return false
-	}
-
-	panic(fmt.Sprintf("Unexpected isSideAlreadyCounted with border direction: [%v]", border))
+func (this *GardenRegionPerimeter) Add(insideCoordinate Coordinate, outsideCoordinate Coordinate) {
+	var borderDirection = cardinalDirectionFor(insideCoordinate, outsideCoordinate)
+	var newBorder = Border{direction: borderDirection, coordinate: insideCoordinate}
+	*this = append(*this, newBorder)
 }
 
 func (this GardenRegionPerimeter) contains(border Border) bool {
-	return slices.Contains(this.borders, border)
+	return slices.Contains(this, border)
 }
 
-func cardinalDirectionFor(outsideCoordinate Coordinate, insideCoordinate Coordinate) CardinalDirection {
+func cardinalDirectionFor(insideCoordinate Coordinate, outsideCoordinate Coordinate) CardinalDirection {
 	if outsideCoordinate.Y < insideCoordinate.Y {
 		return SOUTH
 	}

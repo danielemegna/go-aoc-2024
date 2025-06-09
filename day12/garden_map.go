@@ -12,9 +12,6 @@ func NewGardenRegion(plant rune) GardenRegion {
 	return GardenRegion{
 		plant: plant,
 		area:  0,
-		perimeter: GardenRegionPerimeter{
-			sides:   0,
-			borders: []Border{},
-		},
+		perimeter: GardenRegionPerimeter{},
 	}
 }

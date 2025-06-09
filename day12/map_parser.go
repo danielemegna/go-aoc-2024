@@ -47,7 +47,7 @@ func completeRegionVisit(
 	})
 
 	for _, closeCoordinate := range differentPlantsCoordinates {
-		partialRegion.perimeter.Add(closeCoordinate, currentCoordinate)
+		partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
 	}
 	for _, closeCoordinate := range samePlantsCoordinates {
 		if slices.Contains(*visitedCoordinates, closeCoordinate) {

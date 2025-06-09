@@ -13,7 +13,7 @@ func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
 	assert.Equal(t, 'O', actual[0].plant)
 	assert.Equal(t, 21, actual[0].area)
 	assert.Equal(t, 36, actual[0].perimeter.Length())
-	//assert.Equal(t, 20, actual[0].perimeter.NumberOfSides()) --- THIS IS WRONGLY CALCULATED !
+	// assert.Equal(t, 20, actual[0].perimeter.NumberOfSides()) // --- THIS IS WRONGLY CALCULATED !
 
 	assert.Equal(t, 'X', actual[1].plant)
 	assert.Equal(t, 1, actual[1].area)
