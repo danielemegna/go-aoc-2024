@@ -6,7 +6,7 @@ func TotalFencePrice(fileContent string) int {
 	var gardenMap = ParseGardenMap(fileContent)
 
 	return lo.SumBy(gardenMap, func(r GardenRegion) int {
-		return r.area * len(r.perimeter.borders)
+		return r.area * r.perimeter.Length()
 	})
 }
 
@@ -14,6 +14,6 @@ func TotalFencePriceWithBulkDiscount(fileContent string) int {
 	var gardenMap = ParseGardenMap(fileContent)
 
 	return lo.SumBy(gardenMap, func(r GardenRegion) int {
-		return r.area * r.perimeter.sides
+		return r.area * r.perimeter.NumberOfSides()
 	})
 }

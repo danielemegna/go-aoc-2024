@@ -12,23 +12,23 @@ func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
 
 	assert.Equal(t, 'O', actual[0].plant)
 	assert.Equal(t, 21, actual[0].area)
-	assert.Equal(t, 36, len(actual[0].perimeter.borders))
-	//assert.Equal(t, 20, actual[0].perimeter.sides) --- THIS IS WRONGLY CALCULATED !
+	assert.Equal(t, 36, actual[0].perimeter.Length())
+	//assert.Equal(t, 20, actual[0].perimeter.NumberOfSides()) --- THIS IS WRONGLY CALCULATED !
 
 	assert.Equal(t, 'X', actual[1].plant)
 	assert.Equal(t, 1, actual[1].area)
-	assert.Equal(t, 4, len(actual[1].perimeter.borders))
-	assert.Equal(t, 4, actual[1].perimeter.sides)
+	assert.Equal(t, 4, actual[1].perimeter.Length())
+	assert.Equal(t, 4, actual[1].perimeter.NumberOfSides())
 
 	assert.Equal(t, 'X', actual[2].plant)
 	assert.Equal(t, 1, actual[2].area)
-	assert.Equal(t, 4, len(actual[2].perimeter.borders))
-	assert.Equal(t, 4, actual[2].perimeter.sides)
+	assert.Equal(t, 4, actual[2].perimeter.Length())
+	assert.Equal(t, 4, actual[2].perimeter.NumberOfSides())
 
 	assert.Equal(t, 'X', actual[3].plant)
 	assert.Equal(t, 1, actual[3].area)
-	assert.Equal(t, 4, len(actual[3].perimeter.borders))
-	assert.Equal(t, 4, actual[3].perimeter.sides)
+	assert.Equal(t, 4, actual[3].perimeter.Length())
+	assert.Equal(t, 4, actual[3].perimeter.NumberOfSides())
 }
 
 /*

@@ -12,8 +12,8 @@ func TestAddSingleElement(t *testing.T) {
 	var insideCoordinate = Coordinate{X: 1, Y: 3}
 	perimeter.Add(outsideCoordinate, insideCoordinate)
 
-	assert.Equal(t, 1, perimeter.NumberOfSides())
 	assert.Equal(t, 1, perimeter.Length())
+	assert.Equal(t, 1, perimeter.NumberOfSides())
 }
 
 func TestSomeFarElements(t *testing.T) {
@@ -22,8 +22,8 @@ func TestSomeFarElements(t *testing.T) {
 	perimeter.Add(Coordinate{X: 1, Y: 2}, Coordinate{X: 1, Y: 3})
 	perimeter.Add(Coordinate{X: 4, Y: 5}, Coordinate{X: 3, Y: 5})
 
-	assert.Equal(t, 2, perimeter.NumberOfSides())
 	assert.Equal(t, 2, perimeter.Length())
+	assert.Equal(t, 2, perimeter.NumberOfSides())
 }
 
 func TestSomeDifferentSideCloseElements(t *testing.T) {
