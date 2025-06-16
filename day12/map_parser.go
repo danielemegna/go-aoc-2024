@@ -39,16 +39,17 @@ func completeRegionVisit(
 
 	var closeCoordinates = currentCoordinate.closeCoordinates()
 
+	// maybe useless separate different and same plants computing here
 	var differentPlantsCoordinates = lo.Filter(closeCoordinates, func(c Coordinate, _ int) bool {
 		return !rawMap.samePlantIn(currentCoordinate, c)
 	})
-	var samePlantsCoordinates = lo.Filter(closeCoordinates, func(c Coordinate, _ int) bool {
-		return !slices.Contains(differentPlantsCoordinates, c)
-	})
-
 	for _, closeCoordinate := range differentPlantsCoordinates {
 		partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
 	}
+
+	var samePlantsCoordinates = lo.Filter(closeCoordinates, func(c Coordinate, _ int) bool {
+		return !slices.Contains(differentPlantsCoordinates, c)
+	})
 	for _, closeCoordinate := range samePlantsCoordinates {
 		if slices.Contains(*visitedCoordinates, closeCoordinate) {
 			continue
