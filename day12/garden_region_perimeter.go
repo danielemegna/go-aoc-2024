@@ -31,37 +31,45 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 
 	// we have to sort this before ! at least two times !!
 	for _, border := range this {
+		if slices.Contains(computed, border) {
+			continue;
+		}
+
 		computed = append(computed, border)
 
-		if (slices.Contains(computed, Border{
-			direction:  border.direction,
-			coordinate: Coordinate{X: border.coordinate.X - 1, Y: border.coordinate.Y},
-		})) {
-			continue
+		var maybeCloses = []Border{
+			{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X - 1, Y: border.coordinate.Y},
+			},
+			{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X + 1, Y: border.coordinate.Y},
+			},
+			{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
+			},
+			{
+				direction:  border.direction,
+				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
+			},
 		}
 
-		if (slices.Contains(computed, Border{
-			direction:  border.direction,
-			coordinate: Coordinate{X: border.coordinate.X + 1, Y: border.coordinate.Y},
-		})) {
-			continue
-		}
-
-		if (slices.Contains(computed, Border{
-			direction:  border.direction,
-			coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
-		})) {
-			continue
-		}
-
-		if (slices.Contains(computed, Border{
-			direction:  border.direction,
-			coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
-		})) {
+		if slices.ContainsFunc(computed, func(b Border) bool {
+			return slices.Contains(maybeCloses, b)
+		}) {
 			continue
 		}
 
 		sides++
+
+		for _, maybeClose := range maybeCloses {
+			if slices.Contains(this, maybeClose) {
+				computed = append(computed, maybeClose)
+			}
+		}
+
 	}
 
 	return sides
