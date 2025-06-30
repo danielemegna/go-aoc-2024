@@ -111,10 +111,10 @@ func (this *GardenRegionPerimeter) Add(insideCoordinate Coordinate, outsideCoord
 
 func cardinalDirectionFor(insideCoordinate Coordinate, outsideCoordinate Coordinate) CardinalDirection {
 	if outsideCoordinate.Y < insideCoordinate.Y {
-		return SOUTH
+		return NORTH
 	}
 	if outsideCoordinate.Y > insideCoordinate.Y {
-		return NORTH
+		return SOUTH
 	}
 	if outsideCoordinate.X < insideCoordinate.X {
 		return WEST
