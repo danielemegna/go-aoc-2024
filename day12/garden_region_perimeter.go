@@ -2,10 +2,14 @@ package day12
 
 import (
 	"fmt"
+	"github.com/samber/lo"
 	"slices"
 )
 
-type GardenRegionPerimeter []Border
+type GardenRegionPerimeter struct {
+	vertical   map[int][]Border
+	horizontal map[int][]Border
+}
 
 type Border struct {
 	direction  CardinalDirection
@@ -21,52 +25,66 @@ const (
 	WEST
 )
 
+func NewGardenRegionPerimeter() GardenRegionPerimeter {
+	return GardenRegionPerimeter{
+		vertical:   map[int][]Border{},
+		horizontal: map[int][]Border{},
+	}
+}
+
 func (this GardenRegionPerimeter) Length() int {
-	return len(this)
+	var result = 0
+	for _, borders := range this.vertical {
+		result += len(borders)
+	}
+	for _, borders := range this.horizontal {
+		result += len(borders)
+	}
+	return result
 }
 
 func (this GardenRegionPerimeter) NumberOfSides() int {
-	var computed = []Border{}
 	var sides = 0
 
-	// we have to sort this before ! at least two times !!
-	for _, border := range this {
-		if slices.Contains(computed, border) {
-			continue;
+	for _, verticalRow := range this.vertical {
+
+		slices.SortFunc(verticalRow, func(a Border, b Border) int {
+			return a.coordinate.Y - b.coordinate.Y
+		})
+
+		var groups = lo.PartitionBy(verticalRow, func(b Border) CardinalDirection {
+			return b.direction
+		})
+
+		var previousY = -99
+		for _, group := range groups {
+			for _, b := range group {
+				if b.coordinate.Y != previousY+1 {
+					sides++
+				}
+				previousY = b.coordinate.Y
+			}
 		}
 
-		computed = append(computed, border)
+	}
 
-		var maybeCloses = []Border{
-			{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X - 1, Y: border.coordinate.Y},
-			},
-			{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X + 1, Y: border.coordinate.Y},
-			},
-			{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y - 1},
-			},
-			{
-				direction:  border.direction,
-				coordinate: Coordinate{X: border.coordinate.X, Y: border.coordinate.Y + 1},
-			},
-		}
+	for _, horizontalRow := range this.horizontal {
 
-		if slices.ContainsFunc(computed, func(b Border) bool {
-			return slices.Contains(maybeCloses, b)
-		}) {
-			continue
-		}
+		slices.SortFunc(horizontalRow, func(a Border, b Border) int {
+			return a.coordinate.X - b.coordinate.X
+		})
 
-		sides++
+		var groups = lo.PartitionBy(horizontalRow, func(b Border) CardinalDirection {
+			return b.direction
+		})
 
-		for _, maybeClose := range maybeCloses {
-			if slices.Contains(this, maybeClose) {
-				computed = append(computed, maybeClose)
+		var previousX = -99
+		for _, group := range groups {
+			for _, b := range group {
+				if b.coordinate.X != previousX+1 {
+					sides++
+				}
+				previousX = b.coordinate.X
 			}
 		}
 
@@ -78,11 +96,17 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 func (this *GardenRegionPerimeter) Add(insideCoordinate Coordinate, outsideCoordinate Coordinate) {
 	var borderDirection = cardinalDirectionFor(insideCoordinate, outsideCoordinate)
 	var newBorder = Border{direction: borderDirection, coordinate: insideCoordinate}
-	*this = append(*this, newBorder)
-}
 
-func (this GardenRegionPerimeter) contains(border Border) bool {
-	return slices.Contains(this, border)
+	switch borderDirection {
+	case NORTH:
+		fallthrough
+	case SOUTH:
+		this.horizontal[insideCoordinate.Y] = append(this.horizontal[insideCoordinate.Y], newBorder)
+	case EAST:
+		fallthrough
+	case WEST:
+		this.vertical[insideCoordinate.X] = append(this.vertical[insideCoordinate.X], newBorder)
+	}
 }
 
 func cardinalDirectionFor(insideCoordinate Coordinate, outsideCoordinate Coordinate) CardinalDirection {
