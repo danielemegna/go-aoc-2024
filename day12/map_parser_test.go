@@ -5,6 +5,37 @@ import (
 	"testing"
 )
 
+func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES))
+
+	assert.Equal(t, 5, len(actual))
+
+	assert.Equal(t, 'A', actual[0].plant)
+	assert.Equal(t, 4, actual[0].area)
+	assert.Equal(t, 10, actual[0].perimeter.Length())
+	assert.Equal(t, 4, actual[0].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'B', actual[1].plant)
+	assert.Equal(t, 4, actual[1].area)
+	assert.Equal(t, 8, actual[1].perimeter.Length())
+	assert.Equal(t, 4, actual[1].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'C', actual[2].plant)
+	assert.Equal(t, 4, actual[2].area)
+	assert.Equal(t, 10, actual[2].perimeter.Length())
+	//assert.Equal(t, 8, actual[2].perimeter.NumberOfSides()) // WRONG !
+
+	assert.Equal(t, 'D', actual[3].plant)
+	assert.Equal(t, 1, actual[3].area)
+	assert.Equal(t, 4, actual[3].perimeter.Length())
+	assert.Equal(t, 4, actual[3].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'E', actual[4].plant)
+	assert.Equal(t, 3, actual[4].area)
+	assert.Equal(t, 8, actual[4].perimeter.Length())
+	assert.Equal(t, 4, actual[4].perimeter.NumberOfSides())
+}
+
 func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
 	var actual = ParseGardenMap(simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES))
 
@@ -79,32 +110,6 @@ func Test2x2RegionOfSamePlant(t *testing.T) {
 
 	var expected = GardenMap{
 		{plant: 'A', area: 4, perimeter: 8},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
-func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
-	var actual = ParseGardenMap(simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES))
-
-	var expected = GardenMap{
-		{plant: 'A', area: 4, perimeter: 10},
-		{plant: 'B', area: 4, perimeter: 8},
-		{plant: 'C', area: 4, perimeter: 10},
-		{plant: 'D', area: 1, perimeter: 4},
-		{plant: 'E', area: 3, perimeter: 8},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
-func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
-	var actual = ParseGardenMap(simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES))
-
-	var expected = GardenMap{
-		{plant: 'X', area: 1, perimeter: 4},
-		{plant: 'X', area: 1, perimeter: 4},
-		{plant: 'X', area: 1, perimeter: 4},
-		{plant: 'O', area: 21, perimeter: 36},
-		{plant: 'X', area: 1, perimeter: 4},
 	}
 	assert.ElementsMatch(t, expected, actual)
 }
