@@ -6,7 +6,7 @@ import (
 )
 
 func TestAddSingleElement(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	var insideCoordinate = Coordinate{X: 1, Y: 3}
 	var outsideCoordinate = Coordinate{X: 1, Y: 2}
@@ -17,7 +17,7 @@ func TestAddSingleElement(t *testing.T) {
 }
 
 func TestSomeFarElements(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	perimeter.Add(Coordinate{X: 1, Y: 2}, Coordinate{X: 1, Y: 3})
 	perimeter.Add(Coordinate{X: 4, Y: 5}, Coordinate{X: 3, Y: 5})
@@ -27,7 +27,7 @@ func TestSomeFarElements(t *testing.T) {
 }
 
 func TestSomeDifferentSideCloseElements(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	perimeter.Add(Coordinate{X: 1, Y: 1}, Coordinate{X: 1, Y: 2})
 	perimeter.Add(Coordinate{X: 2, Y: 3}, Coordinate{X: 2, Y: 2})
@@ -50,7 +50,7 @@ func TestSomeDifferentSideCloseElements(t *testing.T) {
 }
 
 func TestCloseSouthBorderShouldNotIncreaseSideCount(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	perimeter.Add(Coordinate{X: 1, Y: 2}, Coordinate{X: 1, Y: 3})
 	assert.Equal(t, 1, perimeter.Length())
@@ -66,7 +66,7 @@ func TestCloseSouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 }
 
 func TestCloseNouthBorderShouldNotIncreaseSideCount(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	perimeter.Add(Coordinate{X: 1, Y: 2}, Coordinate{X: 1, Y: 1})
 	assert.Equal(t, 1, perimeter.Length())
@@ -82,7 +82,7 @@ func TestCloseNouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 }
 
 func TestCloseEastBorderShouldNotIncreaseSideCount(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 
 	perimeter.Add(Coordinate{X: 2, Y: 3}, Coordinate{X: 3, Y: 3})
 	assert.Equal(t, 1, perimeter.Length())
@@ -98,7 +98,7 @@ func TestCloseEastBorderShouldNotIncreaseSideCount(t *testing.T) {
 }
 
 func TestSinglePlant(t *testing.T) {
-	var perimeter = GardenRegionPerimeter{}
+	var perimeter = NewGardenRegionPerimeter()
 	var singlePlantCoordinate = Coordinate{X: 3, Y: 3}
 
 	perimeter.Add(Coordinate{X: 3, Y: 2}, singlePlantCoordinate)
