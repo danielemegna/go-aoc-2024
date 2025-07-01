@@ -78,7 +78,6 @@ func TestSolveSecondPartWithSimpleProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithAnotherProvidedExample(t *testing.T) {
-	t.Skip("FIXME: Something is calculated wrong in perimeter sides...")
 	var fileContent = simulateFileContent(ANOTHER_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 436, TotalFencePriceWithBulkDiscount(fileContent))
 }
@@ -89,13 +88,11 @@ func TestSolveSecondPartWithEShapedProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithSpecialProvidedExample(t *testing.T) {
-	t.Skip("FIXME: Something is calculated wrong in perimeter sides...")
 	var fileContent = simulateFileContent(SPECIAL_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 368, TotalFencePriceWithBulkDiscount(fileContent))
 }
 
 func TestSolveSecondPartWithLargeProvidedExample(t *testing.T) {
-	t.Skip("FIXME: Something is calculated wrong in perimeter sides...")
 	var fileContent = simulateFileContent(LARGE_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 1206, TotalFencePriceWithBulkDiscount(fileContent))
 }
