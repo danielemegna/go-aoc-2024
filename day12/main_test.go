@@ -97,6 +97,11 @@ func TestSolveSecondPartWithLargeProvidedExample(t *testing.T) {
 	assert.Equal(t, 1206, TotalFencePriceWithBulkDiscount(fileContent))
 }
 
+func TestSolveSecondPartWithFile(t *testing.T) {
+	var fileContent = readFileContent()
+	assert.Equal(t, 909564, TotalFencePriceWithBulkDiscount(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
