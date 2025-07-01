@@ -5,6 +5,54 @@ import (
 	"testing"
 )
 
+func TestParseSinglePlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap("A\n")
+
+	assert.Equal(t, 1, len(actual))
+
+	assert.Equal(t, 'A', actual[0].plant)
+	assert.Equal(t, 1, actual[0].area)
+	assert.Equal(t, 4, actual[0].perimeter.Length())
+	assert.Equal(t, 4, actual[0].perimeter.NumberOfSides())
+}
+
+func TestTwoDifferentPlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap("AB\n")
+
+	assert.Equal(t, 2, len(actual))
+
+	assert.Equal(t, 'A', actual[0].plant)
+	assert.Equal(t, 1, actual[0].area)
+	assert.Equal(t, 4, actual[0].perimeter.Length())
+	assert.Equal(t, 4, actual[0].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'B', actual[1].plant)
+	assert.Equal(t, 1, actual[1].area)
+	assert.Equal(t, 4, actual[1].perimeter.Length())
+	assert.Equal(t, 4, actual[1].perimeter.NumberOfSides())
+}
+
+func TestFourDifferentPlantGardenMap(t *testing.T) {
+	var actual = ParseGardenMap(
+		"AB\n" +
+		"CD\n",
+	)
+
+	assert.Equal(t, 4, len(actual))
+}
+
+func Test2x2RegionOfSamePlant(t *testing.T) {
+	var actual = ParseGardenMap(
+		"AA\n" +
+		"AA\n",
+	)
+
+	assert.Equal(t, 'A', actual[0].plant)
+	assert.Equal(t, 4, actual[0].area)
+	assert.Equal(t, 8, actual[0].perimeter.Length())
+	assert.Equal(t, 4, actual[0].perimeter.NumberOfSides())
+}
+
 func TestParseSimpleProvidedExampleGardenMap(t *testing.T) {
 	var actual = ParseGardenMap(simulateFileContent(SIMPLE_PROVIDED_EXAMPLE_INPUT_LINES))
 
@@ -67,69 +115,23 @@ func TestParseAnotherProvidedExampleGardenMap(t *testing.T) {
 	assert.Equal(t, 4, actual[4].perimeter.NumberOfSides())
 }
 
-/*
-func TestParseSinglePlantGardenMap(t *testing.T) {
-	var actual = ParseGardenMap("A\n")
-
-	var expected = GardenMap{
-		{plant: 'A', area: 1, perimeter: 4},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
-func TestTwoDifferentPlantGardenMap(t *testing.T) {
-	var actual = ParseGardenMap("AB\n")
-
-	var expected = GardenMap{
-		{plant: 'A', area: 1, perimeter: 4},
-		{plant: 'B', area: 1, perimeter: 4},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
-func TestFourDifferentPlantGardenMap(t *testing.T) {
-	var actual = ParseGardenMap(
-		"AB\n" +
-		"CD\n",
-	)
-
-	var expected = GardenMap{
-		{plant: 'A', area: 1, perimeter: 4},
-		{plant: 'B', area: 1, perimeter: 4},
-		{plant: 'C', area: 1, perimeter: 4},
-		{plant: 'D', area: 1, perimeter: 4},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
-func Test2x2RegionOfSamePlant(t *testing.T) {
-	var actual = ParseGardenMap(
-		"AA\n" +
-		"AA\n",
-	)
-
-	var expected = GardenMap{
-		{plant: 'A', area: 4, perimeter: 8},
-	}
-	assert.ElementsMatch(t, expected, actual)
-}
-
 func TestParseLargeProvidedExampleGardenMap(t *testing.T) {
 	var actual = ParseGardenMap(simulateFileContent(LARGE_PROVIDED_EXAMPLE_INPUT_LINES))
 
-	var expected = GardenMap{
-		{plant: 'R', area: 12, perimeter: 18},
-		{plant: 'I', area: 4, perimeter: 8},
-		{plant: 'C', area: 14, perimeter: 28},
-		{plant: 'F', area: 10, perimeter: 18},
-		{plant: 'V', area: 13, perimeter: 20},
-		{plant: 'J', area: 11, perimeter: 20},
-		{plant: 'C', area: 1, perimeter: 4},
-		{plant: 'E', area: 13, perimeter: 18},
-		{plant: 'I', area: 14, perimeter: 22},
-		{plant: 'M', area: 5, perimeter: 12},
-		{plant: 'S', area: 3, perimeter: 8},
-	}
-	assert.ElementsMatch(t, expected, actual)
+	assert.Equal(t, 11, len(actual))
+
+	assert.Equal(t, 'R', actual[0].plant)
+	assert.Equal(t, 12, actual[0].area)
+	assert.Equal(t, 18, actual[0].perimeter.Length())
+	assert.Equal(t, 10, actual[0].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'V', actual[4].plant)
+	assert.Equal(t, 13, actual[4].area)
+	assert.Equal(t, 20, actual[4].perimeter.Length())
+	assert.Equal(t, 10, actual[4].perimeter.NumberOfSides())
+
+	assert.Equal(t, 'I', actual[8].plant)
+	assert.Equal(t, 14, actual[8].area)
+	assert.Equal(t, 22, actual[8].perimeter.Length())
+	assert.Equal(t, 16, actual[8].perimeter.NumberOfSides())
 }
-*/
