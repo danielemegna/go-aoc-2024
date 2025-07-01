@@ -56,8 +56,8 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 			return b.direction
 		})
 
-		var previousY = -99
 		for _, group := range groups {
+			var previousY = -99
 			for _, b := range group {
 				if b.coordinate.Y != previousY+1 {
 					sides++
@@ -78,8 +78,8 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 			return b.direction
 		})
 
-		var previousX = -99
 		for _, group := range groups {
+			var previousX = -99
 			for _, b := range group {
 				if b.coordinate.X != previousX+1 {
 					sides++
