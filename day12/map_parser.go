@@ -1,7 +1,6 @@
 package day12
 
 import (
-	"github.com/samber/lo"
 	"slices"
 	"strings"
 )
@@ -39,18 +38,12 @@ func completeRegionVisit(
 
 	var closeCoordinates = currentCoordinate.closeCoordinates()
 
-	// maybe useless separate different and same plants computing here
-	var differentPlantsCoordinates = lo.Filter(closeCoordinates, func(c Coordinate, _ int) bool {
-		return !rawMap.samePlantIn(currentCoordinate, c)
-	})
-	for _, closeCoordinate := range differentPlantsCoordinates {
-		partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
-	}
+	for _, closeCoordinate := range closeCoordinates {
+		if !rawMap.samePlantIn(currentCoordinate, closeCoordinate) {
+			partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
+			continue
+		}
 
-	var samePlantsCoordinates = lo.Filter(closeCoordinates, func(c Coordinate, _ int) bool {
-		return !slices.Contains(differentPlantsCoordinates, c)
-	})
-	for _, closeCoordinate := range samePlantsCoordinates {
 		if slices.Contains(*visitedCoordinates, closeCoordinate) {
 			continue
 		}
