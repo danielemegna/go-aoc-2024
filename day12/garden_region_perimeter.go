@@ -93,35 +93,35 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 	return sides
 }
 
-func (this *GardenRegionPerimeter) Add(insideCoordinate Coordinate, outsideCoordinate Coordinate) {
-	var borderDirection = cardinalDirectionFor(insideCoordinate, outsideCoordinate)
-	var newBorder = Border{direction: borderDirection, coordinate: insideCoordinate}
+func (this *GardenRegionPerimeter) Add(coordinate Coordinate, closeCoordinate Coordinate) {
+	var borderDirection = cardinalDirectionFor(coordinate, closeCoordinate)
+	var newBorder = Border{direction: borderDirection, coordinate: coordinate}
 
 	switch borderDirection {
 	case NORTH:
 		fallthrough
 	case SOUTH:
-		this.horizontal[insideCoordinate.Y] = append(this.horizontal[insideCoordinate.Y], newBorder)
+		this.horizontal[coordinate.Y] = append(this.horizontal[coordinate.Y], newBorder)
 	case EAST:
 		fallthrough
 	case WEST:
-		this.vertical[insideCoordinate.X] = append(this.vertical[insideCoordinate.X], newBorder)
+		this.vertical[coordinate.X] = append(this.vertical[coordinate.X], newBorder)
 	}
 }
 
-func cardinalDirectionFor(insideCoordinate Coordinate, outsideCoordinate Coordinate) CardinalDirection {
-	if outsideCoordinate.Y < insideCoordinate.Y {
+func cardinalDirectionFor(coordinate Coordinate, closeCoordinate Coordinate) CardinalDirection {
+	if closeCoordinate.Y < coordinate.Y {
 		return NORTH
 	}
-	if outsideCoordinate.Y > insideCoordinate.Y {
+	if closeCoordinate.Y > coordinate.Y {
 		return SOUTH
 	}
-	if outsideCoordinate.X < insideCoordinate.X {
+	if closeCoordinate.X < coordinate.X {
 		return WEST
 	}
-	if outsideCoordinate.X > insideCoordinate.X {
+	if closeCoordinate.X > coordinate.X {
 		return EAST
 	}
 
-	panic(fmt.Sprintf("Unexpected cardinalDirectionFor two identical coordinates: [%v]", outsideCoordinate))
+	panic(fmt.Sprintf("Unexpected cardinalDirectionFor two identical coordinates: [%v]", closeCoordinate))
 }

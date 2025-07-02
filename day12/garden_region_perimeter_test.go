@@ -8,9 +8,9 @@ import (
 func TestAddSingleElement(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	var insideCoordinate = Coordinate{X: 1, Y: 3}
-	var outsideCoordinate = Coordinate{X: 1, Y: 2}
-	perimeter.Add(insideCoordinate, outsideCoordinate)
+	var coordinate = Coordinate{X: 1, Y: 3}
+	var closeCoordinate = Coordinate{X: 1, Y: 2}
+	perimeter.Add(coordinate, closeCoordinate)
 
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
