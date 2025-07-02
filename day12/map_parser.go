@@ -40,7 +40,7 @@ func completeRegionVisit(
 
 	for _, closeCoordinate := range closeCoordinates {
 		if !rawMap.hasPlantIn(partialRegion.plant, closeCoordinate) {
-			partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
+			partialRegion.AddPerimeterPiece(currentCoordinate, closeCoordinate)
 			continue
 		}
 

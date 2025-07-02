@@ -1,9 +1,9 @@
 package day12
 
 import (
-	"fmt"
-	"github.com/samber/lo"
 	"slices"
+
+	"github.com/samber/lo"
 )
 
 type GardenRegionPerimeter struct {
@@ -93,11 +93,10 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 	return sides
 }
 
-func (this *GardenRegionPerimeter) Add(coordinate Coordinate, closeCoordinate Coordinate) {
-	var borderDirection = cardinalDirectionFor(coordinate, closeCoordinate)
-	var newBorder = Border{direction: borderDirection, coordinate: coordinate}
+func (this *GardenRegionPerimeter) AddBorder(coordinate Coordinate, direction CardinalDirection) {
+	var newBorder = Border{coordinate: coordinate, direction: direction}
 
-	switch borderDirection {
+	switch direction {
 	case NORTH:
 		fallthrough
 	case SOUTH:
@@ -107,21 +106,4 @@ func (this *GardenRegionPerimeter) Add(coordinate Coordinate, closeCoordinate Co
 	case WEST:
 		this.vertical[coordinate.X] = append(this.vertical[coordinate.X], newBorder)
 	}
-}
-
-func cardinalDirectionFor(coordinate Coordinate, closeCoordinate Coordinate) CardinalDirection {
-	if closeCoordinate.Y < coordinate.Y {
-		return NORTH
-	}
-	if closeCoordinate.Y > coordinate.Y {
-		return SOUTH
-	}
-	if closeCoordinate.X < coordinate.X {
-		return WEST
-	}
-	if closeCoordinate.X > coordinate.X {
-		return EAST
-	}
-
-	panic(fmt.Sprintf("Unexpected cardinalDirectionFor two identical coordinates: [%v]", closeCoordinate))
 }
