@@ -20,7 +20,7 @@ func ParseGardenMap(fileContent string) GardenMap {
 			}
 
 			var newGardenRegion = NewGardenRegion(char)
-			var gardenRegion = completeRegionVisit(newGardenRegion, coordinate, rawMap, &visitedCoordinates)
+			var gardenRegion = completeRegionVisit(coordinate, newGardenRegion, rawMap, &visitedCoordinates)
 			result = append(result, gardenRegion)
 		}
 	}
@@ -28,8 +28,8 @@ func ParseGardenMap(fileContent string) GardenMap {
 }
 
 func completeRegionVisit(
-	partialRegion GardenRegion,
 	currentCoordinate Coordinate,
+	partialRegion GardenRegion,
 	rawMap RawGardenMap,
 	visitedCoordinates *[]Coordinate,
 ) GardenRegion {
@@ -49,8 +49,8 @@ func completeRegionVisit(
 		}
 
 		partialRegion = completeRegionVisit(
-			partialRegion,
 			closeCoordinate,
+			partialRegion,
 			rawMap,
 			visitedCoordinates,
 		)
