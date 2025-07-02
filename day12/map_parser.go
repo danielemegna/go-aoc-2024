@@ -39,7 +39,7 @@ func completeRegionVisit(
 	var closeCoordinates = currentCoordinate.closeCoordinates()
 
 	for _, closeCoordinate := range closeCoordinates {
-		if !rawMap.samePlantIn(currentCoordinate, closeCoordinate) {
+		if !rawMap.hasPlantIn(partialRegion.plant, closeCoordinate) {
 			partialRegion.perimeter.Add(currentCoordinate, closeCoordinate)
 			continue
 		}
@@ -59,12 +59,12 @@ func completeRegionVisit(
 	return partialRegion
 }
 
-func (rawMap RawGardenMap) samePlantIn(c1 Coordinate, c2 Coordinate) bool {
-	if c1.isOutOfBoundsOf(rawMap) || c2.isOutOfBoundsOf(rawMap) {
+func (rawMap RawGardenMap) hasPlantIn(plant rune, c Coordinate) bool {
+	if c.isOutOfBoundsOf(rawMap) {
 		return false
 	}
 
-	return rawMap[c1.Y][c1.X] == rawMap[c2.Y][c2.X]
+	return rawMap[c.Y][c.X] == byte(plant)
 }
 
 func rawGardenMapFrom(input string) RawGardenMap {
