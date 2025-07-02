@@ -11,20 +11,6 @@ type GardenRegionPerimeter struct {
 	horizontal map[int][]Border
 }
 
-type Border struct {
-	direction  CardinalDirection
-	coordinate Coordinate
-}
-
-type CardinalDirection int
-
-const (
-	NORTH CardinalDirection = iota
-	SOUTH
-	EAST
-	WEST
-)
-
 func NewGardenRegionPerimeter() GardenRegionPerimeter {
 	return GardenRegionPerimeter{
 		vertical:   map[int][]Border{},
@@ -93,17 +79,15 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 	return sides
 }
 
-func (this *GardenRegionPerimeter) AddBorder(coordinate Coordinate, direction CardinalDirection) {
-	var newBorder = Border{coordinate: coordinate, direction: direction}
-
-	switch direction {
+func (this *GardenRegionPerimeter) AddBorder(border Border) {
+	switch border.direction {
 	case NORTH:
 		fallthrough
 	case SOUTH:
-		this.horizontal[coordinate.Y] = append(this.horizontal[coordinate.Y], newBorder)
+		this.horizontal[border.coordinate.Y] = append(this.horizontal[border.coordinate.Y], border)
 	case EAST:
 		fallthrough
 	case WEST:
-		this.vertical[coordinate.X] = append(this.vertical[coordinate.X], newBorder)
+		this.vertical[border.coordinate.X] = append(this.vertical[border.coordinate.X], border)
 	}
 }

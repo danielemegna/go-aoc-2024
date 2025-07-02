@@ -9,7 +9,7 @@ func TestAddSingleElement(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
 	var coordinate = Coordinate{X: 1, Y: 3}
-	perimeter.AddBorder(coordinate, NORTH)
+	perimeter.AddBorder(Border{coordinate: coordinate, direction: NORTH})
 
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
@@ -18,8 +18,8 @@ func TestAddSingleElement(t *testing.T) {
 func TestSomeFarElements(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	perimeter.AddBorder(Coordinate{X: 1, Y: 2}, SOUTH)
-	perimeter.AddBorder(Coordinate{X: 4, Y: 5}, WEST)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 1, Y: 2}, direction: SOUTH})
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 4, Y: 5}, direction: WEST})
 
 	assert.Equal(t, 2, perimeter.Length())
 	assert.Equal(t, 2, perimeter.NumberOfSides())
@@ -28,21 +28,21 @@ func TestSomeFarElements(t *testing.T) {
 func TestSomeDifferentSideCloseElements(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	perimeter.AddBorder(Coordinate{X: 1, Y: 1}, SOUTH)
-	perimeter.AddBorder(Coordinate{X: 2, Y: 3}, NORTH)
-	perimeter.AddBorder(Coordinate{X: 3, Y: 1}, SOUTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 1, Y: 1}, direction: SOUTH})
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 3}, direction: NORTH})
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 3, Y: 1}, direction: SOUTH})
 
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 3, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 6, Y: 7}, NORTH)
-	perimeter.AddBorder(Coordinate{X: 5, Y: 6}, EAST)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 6, Y: 7}, direction: NORTH})
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 5, Y: 6}, direction: EAST})
 
 	assert.Equal(t, 5, perimeter.Length())
 	assert.Equal(t, 5, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 9, Y: 8}, SOUTH)
-	perimeter.AddBorder(Coordinate{X: 10, Y: 10}, NORTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 9, Y: 8}, direction: SOUTH})
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 10, Y: 10}, direction: NORTH})
 
 	assert.Equal(t, 7, perimeter.Length())
 	assert.Equal(t, 7, perimeter.NumberOfSides())
@@ -51,15 +51,15 @@ func TestSomeDifferentSideCloseElements(t *testing.T) {
 func TestCloseSouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	perimeter.AddBorder(Coordinate{X: 1, Y: 2}, SOUTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 1, Y: 2}, direction: SOUTH})
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 2, Y: 2}, SOUTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 2}, direction: SOUTH})
 	assert.Equal(t, 2, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 0, Y: 2}, SOUTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 0, Y: 2}, direction: SOUTH})
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 }
@@ -67,15 +67,15 @@ func TestCloseSouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 func TestCloseNouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	perimeter.AddBorder(Coordinate{X: 1, Y: 2}, NORTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 1, Y: 2}, direction: NORTH})
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 2, Y: 2}, NORTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 2}, direction: NORTH})
 	assert.Equal(t, 2, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 0, Y: 2}, NORTH)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 0, Y: 2}, direction: NORTH})
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 }
@@ -83,15 +83,15 @@ func TestCloseNouthBorderShouldNotIncreaseSideCount(t *testing.T) {
 func TestCloseEastBorderShouldNotIncreaseSideCount(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 
-	perimeter.AddBorder(Coordinate{X: 2, Y: 3}, EAST)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 3}, direction: EAST})
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 2, Y: 4}, EAST)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 4}, direction: EAST})
 	assert.Equal(t, 2, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(Coordinate{X: 2, Y: 2}, EAST)
+	perimeter.AddBorder(Border{coordinate: Coordinate{X: 2, Y: 2}, direction: EAST})
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 }
@@ -100,19 +100,19 @@ func TestSinglePlant(t *testing.T) {
 	var perimeter = NewGardenRegionPerimeter()
 	var singlePlantCoordinate = Coordinate{X: 3, Y: 3}
 
-	perimeter.AddBorder(singlePlantCoordinate, NORTH)
+	perimeter.AddBorder(Border{coordinate: singlePlantCoordinate, direction: NORTH})
 	assert.Equal(t, 1, perimeter.Length())
 	assert.Equal(t, 1, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(singlePlantCoordinate, SOUTH)
+	perimeter.AddBorder(Border{coordinate: singlePlantCoordinate, direction: SOUTH})
 	assert.Equal(t, 2, perimeter.Length())
 	assert.Equal(t, 2, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(singlePlantCoordinate, WEST)
+	perimeter.AddBorder(Border{coordinate: singlePlantCoordinate, direction: WEST})
 	assert.Equal(t, 3, perimeter.Length())
 	assert.Equal(t, 3, perimeter.NumberOfSides())
 
-	perimeter.AddBorder(singlePlantCoordinate, EAST)
+	perimeter.AddBorder(Border{coordinate: singlePlantCoordinate, direction: EAST})
 	assert.Equal(t, 4, perimeter.Length())
 	assert.Equal(t, 4, perimeter.NumberOfSides())
 }
