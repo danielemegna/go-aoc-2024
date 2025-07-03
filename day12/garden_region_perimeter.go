@@ -34,10 +34,6 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 
 	for _, verticalRow := range this.vertical {
 
-		slices.SortFunc(verticalRow, func(a Border, b Border) int {
-			return a.coordinate.Y - b.coordinate.Y
-		})
-
 		var groups = lo.PartitionBy(verticalRow, func(b Border) CardinalDirection {
 			return b.direction
 		})
@@ -55,10 +51,6 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 	}
 
 	for _, horizontalRow := range this.horizontal {
-
-		slices.SortFunc(horizontalRow, func(a Border, b Border) int {
-			return a.coordinate.X - b.coordinate.X
-		})
 
 		var groups = lo.PartitionBy(horizontalRow, func(b Border) CardinalDirection {
 			return b.direction
@@ -85,9 +77,15 @@ func (this *GardenRegionPerimeter) AddBorder(border Border) {
 		fallthrough
 	case SOUTH:
 		this.horizontal[border.coordinate.Y] = append(this.horizontal[border.coordinate.Y], border)
+		slices.SortFunc(this.horizontal[border.coordinate.Y], func(a Border, b Border) int {
+			return a.coordinate.X - b.coordinate.X
+		})
 	case EAST:
 		fallthrough
 	case WEST:
 		this.vertical[border.coordinate.X] = append(this.vertical[border.coordinate.X], border)
+		slices.SortFunc(this.vertical[border.coordinate.X], func(a Border, b Border) int {
+			return a.coordinate.Y - b.coordinate.Y
+		})
 	}
 }
