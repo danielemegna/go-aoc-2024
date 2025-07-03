@@ -2,29 +2,31 @@ package day12
 
 import (
 	"slices"
-
-	"github.com/samber/lo"
 )
 
 type GardenRegionPerimeter struct {
-	vertical   map[int][]Border
-	horizontal map[int][]Border
+	vertical   map[int]map[CardinalDirection][]Border
+	horizontal map[int]map[CardinalDirection][]Border
 }
 
 func NewGardenRegionPerimeter() GardenRegionPerimeter {
 	return GardenRegionPerimeter{
-		vertical:   map[int][]Border{},
-		horizontal: map[int][]Border{},
+		vertical:   map[int]map[CardinalDirection][]Border{},
+		horizontal: map[int]map[CardinalDirection][]Border{},
 	}
 }
 
 func (this GardenRegionPerimeter) Length() int {
 	var result = 0
-	for _, borders := range this.vertical {
-		result += len(borders)
+	for _, directions := range this.vertical {
+		for _, borders := range directions {
+			result += len(borders)
+		}
 	}
-	for _, borders := range this.horizontal {
-		result += len(borders)
+	for _, directions := range this.horizontal {
+		for _, borders := range directions {
+			result += len(borders)
+		}
 	}
 	return result
 }
@@ -32,15 +34,10 @@ func (this GardenRegionPerimeter) Length() int {
 func (this GardenRegionPerimeter) NumberOfSides() int {
 	var sides = 0
 
-	for _, verticalRow := range this.vertical {
-
-		var groups = lo.PartitionBy(verticalRow, func(b Border) CardinalDirection {
-			return b.direction
-		})
-
-		for _, group := range groups {
+	for _, directions := range this.vertical {
+		for _, borders := range directions {
 			var previousY = -99
-			for _, b := range group {
+			for _, b := range borders {
 				if b.coordinate.Y != previousY+1 {
 					sides++
 				}
@@ -50,15 +47,10 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 
 	}
 
-	for _, horizontalRow := range this.horizontal {
-
-		var groups = lo.PartitionBy(horizontalRow, func(b Border) CardinalDirection {
-			return b.direction
-		})
-
-		for _, group := range groups {
+	for _, directions := range this.horizontal {
+		for _, borders := range directions {
 			var previousX = -99
-			for _, b := range group {
+			for _, b := range borders {
 				if b.coordinate.X != previousX+1 {
 					sides++
 				}
@@ -76,15 +68,25 @@ func (this *GardenRegionPerimeter) AddBorder(border Border) {
 	case NORTH:
 		fallthrough
 	case SOUTH:
-		this.horizontal[border.coordinate.Y] = append(this.horizontal[border.coordinate.Y], border)
-		slices.SortFunc(this.horizontal[border.coordinate.Y], func(a Border, b Border) int {
+		if this.horizontal[border.coordinate.Y] == nil {
+			this.horizontal[border.coordinate.Y] = map[CardinalDirection][]Border{}
+		}
+		this.horizontal[border.coordinate.Y][border.direction] = append(
+			this.horizontal[border.coordinate.Y][border.direction], border,
+		)
+		slices.SortFunc(this.horizontal[border.coordinate.Y][border.direction], func(a Border, b Border) int {
 			return a.coordinate.X - b.coordinate.X
 		})
 	case EAST:
 		fallthrough
 	case WEST:
-		this.vertical[border.coordinate.X] = append(this.vertical[border.coordinate.X], border)
-		slices.SortFunc(this.vertical[border.coordinate.X], func(a Border, b Border) int {
+		if this.vertical[border.coordinate.X] == nil {
+			this.vertical[border.coordinate.X] = map[CardinalDirection][]Border{}
+		}
+		this.vertical[border.coordinate.X][border.direction] = append(
+			this.vertical[border.coordinate.X][border.direction], border,
+		)
+		slices.SortFunc(this.vertical[border.coordinate.X][border.direction], func(a Border, b Border) int {
 			return a.coordinate.Y - b.coordinate.Y
 		})
 	}
