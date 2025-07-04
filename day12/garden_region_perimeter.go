@@ -4,15 +4,17 @@ import (
 	"slices"
 )
 
+type PartitionedSortedBordersLine map[CardinalDirection][]Border
+
 type GardenRegionPerimeter struct {
-	vertical   map[int]map[CardinalDirection][]Border
-	horizontal map[int]map[CardinalDirection][]Border
+	vertical   map[int]PartitionedSortedBordersLine
+	horizontal map[int]PartitionedSortedBordersLine
 }
 
 func NewGardenRegionPerimeter() GardenRegionPerimeter {
 	return GardenRegionPerimeter{
-		vertical:   map[int]map[CardinalDirection][]Border{},
-		horizontal: map[int]map[CardinalDirection][]Border{},
+		vertical:   map[int]PartitionedSortedBordersLine{},
+		horizontal: map[int]PartitionedSortedBordersLine{},
 	}
 }
 
@@ -64,30 +66,23 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 }
 
 func (this *GardenRegionPerimeter) AddBorder(border Border) {
-	switch border.direction {
-	case NORTH:
-		fallthrough
-	case SOUTH:
+	if border.direction == NORTH || border.direction == SOUTH {
 		if this.horizontal[border.coordinate.Y] == nil {
 			this.horizontal[border.coordinate.Y] = map[CardinalDirection][]Border{}
 		}
-		this.horizontal[border.coordinate.Y][border.direction] = append(
-			this.horizontal[border.coordinate.Y][border.direction], border,
-		)
-		slices.SortFunc(this.horizontal[border.coordinate.Y][border.direction], func(a Border, b Border) int {
-			return a.coordinate.X - b.coordinate.X
-		})
-	case EAST:
-		fallthrough
-	case WEST:
-		if this.vertical[border.coordinate.X] == nil {
-			this.vertical[border.coordinate.X] = map[CardinalDirection][]Border{}
-		}
-		this.vertical[border.coordinate.X][border.direction] = append(
-			this.vertical[border.coordinate.X][border.direction], border,
-		)
-		slices.SortFunc(this.vertical[border.coordinate.X][border.direction], func(a Border, b Border) int {
-			return a.coordinate.Y - b.coordinate.Y
-		})
+		this.horizontal[border.coordinate.Y].Add(border)
+		return
 	}
+
+	if this.vertical[border.coordinate.X] == nil {
+		this.vertical[border.coordinate.X] = map[CardinalDirection][]Border{}
+	}
+	this.vertical[border.coordinate.X].Add(border)
+}
+
+func (this PartitionedSortedBordersLine) Add(border Border) {
+	this[border.direction] = append(this[border.direction], border)
+	slices.SortFunc(this[border.direction], func(a Border, b Border) int {
+		return a.CompareTo(b)
+	})
 }
