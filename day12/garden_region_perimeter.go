@@ -66,18 +66,22 @@ func (this GardenRegionPerimeter) NumberOfSides() int {
 }
 
 func (this *GardenRegionPerimeter) AddBorder(border Border) {
+	this.InitLinesIfNeeded(border.coordinate)
 	if border.direction == NORTH || border.direction == SOUTH {
-		if this.horizontal[border.coordinate.Y] == nil {
-			this.horizontal[border.coordinate.Y] = map[CardinalDirection][]Border{}
-		}
 		this.horizontal[border.coordinate.Y].Add(border)
 		return
 	}
 
-	if this.vertical[border.coordinate.X] == nil {
-		this.vertical[border.coordinate.X] = map[CardinalDirection][]Border{}
-	}
 	this.vertical[border.coordinate.X].Add(border)
+}
+
+func (this *GardenRegionPerimeter) InitLinesIfNeeded(coordinate Coordinate) {
+	if this.horizontal[coordinate.Y] == nil {
+		this.horizontal[coordinate.Y] = map[CardinalDirection][]Border{}
+	}
+	if this.vertical[coordinate.X] == nil {
+		this.vertical[coordinate.X] = map[CardinalDirection][]Border{}
+	}
 }
 
 func (this PartitionedSortedBordersLine) Add(border Border) {
