@@ -38,10 +38,14 @@ func cardinalDirectionFor(coordinate Coordinate, closeCoordinate Coordinate) Car
 	panic(fmt.Sprintf("Unexpected cardinalDirectionFor two identical coordinates: [%v]", closeCoordinate))
 }
 
-func (this Border) CompareTo(other Border) int {
+func (this Border) CompareLineOrderFn() func(Border, Border) int {
 	if this.direction == NORTH || this.direction == SOUTH {
-		return this.coordinate.X - other.coordinate.X
+		return func(a Border, b Border) int {
+			return a.coordinate.X - b.coordinate.X
+		}
 	}
 
-	return this.coordinate.Y - other.coordinate.Y
+	return func(a Border, b Border) int {
+		return a.coordinate.Y - b.coordinate.Y
+	}
 }

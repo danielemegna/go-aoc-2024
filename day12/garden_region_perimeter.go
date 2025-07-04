@@ -86,7 +86,5 @@ func (this *GardenRegionPerimeter) InitLinesIfNeeded(coordinate Coordinate) {
 
 func (this PartitionedSortedBordersLine) Add(border Border) {
 	this[border.direction] = append(this[border.direction], border)
-	slices.SortFunc(this[border.direction], func(a Border, b Border) int {
-		return a.CompareTo(b)
-	})
+	slices.SortFunc(this[border.direction], border.CompareLineOrderFn())
 }
