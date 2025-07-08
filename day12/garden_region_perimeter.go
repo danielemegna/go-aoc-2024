@@ -20,13 +20,13 @@ func NewGardenRegionPerimeter() GardenRegionPerimeter {
 
 func (this GardenRegionPerimeter) Length() int {
 	var result = 0
-	for _, directions := range this.vertical {
-		for _, borders := range directions {
+	for _, lineOfPartionedBorders := range this.vertical {
+		for _, borders := range lineOfPartionedBorders {
 			result += len(borders)
 		}
 	}
-	for _, directions := range this.horizontal {
-		for _, borders := range directions {
+	for _, lineOfPartionedBorders := range this.horizontal {
+		for _, borders := range lineOfPartionedBorders {
 			result += len(borders)
 		}
 	}
@@ -36,30 +36,12 @@ func (this GardenRegionPerimeter) Length() int {
 func (this GardenRegionPerimeter) NumberOfSides() int {
 	var sides = 0
 
-	for _, directions := range this.vertical {
-		for _, borders := range directions {
-			var previousY = -99
-			for _, b := range borders {
-				if b.coordinate.Y != previousY+1 {
-					sides++
-				}
-				previousY = b.coordinate.Y
-			}
-		}
-
+	for _, lineOfPartitionedBorders := range this.vertical {
+		sides+= lineOfPartitionedBorders.NumberOfDifferentSides()
 	}
 
-	for _, directions := range this.horizontal {
-		for _, borders := range directions {
-			var previousX = -99
-			for _, b := range borders {
-				if b.coordinate.X != previousX+1 {
-					sides++
-				}
-				previousX = b.coordinate.X
-			}
-		}
-
+	for _, lineOfPartitionedBorders := range this.horizontal {
+		sides+= lineOfPartitionedBorders.NumberOfDifferentSides()
 	}
 
 	return sides
@@ -87,4 +69,24 @@ func (this *GardenRegionPerimeter) InitLinesIfNeeded(coordinate Coordinate) {
 func (this PartitionedSortedBordersLine) Add(border Border) {
 	this[border.direction] = append(this[border.direction], border)
 	slices.SortFunc(this[border.direction], border.CompareLineOrderFn())
+}
+
+func (this PartitionedSortedBordersLine) NumberOfDifferentSides() int {
+	if(len(this) == 0) {
+		return 0
+	}
+
+	var sides = 0
+	for _, bordersWithSameDirection := range this {
+		for i := 1; i < len(bordersWithSameDirection); i++ {
+			var current = bordersWithSameDirection[i]
+			var previous = bordersWithSameDirection[i-1]
+			var borderCompareFn = current.CompareLineOrderFn()
+			if borderCompareFn(current, previous) != 1 {
+				sides++
+			}
+		}
+		sides++
+	}
+	return sides
 }
