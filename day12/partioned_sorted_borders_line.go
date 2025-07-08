@@ -16,15 +16,22 @@ func (this PartitionedSortedBordersLine) NumberOfDifferentSides() int {
 
 	var sides = 0
 	for _, bordersWithSameDirection := range this {
-		for i := 1; i < len(bordersWithSameDirection); i++ {
+		if len(bordersWithSameDirection) == 0 {
+			continue
+		}
+
+		var borderCompareFn = bordersWithSameDirection[0].CompareLineOrderFn()
+
+		sides++
+		for i := range len(bordersWithSameDirection) - 1 {
 			var current = bordersWithSameDirection[i]
-			var previous = bordersWithSameDirection[i-1]
-			var borderCompareFn = current.CompareLineOrderFn()
-			if borderCompareFn(current, previous) != 1 {
+			var next = bordersWithSameDirection[i+1]
+			var areCloseBorderOfSameSide = borderCompareFn(next, current) == 1
+			if !areCloseBorderOfSameSide {
 				sides++
 			}
 		}
-		sides++
 	}
+
 	return sides
 }
