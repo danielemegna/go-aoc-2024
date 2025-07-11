@@ -14,32 +14,29 @@ type Coordinate struct {
 }
 
 func (this ClawMachine) HowToWinThePrize() (int, int) {
-
-	var guessBPressCount = this.prizeCoordinate.X / this.buttonB.X
+	var buttonBPressCount = this.prizeCoordinate.X / this.buttonB.X
 
 	for {
-		var differenza = this.prizeCoordinate.X - (this.buttonB.X * guessBPressCount)
+		var xPrizeCoordinateDiff = this.prizeCoordinate.X - (this.buttonB.X * buttonBPressCount)
 
-		var resto = differenza % this.buttonA.X
-		if resto == 0 {
-			var buttonAPressCount = differenza / this.buttonA.X
-			var buttonBPressCount = guessBPressCount
+		if xPrizeCoordinateDiff % this.buttonA.X == 0 {
+			var buttonAPressCount = xPrizeCoordinateDiff / this.buttonA.X
 
 			var y = (buttonAPressCount * this.buttonA.Y) + (buttonBPressCount * this.buttonB.Y)
 			if y == this.prizeCoordinate.Y {
 				return buttonAPressCount, buttonBPressCount
 			}
 
-			guessBPressCount--
-			if guessBPressCount < 0 {
+			buttonBPressCount--
+			if buttonBPressCount < 0 {
 				break
 			}
 
 			continue
 		}
 
-		guessBPressCount--
-		if guessBPressCount < 0 {
+		buttonBPressCount--
+		if buttonBPressCount < 0 {
 			break
 		}
 	}
