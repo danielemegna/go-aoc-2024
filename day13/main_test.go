@@ -27,7 +27,7 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 }
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
-	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	var fileContent = SimulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 280+200, TotalTokensNeededToWinAllThePrizes(fileContent))
 }
 
@@ -37,7 +37,7 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, -99, TotalTokensNeededToWinAllThePrizes(fileContent))
 }
 
-func simulateFileContent(inputLines []string) string {
+func SimulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
 
