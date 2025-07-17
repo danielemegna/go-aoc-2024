@@ -6,7 +6,7 @@ func TotalTokensNeededToWinAllThePrizes(fileContent string) int {
 
 	for _, machine := range machines {
 		var buttonAPressCount, buttonBPressCount = machine.HowToWinThePrize()
-		if buttonAPressCount == -1 || buttonBPressCount == -1 {
+		if buttonAPressCount == -1 || buttonBPressCount == -1 || buttonAPressCount > 100 || buttonBPressCount > 100 {
 			continue
 		}
 
