@@ -32,9 +32,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -99, TotalTokensNeededToWinAllThePrizes(fileContent))
+	assert.Equal(t, 26810, TotalTokensNeededToWinAllThePrizes(fileContent))
 }
 
 func SimulateFileContent(inputLines []string) string {
