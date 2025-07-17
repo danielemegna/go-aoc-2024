@@ -26,3 +26,8 @@ func (this ClawMachine) HowToWinThePrize() (int, int) {
 	return buttonAPressCount, buttonBPressCount
 
 }
+
+func (this *ClawMachine) FixPrizeCoordinates() {
+	this.prizeCoordinate.X += 10000000000000
+	this.prizeCoordinate.Y += 10000000000000
+}

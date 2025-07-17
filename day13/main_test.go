@@ -37,15 +37,13 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 }
 
 func TestSolveSecondPartWithProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = SimulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, -99, RealTotalTokensNeededToWinAllThePrizes(fileContent))
+	assert.Equal(t, 875318608908, RealTotalTokensNeededToWinAllThePrizes(fileContent))
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -99, RealTotalTokensNeededToWinAllThePrizes(fileContent))
+	assert.Equal(t, 109713182988529, RealTotalTokensNeededToWinAllThePrizes(fileContent))
 }
 
 func SimulateFileContent(inputLines []string) string {

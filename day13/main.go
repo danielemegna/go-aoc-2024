@@ -22,7 +22,7 @@ func RealTotalTokensNeededToWinAllThePrizes(fileContent string) int {
 	var tokensNeeded = 0
 
 	for _, machine := range machines {
-		// TODO change the machine prize coordinates here ...
+		machine.FixPrizeCoordinates()
 		var buttonAPressCount, buttonBPressCount = machine.HowToWinThePrize()
 		if buttonAPressCount == -1 || buttonBPressCount == -1 {
 			continue

@@ -82,3 +82,33 @@ func TestClawMachineWithoutSolutionWithPrizeVeryFar(t *testing.T) {
 	assert.Equal(t, -1, buttonAPressCount)
 	assert.Equal(t, -1, buttonBPressCount)
 }
+
+func TestProvidedExampleClawMachineWithFixedPrizeCoordinates(t *testing.T) {
+	var machine = ClawMachine{
+		buttonA:         Coordinate{X: 26, Y: 66},
+		buttonB:         Coordinate{X: 67, Y: 21},
+		prizeCoordinate: Coordinate{X: 12748, Y: 12176},
+	}
+
+	machine.FixPrizeCoordinates()
+
+	var buttonAPressCount, buttonBPressCount = machine.HowToWinThePrize()
+
+	assert.Equal(t, 118679050709, buttonAPressCount)
+	assert.Equal(t, 103199174542, buttonBPressCount)
+}
+
+func TestAnotherProvidedExampleClawMachineWithFixedPrizeCoordinates(t *testing.T) {
+	var machine = ClawMachine{
+		buttonA:         Coordinate{X: 69, Y: 23},
+		buttonB:         Coordinate{X: 27, Y: 71},
+		prizeCoordinate: Coordinate{X: 18641, Y: 10279},
+	}
+
+	machine.FixPrizeCoordinates()
+
+	var buttonAPressCount, buttonBPressCount = machine.HowToWinThePrize()
+
+	assert.Equal(t, 102851800151, buttonAPressCount)
+	assert.Equal(t, 107526881786, buttonBPressCount)
+}
