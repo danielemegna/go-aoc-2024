@@ -6,13 +6,16 @@ import (
 	"strings"
 )
 
-func parseClawMachines(fileContent string) ClawMachine {
-	panic("Not implemented")
+func parseClawMachines(fileContent string) []ClawMachine {
+	var rows = rowsFrom(fileContent)
+	var machines = []ClawMachine{}
+	for i := 0; i < len(rows); i += 4 {
+		machines = append(machines, parseClawMachine(rows[i:i+3]))
+	}
+	return machines
 }
 
-func parseClawMachine(machineContent string) ClawMachine {
-	var rows = rowsFrom(machineContent)
-
+func parseClawMachine(rows []string) ClawMachine {
 	var xButtonA, yButtonA = extractGroupsFrom(rows[0], `^Button A: X\+(\d+), Y\+(\d+)$`)
 	var xButtonB, yButtonB = extractGroupsFrom(rows[1], `^Button B: X\+(\d+), Y\+(\d+)$`)
 	var xPrize, yPrize = extractGroupsFrom(rows[2], `^Prize: X\=(\d+), Y\=(\d+)$`)
