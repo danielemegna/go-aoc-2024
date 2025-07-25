@@ -43,6 +43,18 @@ func TestTeleportAtTheEdgeOfTheSpaceHorizontally(t *testing.T) {
 	assert.Equal(t, expectedNewPosition, robot.position)
 }
 
+func TestTeleportAtTheEdgeOfTheSpaceBackward(t *testing.T) {
+	var robot = RobotGuard{
+		position: Position{x: 1, y: 1},
+		velocity: Velocity{horizontal: -3, vertical: -3},
+	}
+
+	robot.OneSecondTick(SPACE_SIZE)
+
+	var expectedNewPosition = Position{x: 9, y: 5}
+	assert.Equal(t, expectedNewPosition, robot.position)
+}
+
 func TestProvidedExampleRobotChangePosition(t *testing.T) {
 	var robot = RobotGuard{
 		position: Position{x: 2, y: 4},
