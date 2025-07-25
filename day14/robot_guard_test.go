@@ -19,8 +19,31 @@ func TestChangePositionAfterOneSecondTick(t *testing.T) {
 	assert.Equal(t, expectedNewPosition, robot.position)
 }
 
+func TestTeleportAtTheEdgeOfTheSpaceVertically(t *testing.T) {
+	var robot = RobotGuard{
+		position: Position{x: 5, y: 6},
+		velocity: Velocity{horizontal: 1, vertical: 1},
+	}
+
+	robot.OneSecondTick(SPACE_SIZE)
+
+	var expectedNewPosition = Position{x: 5 + 1, y: 0}
+	assert.Equal(t, expectedNewPosition, robot.position)
+}
+
+func TestTeleportAtTheEdgeOfTheSpaceHorizontally(t *testing.T) {
+	var robot = RobotGuard{
+		position: Position{x: 9, y: 2},
+		velocity: Velocity{horizontal: 3, vertical: 3},
+	}
+
+	robot.OneSecondTick(SPACE_SIZE)
+
+	var expectedNewPosition = Position{x: 1, y: 2 + 3}
+	assert.Equal(t, expectedNewPosition, robot.position)
+}
+
 func TestProvidedExampleRobotChangePosition(t *testing.T) {
-	t.Skip("WIP")
 	var robot = RobotGuard{
 		position: Position{x: 2, y: 4},
 		velocity: Velocity{horizontal: 2, vertical: -3},

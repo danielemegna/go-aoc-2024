@@ -21,5 +21,8 @@ type Velocity struct {
 }
 
 func (this *RobotGuard) OneSecondTick(spaceSize SpaceSize) {
-	this.position = Position{3, 3}
+	this.position = Position{
+		(this.position.x + this.velocity.horizontal) % spaceSize.width,
+		(this.position.y + this.velocity.vertical) % spaceSize.height,
+	}
 }
