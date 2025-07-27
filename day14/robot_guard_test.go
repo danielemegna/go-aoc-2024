@@ -78,3 +78,15 @@ func TestProvidedExampleRobotChangePositionAfter5Seconds(t *testing.T) {
 	var expectedNewPosition = Position{x: 1, y: 3}
 	assert.Equal(t, expectedNewPosition, robot.position)
 }
+
+func TestRobotWithHypervelocityChangePosition(t *testing.T) {
+	var robot = RobotGuard{
+		position: Position{x: 4, y: 4},
+		velocity: Velocity{horizontal: 11 * 10, vertical: 7 * 10},
+	}
+
+	robot.OneSecondTick(SPACE_SIZE)
+
+	var expectedNewPosition = Position{x: 4, y: 4}
+	assert.Equal(t, expectedNewPosition, robot.position)
+}
