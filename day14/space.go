@@ -20,5 +20,5 @@ type Space struct {
 }
 
 func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
-	return 0
+	return len(this.guards)
 }
