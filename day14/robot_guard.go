@@ -1,10 +1,5 @@
 package day14
 
-type SpaceSize struct {
-	width  int
-	height int
-}
-
 type RobotGuard struct {
 	position Position
 	velocity Velocity
