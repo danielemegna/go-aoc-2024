@@ -11,6 +11,14 @@ var PROVIDED_EXAMPLE_SPACE = Space{
 		{position: Position{x: 6, y: 0}, velocity: Velocity{1, 2}},
 		{position: Position{x: 6, y: 0}, velocity: Velocity{3, -1}},
 		{position: Position{x: 9, y: 0} /* any velocity */},
+		{position: Position{x: 0, y: 2} /* any velocity */},
+		{position: Position{x: 1, y: 3} /* any velocity */},
+		{position: Position{x: 2, y: 3} /* any velocity */},
+		{position: Position{x: 5, y: 4} /* any velocity */},
+		{position: Position{x: 3, y: 5} /* any velocity */},
+		{position: Position{x: 4, y: 5}, velocity: Velocity{1, 1}},
+		{position: Position{x: 4, y: 5}, velocity: Velocity{-2, 3}},
+		{position: Position{x: 1, y: 6} /* any velocity */},
 		{position: Position{x: 6, y: 6} /* any velocity */},
 	},
 }
@@ -35,4 +43,14 @@ func TestGetNumerOfRobotsInNorthEastArea(t *testing.T) {
 func TestGetNumerOfRobotsInSouthEastArea(t *testing.T) {
 	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInArea(SOUTH_EAST)
 	assert.Equal(t, 1, robotsInArea)
+}
+
+func TestGetNumerOfRobotsInNorthWestArea(t *testing.T) {
+	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInArea(NORTH_WEST)
+	assert.Equal(t, 1, robotsInArea)
+}
+
+func TestGetNumerOfRobotsInSouthWestArea(t *testing.T) {
+	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInArea(SOUTH_WEST)
+	assert.Equal(t, 4, robotsInArea)
 }

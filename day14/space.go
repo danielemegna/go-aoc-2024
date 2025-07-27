@@ -37,10 +37,14 @@ func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {
 	var width, height = this.size.width, this.size.height
 	switch area {
 	case NORTH_EAST:
-		return (width / 2) + 1, width - 1, 0, (height / 2) - 1
+		return ((width / 2) + 1), (width - 1), (0), ((height / 2) - 1)
 	case SOUTH_EAST:
-		return (width / 2) + 1, width - 1, (height / 2) + 1, height - 1
+		return ((width / 2) + 1), (width - 1), ((height / 2) + 1), (height - 1)
+	case NORTH_WEST:
+		return (0), ((width / 2) - 1), (0), ((height / 2) - 1)
+	case SOUTH_WEST:
+		return (0), ((width / 2) - 1), ((height / 2) + 1), (height - 1)
 	default:
-		return -1, -1, -1, -1
+		panic("Something strange here ..")
 	}
 }
