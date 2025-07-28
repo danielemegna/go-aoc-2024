@@ -24,13 +24,14 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 1*3*4*1, SafetyFactorAfter100Seconds(fileContent))
+	var spaceSize = SpaceSize{width: 11, height: 7}
+	assert.Equal(t, 1*3*4*1, SafetyFactorAfter100Seconds(fileContent, spaceSize))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, SafetyFactorAfter100Seconds(fileContent))
+	var spaceSize = SpaceSize{width: 101, height: 103}
+	assert.Equal(t, 222901875, SafetyFactorAfter100Seconds(fileContent, spaceSize))
 }
 
 func simulateFileContent(inputLines []string) string {

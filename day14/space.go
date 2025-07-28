@@ -33,6 +33,12 @@ func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
 	return count
 }
 
+func (this Space) TickSeconds(seconds int) {
+	for i := range this.guards {
+		this.guards[i].MoreSecondsTick(this.size, seconds)
+	}
+}
+
 func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {
 	var width, height = this.size.width, this.size.height
 
