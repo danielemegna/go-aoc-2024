@@ -4,7 +4,7 @@ func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
 	var robots = ParseRobotLines(fileContent)
 	var space = Space{size: spaceSize, guards: robots}
 
-	space.TickSeconds(100)
+	space.AfterSeconds(100)
 
 	return space.GetNumberOfRobotsInArea(NORTH_EAST) *
 		space.GetNumberOfRobotsInArea(NORTH_WEST) *

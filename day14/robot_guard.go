@@ -15,11 +15,11 @@ type Velocity struct {
 	vertical   int
 }
 
-func (this *RobotGuard) TickOneSecond(spaceSize SpaceSize) {
-	this.TickSeconds(1, spaceSize)
+func (this *RobotGuard) AfterOneSecond(spaceSize SpaceSize) {
+	this.AfterSeconds(1, spaceSize)
 }
 
-func (this *RobotGuard) TickSeconds(seconds int, spaceSize SpaceSize) {
+func (this *RobotGuard) AfterSeconds(seconds int, spaceSize SpaceSize) {
 	var newX = this.position.x + (this.velocity.horizontal * seconds)
 	var newY = this.position.y + (this.velocity.vertical * seconds)
 

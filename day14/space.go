@@ -33,9 +33,9 @@ func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
 	return count
 }
 
-func (this Space) TickSeconds(seconds int) {
+func (this Space) AfterSeconds(seconds int) {
 	for i := range this.guards {
-		this.guards[i].TickSeconds(seconds, this.size)
+		this.guards[i].AfterSeconds(seconds, this.size)
 	}
 }
 
