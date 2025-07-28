@@ -19,6 +19,19 @@ type Space struct {
 	guards []RobotGuard
 }
 
+func (this Space) AfterSeconds(seconds int) {
+	for i := range this.guards {
+		this.guards[i].AfterSeconds(seconds, this.size)
+	}
+}
+
+func (this Space) GetSafetyFactor() int {
+	return this.GetNumberOfRobotsInArea(NORTH_EAST) *
+		this.GetNumberOfRobotsInArea(NORTH_WEST) *
+		this.GetNumberOfRobotsInArea(SOUTH_EAST) *
+		this.GetNumberOfRobotsInArea(SOUTH_WEST)
+}
+
 func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
 	var minX, maxX, minY, maxY = this.getAreaLimitsFor(area)
 
@@ -31,12 +44,6 @@ func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
 	}
 
 	return count
-}
-
-func (this Space) AfterSeconds(seconds int) {
-	for i := range this.guards {
-		this.guards[i].AfterSeconds(seconds, this.size)
-	}
 }
 
 func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {

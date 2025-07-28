@@ -6,8 +6,5 @@ func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
 
 	space.AfterSeconds(100)
 
-	return space.GetNumberOfRobotsInArea(NORTH_EAST) *
-		space.GetNumberOfRobotsInArea(NORTH_WEST) *
-		space.GetNumberOfRobotsInArea(SOUTH_EAST) *
-		space.GetNumberOfRobotsInArea(SOUTH_WEST)
+	return space.GetSafetyFactor()
 }

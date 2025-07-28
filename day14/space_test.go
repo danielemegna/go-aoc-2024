@@ -24,15 +24,16 @@ var PROVIDED_EXAMPLE_SPACE = Space{
 }
 
 func TestGetNumerOfRobotsInASpaceWithNoRobots(t *testing.T) {
-	var space = Space{
+	var emptySpace = Space{
 		size:   SpaceSize{width: 7, height: 7},
 		guards: []RobotGuard{},
 	}
 
-	assert.Equal(t, 0, space.GetNumberOfRobotsInArea(NORTH_WEST))
-	assert.Equal(t, 0, space.GetNumberOfRobotsInArea(NORTH_EAST))
-	assert.Equal(t, 0, space.GetNumberOfRobotsInArea(SOUTH_WEST))
-	assert.Equal(t, 0, space.GetNumberOfRobotsInArea(SOUTH_EAST))
+	assert.Equal(t, 0, emptySpace.GetNumberOfRobotsInArea(NORTH_WEST))
+	assert.Equal(t, 0, emptySpace.GetNumberOfRobotsInArea(NORTH_EAST))
+	assert.Equal(t, 0, emptySpace.GetNumberOfRobotsInArea(SOUTH_WEST))
+	assert.Equal(t, 0, emptySpace.GetNumberOfRobotsInArea(SOUTH_EAST))
+	assert.Equal(t, 0, emptySpace.GetSafetyFactor())
 }
 
 func TestGetNumerOfRobotsInNorthEastArea(t *testing.T) {
@@ -53,4 +54,9 @@ func TestGetNumerOfRobotsInNorthWestArea(t *testing.T) {
 func TestGetNumerOfRobotsInSouthWestArea(t *testing.T) {
 	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInArea(SOUTH_WEST)
 	assert.Equal(t, 4, robotsInArea)
+}
+
+func TestGetSafetyFactor(t *testing.T) {
+	var safetyFactor = PROVIDED_EXAMPLE_SPACE.GetSafetyFactor()
+	assert.Equal(t, 3*1*1*4, safetyFactor)
 }
