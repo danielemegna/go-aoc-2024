@@ -28,14 +28,22 @@ func (this Space) AfterSeconds(seconds int) {
 }
 
 func (this Space) GetSafetyFactor() int {
-	return this.GetNumberOfRobotsInArea(NORTH_EAST) *
-		this.GetNumberOfRobotsInArea(NORTH_WEST) *
-		this.GetNumberOfRobotsInArea(SOUTH_EAST) *
-		this.GetNumberOfRobotsInArea(SOUTH_WEST)
+	return this.GetSafetyFactorWith(1)
+}
+
+func (this Space) GetSafetyFactorWith(centerThickness int) int {
+	return this.GetNumberOfRobotsInAreaWith(NORTH_EAST, centerThickness) *
+		this.GetNumberOfRobotsInAreaWith(NORTH_WEST, centerThickness) *
+		this.GetNumberOfRobotsInAreaWith(SOUTH_EAST, centerThickness) *
+		this.GetNumberOfRobotsInAreaWith(SOUTH_WEST, centerThickness)
 }
 
 func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
-	var minX, maxX, minY, maxY = this.getAreaLimitsFor(area)
+	return this.GetNumberOfRobotsInAreaWith(area, 1)
+}
+
+func (this Space) GetNumberOfRobotsInAreaWith(area SpaceArea, centerThickness int) int {
+	var minX, maxX, minY, maxY = this.getAreaLimitsFor(area, centerThickness)
 
 	var count = 0
 	for _, guard := range this.guards {
@@ -77,23 +85,23 @@ func (this Space) Print() {
 	fmt.Println("========= End Print Space")
 }
 
-func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {
+func (this Space) getAreaLimitsFor(area SpaceArea, centerThickness int) (int, int, int, int) {
 	var width, height = this.size.width, this.size.height
 
 	var minX, maxX int
 	switch area {
 	case NORTH_WEST, SOUTH_WEST:
-		minX, maxX = (0), ((width / 2) - 1)
+		minX, maxX = (0), ((width / 2) - centerThickness)
 	case NORTH_EAST, SOUTH_EAST:
-		minX, maxX = ((width / 2) + 1), (width - 1)
+		minX, maxX = ((width / 2) + centerThickness), (width - 1)
 	}
 
 	var minY, maxY int
 	switch area {
 	case NORTH_WEST, NORTH_EAST:
-		minY, maxY = (0), ((height / 2) - 1)
+		minY, maxY = (0), ((height / 2) - centerThickness)
 	case SOUTH_WEST, SOUTH_EAST:
-		minY, maxY = ((height / 2) + 1), (height - 1)
+		minY, maxY = ((height / 2) + centerThickness), (height - 1)
 	}
 
 	return minX, maxX, minY, maxY

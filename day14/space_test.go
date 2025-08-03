@@ -74,3 +74,20 @@ func TestCoordinatesWithGuard(t *testing.T) {
 	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(3,5))
 	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(6,6))
 }
+
+func TestGetNumerOfRobotsInNorthEastAreaWithGreaterCenterThickness(t *testing.T) {
+	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInAreaWith(NORTH_EAST, 3)
+	assert.Equal(t, 1, robotsInArea)
+}
+
+func TestGetNumerOfRobotsInSouthWestAreaWithGreaterCenterThickness(t *testing.T) {
+	var robotsInArea = PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInAreaWith(SOUTH_WEST, 3)
+	assert.Equal(t, 1, robotsInArea)
+}
+
+func TestGetSafetyFactorWithGreaterCenterThickness(t *testing.T) {
+	var safetyFactor = PROVIDED_EXAMPLE_SPACE.GetSafetyFactorWith(1)
+	assert.Equal(t, 12, safetyFactor)
+	safetyFactor = PROVIDED_EXAMPLE_SPACE.GetSafetyFactorWith(2)
+	assert.Equal(t, 0, safetyFactor)
+}
