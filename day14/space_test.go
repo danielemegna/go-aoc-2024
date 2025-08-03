@@ -60,3 +60,17 @@ func TestGetSafetyFactor(t *testing.T) {
 	var safetyFactor = PROVIDED_EXAMPLE_SPACE.GetSafetyFactor()
 	assert.Equal(t, 3*1*1*4, safetyFactor)
 }
+
+func TestCoordinatesWithoutGuard(t *testing.T) {
+	assert.False(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(0,0))
+	assert.False(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(0,1))
+	assert.False(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(1,0))
+	assert.False(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(9,9))
+}
+
+func TestCoordinatesWithGuard(t *testing.T) {
+	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(6,0))
+	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(9,0))
+	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(3,5))
+	assert.True(t, PROVIDED_EXAMPLE_SPACE.HasGuardIn(6,6))
+}

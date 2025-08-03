@@ -46,6 +46,17 @@ func (this Space) GetNumberOfRobotsInArea(area SpaceArea) int {
 	return count
 }
 
+func (this Space) HasGuardIn(x int, y int) bool {
+	// NEXT: improve this keeping an up-to-date boolean matrix of presences
+	for _, guard := range this.guards {
+		if guard.position.x == x && guard.position.y == y {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {
 	var width, height = this.size.width, this.size.height
 
