@@ -24,13 +24,7 @@ func FindTree() {
 	for {
 		space.AfterSeconds(1)
 		elapsedSeconds++
-		var northWest = space.GetNumberOfRobotsInArea(NORTH_WEST)
-		var southWest = space.GetNumberOfRobotsInArea(SOUTH_WEST)
-		var northEast = space.GetNumberOfRobotsInArea(NORTH_EAST)
-		var southEast = space.GetNumberOfRobotsInArea(SOUTH_EAST)
-		var areaPresenceThreashold = 54
-		var shouldPrint = northWest < areaPresenceThreashold || northEast < areaPresenceThreashold ||
-			southWest < areaPresenceThreashold || southEast < areaPresenceThreashold
+		var shouldPrint = space.GetSafetyFactorWith(40) == 0
 
 		if shouldPrint {
 			space.Print()
