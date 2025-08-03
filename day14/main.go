@@ -1,7 +1,8 @@
 package day14
 
 import (
-	"strings"
+	"fmt"
+	"os"
 	"time"
 )
 
@@ -17,32 +18,30 @@ func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
 // run this with `go run day14/run/run.go`
 func FindTree() {
 	var space = buildSpace()
+	var elapsedSeconds = 0
 
 	for {
-		space.Print()
 		space.AfterSeconds(1)
-		time.Sleep(500 * time.Millisecond)
+		elapsedSeconds++
+		var northWest = space.GetNumberOfRobotsInArea(NORTH_WEST)
+		var southWest = space.GetNumberOfRobotsInArea(SOUTH_WEST)
+		var northEast = space.GetNumberOfRobotsInArea(NORTH_EAST)
+		var southEast = space.GetNumberOfRobotsInArea(SOUTH_EAST)
+		var shouldPrint = northWest == northEast && southWest == southEast
+
+		if shouldPrint {
+			space.Print()
+			fmt.Printf("======== Elapsed seconds: %d\n", elapsedSeconds)
+			time.Sleep(500 * time.Millisecond)
+		}
 	}
 
 }
 
 func buildSpace() Space {
-	var providedExampleInputLines = []string{
-		"p=0,4 v=3,-3",
-		"p=6,3 v=-1,-3",
-		"p=10,3 v=-1,2",
-		"p=2,0 v=2,-1",
-		"p=0,0 v=1,3",
-		"p=3,0 v=-2,-2",
-		"p=7,6 v=-1,-3",
-		"p=3,0 v=-1,-2",
-		"p=9,3 v=2,3",
-		"p=7,3 v=-1,2",
-		"p=2,4 v=2,-3",
-		"p=9,5 v=-3,-3",
-	}
-	var fileContent = strings.Join(providedExampleInputLines, "\n") + "\n"
-	var spaceSize = SpaceSize{width: 11, height: 7}
+	var fileBytes, _ = os.ReadFile("day14/input.txt")
+	var fileContent = string(fileBytes)
+	var spaceSize = SpaceSize{width: 101, height: 103}
 	var robots = ParseRobotLines(fileContent)
 	return Space{size: spaceSize, guards: robots}
 }
