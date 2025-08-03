@@ -19,6 +19,7 @@ func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
 func FindTree() {
 	var space = buildSpace()
 	var elapsedSeconds = 0
+	var patternRepeatLimit = 10403
 
 	for {
 		space.AfterSeconds(1)
@@ -27,12 +28,18 @@ func FindTree() {
 		var southWest = space.GetNumberOfRobotsInArea(SOUTH_WEST)
 		var northEast = space.GetNumberOfRobotsInArea(NORTH_EAST)
 		var southEast = space.GetNumberOfRobotsInArea(SOUTH_EAST)
-		var shouldPrint = northWest == northEast && southWest == southEast
+		var areaPresenceThreashold = 54
+		var shouldPrint = northWest < areaPresenceThreashold || northEast < areaPresenceThreashold ||
+			southWest < areaPresenceThreashold || southEast < areaPresenceThreashold
 
 		if shouldPrint {
 			space.Print()
 			fmt.Printf("======== Elapsed seconds: %d\n", elapsedSeconds)
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(200 * time.Millisecond)
+		}
+
+		if elapsedSeconds > patternRepeatLimit {
+			break
 		}
 	}
 
