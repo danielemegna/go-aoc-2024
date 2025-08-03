@@ -6,5 +6,5 @@ import (
 
 // just a bridge to run main#PrintTree
 func main() {
-	day14.PrintTree()
+	day14.FindTree()
 }

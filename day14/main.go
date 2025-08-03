@@ -1,8 +1,8 @@
 package day14
 
 import (
-	"fmt"
 	"strings"
+	"time"
 )
 
 func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
@@ -15,10 +15,15 @@ func SafetyFactorAfter100Seconds(fileContent string, spaceSize SpaceSize) int {
 }
 
 // run this with `go run day14/run/run.go`
-func PrintTree() {
-	fmt.Println("========= Hello, World!")
+func FindTree() {
 	var space = buildSpace()
-	fmt.Printf("%+v\n", space)
+
+	for {
+		space.Print()
+		space.AfterSeconds(1)
+		time.Sleep(500 * time.Millisecond)
+	}
+
 }
 
 func buildSpace() Space {

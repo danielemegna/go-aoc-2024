@@ -1,5 +1,7 @@
 package day14
 
+import "fmt"
+
 type SpaceSize struct {
 	width  int
 	height int
@@ -55,6 +57,24 @@ func (this Space) HasGuardIn(x int, y int) bool {
 	}
 
 	return false
+}
+
+func (this Space) Print() {
+	fmt.Print("\033[H\033[2J")
+	fmt.Println("========= Print Space")
+
+	for y := 0; y < this.size.height; y++ {
+		for x := 0; x < this.size.width; x++ {
+			var hasGuard = this.HasGuardIn(x, y)
+			if hasGuard {
+				fmt.Print("X")
+			} else {
+				fmt.Print(" ")
+			}
+		}
+		fmt.Print("\n")
+	}
+	fmt.Println("========= End Print Space")
 }
 
 func (this Space) getAreaLimitsFor(area SpaceArea) (int, int, int, int) {
