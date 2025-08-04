@@ -34,6 +34,12 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 222901875, SafetyFactorAfter100Seconds(fileContent, spaceSize))
 }
 
+func TestSolveSecondPartWithFile(t *testing.T) {
+	var fileContent = readFileContent()
+	var spaceSize = SpaceSize{width: 101, height: 103}
+	assert.Equal(t, 6243, SecondsToWaitToSeeTheChristmasTreeEasterEgg(fileContent, spaceSize))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
