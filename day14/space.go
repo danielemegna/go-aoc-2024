@@ -14,6 +14,7 @@ const (
 	NORTH_EAST
 	SOUTH_WEST
 	SOUTH_EAST
+	CENTER
 )
 
 type Space struct {
@@ -94,6 +95,8 @@ func (this Space) getAreaLimitsFor(area SpaceArea, centerThickness int) (int, in
 		minX, maxX = (0), ((width / 2) - centerThickness)
 	case NORTH_EAST, SOUTH_EAST:
 		minX, maxX = ((width / 2) + centerThickness), (width - 1)
+	case CENTER:
+		minX, maxX = ((width / 2) - centerThickness), ((width / 2) + centerThickness)
 	}
 
 	var minY, maxY int
@@ -102,6 +105,8 @@ func (this Space) getAreaLimitsFor(area SpaceArea, centerThickness int) (int, in
 		minY, maxY = (0), ((height / 2) - centerThickness)
 	case SOUTH_WEST, SOUTH_EAST:
 		minY, maxY = ((height / 2) + centerThickness), (height - 1)
+	case CENTER:
+		minY, maxY = ((height / 2) - centerThickness), ((height / 2) + centerThickness)
 	}
 
 	return minX, maxX, minY, maxY

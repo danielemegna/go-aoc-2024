@@ -91,3 +91,9 @@ func TestGetSafetyFactorWithGreaterCenterThickness(t *testing.T) {
 	safetyFactor = PROVIDED_EXAMPLE_SPACE.GetSafetyFactorWith(2)
 	assert.Equal(t, 0, safetyFactor)
 }
+
+func TestGetNumberOfRobotsInCenterArea(t *testing.T) {
+	assert.Equal(t, 1, PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInArea(CENTER))
+	assert.Equal(t, 4, PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInAreaWith(CENTER, 2))
+	assert.Equal(t, 8, PROVIDED_EXAMPLE_SPACE.GetNumberOfRobotsInAreaWith(CENTER, 3))
+}
