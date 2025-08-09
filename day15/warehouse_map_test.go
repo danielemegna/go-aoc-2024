@@ -5,14 +5,40 @@ import (
 	"testing"
 )
 
+func TestMoveRobotToTheRightInEmptyMap(t *testing.T) {
+	var warehouseMap = smallEmptyMap()
+	assert.Equal(t, ROBOT, warehouseMap[2][0])
+	assert.Equal(t, EMPTY, warehouseMap[2][1])
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, EMPTY, warehouseMap[2][0])
+	assert.Equal(t, ROBOT, warehouseMap[2][1])
+}
+
+func TestMoveRobotUpInEmptyMap(t *testing.T) {
+	var warehouseMap = smallEmptyMap()
+	assert.Equal(t, EMPTY, warehouseMap[1][0])
+	assert.Equal(t, ROBOT, warehouseMap[2][0])
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, ROBOT, warehouseMap[1][0])
+	assert.Equal(t, EMPTY, warehouseMap[2][0])
+}
+
+func TestRobotCannotMoveOutOfMapBounds(t *testing.T) {
+	var warehouseMap = smallEmptyMap()
+	assert.Equal(t, ROBOT, warehouseMap[2][0])
+
+	warehouseMap.MoveRobot(LEFT)
+
+	assert.Equal(t, ROBOT, warehouseMap[2][0])
+}
+
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
-	var emptyMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-	}
-	assert.Equal(t, 0, emptyMap.GetBoxesGPSCoordinatesSum())
+	var warehouseMap = smallEmptyMap()
+	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
 func TestGetBoxesGPSCoordinatesSumOfAMapWithASingleBoxAtTopLeftEdge(t *testing.T) {
@@ -73,4 +99,13 @@ func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExample(t *testing.T) {
 		{BOX, BOX, EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
 	}
 	assert.Equal(t, 10092, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func smallEmptyMap() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{ROBOT, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
 }
