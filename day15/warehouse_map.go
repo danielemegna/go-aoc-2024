@@ -17,17 +17,17 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 
 	var destinationX, destinationY int
 	switch direction {
-		case RIGHT:
-			destinationX, destinationY = startingX+1, startingY
-		case LEFT:
-			destinationX, destinationY = startingX-1, startingY
-		case UP:
-			destinationX, destinationY = startingX, startingY-1
-		case DOWN:
-			destinationX, destinationY = startingX, startingY+1
+	case RIGHT:
+		destinationX, destinationY = startingX+1, startingY
+	case LEFT:
+		destinationX, destinationY = startingX-1, startingY
+	case UP:
+		destinationX, destinationY = startingX, startingY-1
+	case DOWN:
+		destinationX, destinationY = startingX, startingY+1
 	}
 
-	if(destinationX < 0 || destinationY < 0) {
+	if destinationX < 0 || destinationY < 0 {
 		return
 	}
 
