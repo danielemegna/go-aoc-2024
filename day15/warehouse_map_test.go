@@ -62,16 +62,10 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithASingleMiddleBox(t *testing.T) {
 }
 
 func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
-	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, BOX},
-		{BOX, EMPTY, EMPTY, EMPTY},
-		{EMPTY, ROBOT, BOX, BOX},
-		{BOX, EMPTY, EMPTY, EMPTY},
-	}
-	var expected = ((100 * 1) + 4) +
-		((100 * 2) + 1) +
-		((100 * 3) + 3) + ((100 * 3) + 4) +
-		((100 * 4) + 1)
+	var warehouseMap = smallFullMap()
+	var expected = ((100 * 2) + 1) +
+		((100 * 2) + 3) + ((100 * 2) + 4) +
+		((100 * 3) + 2)
 	assert.Equal(t, expected, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
@@ -107,5 +101,15 @@ func smallEmptyMap() WarehouseMap {
 		{EMPTY, EMPTY, EMPTY, EMPTY},
 		{ROBOT, EMPTY, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+}
+
+func smallFullMap() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, WALL, EMPTY, EMPTY, EMPTY},
+		{BOX, ROBOT, BOX, BOX, EMPTY},
+		{EMPTY, BOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, WALL, EMPTY, EMPTY, EMPTY},
 	}
 }
