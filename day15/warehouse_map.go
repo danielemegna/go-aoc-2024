@@ -15,6 +15,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	// TODO: extract Coordinate concept?
 	var startingX, startingY = this.GetRobotPosition()
 
+	// TODO: remove destination calc duplication
 	var destinationX, destinationY int
 	switch direction {
 	case RIGHT:
@@ -35,8 +36,36 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 		return
 	}
 
+	if this[destinationY][destinationX] == BOX {
+		this.shiftBoxesIfPossible(destinationX, destinationY, direction)
+		// NEXT: exit if shiftBoxesIfPossible returns false
+	}
+
 	this[startingY][startingX] = EMPTY
 	this[destinationY][destinationX] = ROBOT
+}
+
+func (this WarehouseMap) shiftBoxesIfPossible(boxX int, boxY int, direction Direction) bool {
+	// TODO: remove destination calc duplication
+	var destinationX, destinationY int
+	switch direction {
+	case RIGHT:
+		destinationX, destinationY = boxX+1, boxY
+	case LEFT:
+		destinationX, destinationY = boxX-1, boxY
+	case UP:
+		destinationX, destinationY = boxX, boxY-1
+	case DOWN:
+		destinationX, destinationY = boxX, boxY+1
+	}
+
+	// NEXT: return false if destination WALL or out of bound
+	// NEXT: call recursively if another box in destination
+
+	this[boxY][boxX] = EMPTY
+	this[destinationY][destinationX] = BOX
+
+	return true
 }
 
 func (this WarehouseMap) GetRobotPosition() (int, int) {

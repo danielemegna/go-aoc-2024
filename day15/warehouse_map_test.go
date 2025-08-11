@@ -45,6 +45,17 @@ func TestRobotCannotMoveOnAWall(t *testing.T) {
 	assert.Equal(t, ROBOT, warehouseMap[1][1])
 }
 
+func TestRobotMovesCloseBoxWithHim(t *testing.T) {
+	var warehouseMap = smallFullMap()
+	assert.Equal(t, ROBOT, warehouseMap[1][1])
+	assert.Equal(t, BOX, warehouseMap[2][1])
+
+	warehouseMap.MoveRobot(DOWN)
+
+	assert.Equal(t, ROBOT, warehouseMap[2][1])
+	assert.Equal(t, BOX, warehouseMap[3][1])
+}
+
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
 	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())
