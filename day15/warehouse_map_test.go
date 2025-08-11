@@ -95,6 +95,15 @@ func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExample(t *testing.T) {
 	assert.Equal(t, 10092, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
+func TestGetRobotPosition(t *testing.T) {
+	var x, y = smallEmptyMap().GetRobotPosition()
+	assert.Equal(t, 0, x)
+	assert.Equal(t, 2, y)
+	x, y = smallFullMap().GetRobotPosition()
+	assert.Equal(t, 1, x)
+	assert.Equal(t, 1, y)
+}
+
 func smallEmptyMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY},

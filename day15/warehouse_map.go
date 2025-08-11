@@ -34,6 +34,18 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	this[destinationY][destinationX] = ROBOT
 }
 
+func (this WarehouseMap) GetRobotPosition() (int, int) {
+	for y, row := range this {
+		for x, mapElement := range row {
+			if mapElement == ROBOT {
+				return x, y
+			}
+		}
+	}
+
+	panic("Cannot find the robot in the map")
+}
+
 type Direction int
 
 const (
