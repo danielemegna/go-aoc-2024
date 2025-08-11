@@ -12,8 +12,8 @@ const (
 type WarehouseMap [][]MapElement
 
 func (this WarehouseMap) MoveRobot(direction Direction) {
-	var startingX = 0
-	var startingY = 2
+	// TODO: extract Coordinate concept?
+	var startingX, startingY = this.GetRobotPosition()
 
 	var destinationX, destinationY int
 	switch direction {
@@ -23,10 +23,15 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 			destinationX, destinationY = startingX-1, startingY
 		case UP:
 			destinationX, destinationY = startingX, startingY-1
-		//case DOWN:
+		case DOWN:
+			destinationX, destinationY = startingX, startingY+1
 	}
 
 	if(destinationX < 0 || destinationY < 0) {
+		return
+	}
+
+	if this[destinationY][destinationX] == WALL {
 		return
 	}
 
