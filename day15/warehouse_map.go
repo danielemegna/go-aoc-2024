@@ -49,8 +49,12 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 	if destination.isOutOfBound() {
 		return false
 	}
+	if(this.ElementAt(destination) == BOX) {
+		this.shiftBoxesIfPossible(destination, direction)
+		// NEXT: return false if shiftBoxesIfPossible returns false
+	}
+
 	// NEXT: return false if destination is a WALL
-	// NEXT: call recursively if another box in destination
 
 	this.setValueAt(boxCoordinate, EMPTY)
 	this.setValueAt(destination, BOX)
