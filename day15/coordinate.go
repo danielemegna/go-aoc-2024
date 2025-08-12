@@ -1,5 +1,7 @@
 package day15
 
+import "fmt"
+
 type Coordinate struct {
 	x int
 	y int
@@ -14,10 +16,10 @@ func (this Coordinate) NextFor(direction Direction) Coordinate {
 	case UP:
 		return Coordinate{this.x, this.y - 1}
 	case DOWN:
-		fallthrough
-	default:
 		return Coordinate{this.x, this.y + 1}
 	}
+
+	panic(fmt.Sprintf("Unexpected Direction value: %v", direction))
 }
 
 func (this Coordinate) isOutOfBound(mapWidth int, mapHeigth int) bool {
