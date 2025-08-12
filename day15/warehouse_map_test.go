@@ -157,6 +157,13 @@ func TestGetRobotPosition(t *testing.T) {
 	assert.Equal(t, Coordinate{1, 1}, position)
 }
 
+func TestGetMapSize(t *testing.T) {
+	assert.Equal(t, 4, smallEmptyMap().MapWidth())
+	assert.Equal(t, 4, smallEmptyMap().MapHeigth())
+	assert.Equal(t, 5, smallFullMap().MapWidth())
+	assert.Equal(t, 5, smallFullMap().MapHeigth())
+}
+
 func smallEmptyMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY},

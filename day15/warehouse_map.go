@@ -1,5 +1,7 @@
 package day15
 
+type WarehouseMap [][]MapElement
+
 type MapElement int
 
 const (
@@ -9,7 +11,14 @@ const (
 	WALL
 )
 
-type WarehouseMap [][]MapElement
+type Direction int
+
+const (
+	UP Direction = iota
+	DOWN
+	LEFT
+	RIGHT
+)
 
 func (this WarehouseMap) MoveRobot(direction Direction) {
 	var start = this.GetRobotPosition()
@@ -26,21 +35,13 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 
 	if destinationElement == BOX {
 		var shifted = this.shiftBoxesIfPossible(destination, direction)
-		if(!shifted) {
+		if !shifted {
 			return
 		}
 	}
 
 	this.setValueAt(start, EMPTY)
 	this.setValueAt(destination, ROBOT)
-}
-
-func (this WarehouseMap) ElementAt(c Coordinate) MapElement {
-	return this[c.y][c.x]
-}
-
-func (this WarehouseMap) setValueAt(c Coordinate, e MapElement) {
-	this[c.y][c.x] = e
 }
 
 func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, direction Direction) bool {
@@ -51,11 +52,11 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 	}
 
 	var destinationElement = this.ElementAt(destination)
-	if(destinationElement == WALL) {
+	if destinationElement == WALL {
 		return false
 	}
 
-	if(destinationElement == BOX) {
+	if destinationElement == BOX {
 		this.shiftBoxesIfPossible(destination, direction)
 		// NEXT: return false if shiftBoxesIfPossible returns false
 	}
@@ -65,6 +66,11 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 
 	return true
 }
+
+func (this WarehouseMap) MapHeigth() int                        { return len(this) }
+func (this WarehouseMap) MapWidth() int                         { return len(this[0]) } // unsupported empty maps
+func (this WarehouseMap) ElementAt(c Coordinate) MapElement     { return this[c.y][c.x] }
+func (this WarehouseMap) setValueAt(c Coordinate, e MapElement) { this[c.y][c.x] = e }
 
 func (this WarehouseMap) GetRobotPosition() Coordinate {
 	for y, row := range this {
@@ -77,15 +83,6 @@ func (this WarehouseMap) GetRobotPosition() Coordinate {
 
 	panic("Cannot find the robot in the map")
 }
-
-type Direction int
-
-const (
-	UP Direction = iota
-	DOWN
-	LEFT
-	RIGHT
-)
 
 func (this WarehouseMap) GetBoxesGPSCoordinatesSum() int {
 	var sum = 0
