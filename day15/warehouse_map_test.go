@@ -116,12 +116,10 @@ func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExample(t *testing.T) {
 }
 
 func TestGetRobotPosition(t *testing.T) {
-	var x, y = smallEmptyMap().GetRobotPosition()
-	assert.Equal(t, 0, x)
-	assert.Equal(t, 2, y)
-	x, y = smallFullMap().GetRobotPosition()
-	assert.Equal(t, 1, x)
-	assert.Equal(t, 1, y)
+	var position = smallEmptyMap().GetRobotPosition()
+	assert.Equal(t, Coordinate{0, 2}, position)
+	position = smallFullMap().GetRobotPosition()
+	assert.Equal(t, Coordinate{1, 1}, position)
 }
 
 func smallEmptyMap() WarehouseMap {
