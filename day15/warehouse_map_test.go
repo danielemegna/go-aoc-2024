@@ -91,6 +91,20 @@ func TestRobotCannotMoveCloseBoxesBlockedByWalls(t *testing.T) {
 	assert.Equal(t, WALL, warehouseMap.ElementAt(Coordinate{1,4}))
 }
 
+func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
+	var warehouseMap = smallFullMap()
+	warehouseMap.MoveRobot(RIGHT)
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2,1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3,1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4,1}))
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2,1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3,1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4,1}))
+}
+
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
 	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())

@@ -20,7 +20,6 @@ func (this Coordinate) NextFor(direction Direction) Coordinate {
 	}
 }
 
-func (this Coordinate) isOutOfBound() bool {
-	// TODO check down and right bounds
-	return this.x < 0 || this.y < 0
+func (this Coordinate) isOutOfBound(mapWidth int, mapHeigth int) bool {
+	return this.x < 0 || this.y < 0 || this.x >= mapWidth || this.y >= mapHeigth
 }

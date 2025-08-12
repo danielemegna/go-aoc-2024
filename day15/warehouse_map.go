@@ -24,7 +24,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	var start = this.GetRobotPosition()
 
 	var destination = start.NextFor(direction)
-	if destination.isOutOfBound() {
+	if destination.isOutOfBound(this.MapWidth(), this.MapHeigth()) {
 		return
 	}
 
@@ -47,7 +47,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, direction Direction) bool {
 	var destination = boxCoordinate.NextFor(direction)
 
-	if destination.isOutOfBound() {
+	if destination.isOutOfBound(this.MapWidth(), this.MapHeigth()) {
 		return false
 	}
 
@@ -57,8 +57,10 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 	}
 
 	if destinationElement == BOX {
-		this.shiftBoxesIfPossible(destination, direction)
-		// NEXT: return false if shiftBoxesIfPossible returns false
+		var shifted = this.shiftBoxesIfPossible(destination, direction)
+		if !shifted {
+			return false
+		}
 	}
 
 	this.setValueAt(boxCoordinate, EMPTY)
