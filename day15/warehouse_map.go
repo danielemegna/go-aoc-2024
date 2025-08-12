@@ -25,8 +25,10 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	}
 
 	if destinationElement == BOX {
-		this.shiftBoxesIfPossible(destination, direction)
-		// NEXT: exit if shiftBoxesIfPossible returns false
+		var shifted = this.shiftBoxesIfPossible(destination, direction)
+		if(!shifted) {
+			return
+		}
 	}
 
 	this.setValueAt(start, EMPTY)
@@ -44,7 +46,10 @@ func (this WarehouseMap) setValueAt(c Coordinate, e MapElement) {
 func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, direction Direction) bool {
 	var destination = boxCoordinate.NextFor(direction)
 
-	// NEXT: return false if destination WALL or out of bound
+	if destination.isOutOfBound() {
+		return false
+	}
+	// NEXT: return false if destination is a WALL
 	// NEXT: call recursively if another box in destination
 
 	this.setValueAt(boxCoordinate, EMPTY)
