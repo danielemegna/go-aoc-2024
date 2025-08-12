@@ -7,53 +7,53 @@ import (
 
 func TestMoveRobotToTheRightInEmptyMap(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
-	assert.Equal(t, ROBOT, warehouseMap[2][0])
-	assert.Equal(t, EMPTY, warehouseMap[2][1])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0,2}))
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{1,2}))
 
 	warehouseMap.MoveRobot(RIGHT)
 
-	assert.Equal(t, EMPTY, warehouseMap[2][0])
-	assert.Equal(t, ROBOT, warehouseMap[2][1])
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0,2}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1,2}))
 }
 
 func TestMoveRobotUpInEmptyMap(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
-	assert.Equal(t, EMPTY, warehouseMap[1][0])
-	assert.Equal(t, ROBOT, warehouseMap[2][0])
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0,1}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0,2}))
 
 	warehouseMap.MoveRobot(UP)
 
-	assert.Equal(t, ROBOT, warehouseMap[1][0])
-	assert.Equal(t, EMPTY, warehouseMap[2][0])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0,1}))
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0,2}))
 }
 
 func TestRobotCannotMoveOutOfMapBounds(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
-	assert.Equal(t, ROBOT, warehouseMap[2][0])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0,2}))
 
 	warehouseMap.MoveRobot(LEFT)
 
-	assert.Equal(t, ROBOT, warehouseMap[2][0])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0,2}))
 }
 
 func TestRobotCannotMoveOnAWall(t *testing.T) {
 	var warehouseMap = smallFullMap()
-	assert.Equal(t, ROBOT, warehouseMap[1][1])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1,1}))
 
 	warehouseMap.MoveRobot(UP)
 
-	assert.Equal(t, ROBOT, warehouseMap[1][1])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1,1}))
 }
 
 func TestRobotMovesCloseBoxWithHim(t *testing.T) {
 	var warehouseMap = smallFullMap()
-	assert.Equal(t, ROBOT, warehouseMap[1][1])
-	assert.Equal(t, BOX, warehouseMap[2][1])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1,1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1,2}))
 
 	warehouseMap.MoveRobot(DOWN)
 
-	assert.Equal(t, ROBOT, warehouseMap[2][1])
-	assert.Equal(t, BOX, warehouseMap[3][1])
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1,2}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1,3}))
 }
 
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
