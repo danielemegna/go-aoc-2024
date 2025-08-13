@@ -22,6 +22,6 @@ func (this Coordinate) NextFor(direction Direction) Coordinate {
 	panic(fmt.Sprintf("Unexpected Direction value: %v", direction))
 }
 
-func (this Coordinate) isOutOfBound(mapWidth int, mapHeigth int) bool {
-	return this.x < 0 || this.y < 0 || this.x >= mapWidth || this.y >= mapHeigth
+func (this Coordinate) isOutOfBound(mapSize int) bool {
+	return this.x < 0 || this.y < 0 || this.x >= mapSize || this.y >= mapSize
 }

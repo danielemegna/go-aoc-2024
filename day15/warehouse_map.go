@@ -24,7 +24,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	var start = this.GetRobotPosition()
 
 	var destination = start.NextFor(direction)
-	if destination.isOutOfBound(this.MapWidth(), this.MapHeigth()) {
+	if destination.isOutOfBound(this.MapSize()) {
 		return
 	}
 
@@ -47,7 +47,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, direction Direction) bool {
 	var destination = boxCoordinate.NextFor(direction)
 
-	if destination.isOutOfBound(this.MapWidth(), this.MapHeigth()) {
+	if destination.isOutOfBound(this.MapSize()) {
 		return false
 	}
 
@@ -69,8 +69,7 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 	return true
 }
 
-func (this WarehouseMap) MapHeigth() int                        { return len(this) }
-func (this WarehouseMap) MapWidth() int                         { return len(this[0]) } // unsupported empty maps
+func (this WarehouseMap) MapSize() int                          { return len(this) } // assuming always square maps
 func (this WarehouseMap) ElementAt(c Coordinate) MapElement     { return this[c.y][c.x] }
 func (this WarehouseMap) setValueAt(c Coordinate, e MapElement) { this[c.y][c.x] = e }
 
