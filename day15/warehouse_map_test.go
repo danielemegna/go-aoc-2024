@@ -105,6 +105,29 @@ func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4, 1}))
 }
 
+func TestMakeAllRobotMovesInSmallerProvidedExampleMap(t *testing.T) {
+	var warehouseMap = smallerProvidedExampleMap()
+
+	warehouseMap.MoveRobot(LEFT)
+	warehouseMap.MoveRobot(UP)
+	warehouseMap.MoveRobot(UP)
+	warehouseMap.MoveRobot(RIGHT)
+	warehouseMap.MoveRobot(RIGHT)
+	warehouseMap.MoveRobot(RIGHT)
+	warehouseMap.MoveRobot(DOWN)
+	warehouseMap.MoveRobot(DOWN)
+	warehouseMap.MoveRobot(LEFT)
+	warehouseMap.MoveRobot(DOWN)
+	warehouseMap.MoveRobot(RIGHT)
+	warehouseMap.MoveRobot(RIGHT)
+	warehouseMap.MoveRobot(DOWN)
+	warehouseMap.MoveRobot(LEFT)
+	warehouseMap.MoveRobot(LEFT)
+
+	var expected = smallerProvidedExampleMapAfterAllRobotMoves()
+	assert.Equal(t, expected, warehouseMap)
+}
+
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
 	var warehouseMap = smallEmptyMap()
 	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())
@@ -139,18 +162,11 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
 }
 
 func TestGetBoxesGPSCoordinatesSumOfSmallerProvidedExampleAfterAllRobotMoves(t *testing.T) {
-	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
-		{WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX},
-		{EMPTY, WALL, BOX, ROBOT, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
-	}
+	var warehouseMap = smallerProvidedExampleMapAfterAllRobotMoves()
 	assert.Equal(t, 2028, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
-func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExample(t *testing.T) {
+func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleAfterAllRobotMoves(t *testing.T) {
 	var warehouseMap = WarehouseMap{
 		{EMPTY, BOX, EMPTY, BOX, EMPTY, BOX, BOX, BOX},
 		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
@@ -206,5 +222,16 @@ func smallerProvidedExampleMap() WarehouseMap {
 		{EMPTY, WALL, EMPTY, BOX, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+}
+
+func smallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
+		{WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX},
+		{EMPTY, WALL, BOX, ROBOT, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
 	}
 }
