@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseSmallerProvidedExampleWarehouseMap(t *testing.T) {
-	var warehouseMap, moves = ParseWarehouseMapAndMoves(SMALLER_PROVIDED_EXAMPLE_INPUT_LINES)
+	var warehouseMap, moves = ParseWarehouseMapAndMoves(simulateFileContent(SMALLER_PROVIDED_EXAMPLE_INPUT_LINES))
 
 	var expectedMap = smallerProvidedExampleMap()
 	var expectedMoves = []Direction{
@@ -18,7 +18,7 @@ func TestParseSmallerProvidedExampleWarehouseMap(t *testing.T) {
 }
 
 func TestParseLargerProvidedExampleWarehouseMap(t *testing.T) {
-	var warehouseMap, moves = ParseWarehouseMapAndMoves(LARGER_PROVIDED_EXAMPLE_INPUT_LINES)
+	var warehouseMap, moves = ParseWarehouseMapAndMoves(simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES))
 
 	assert.Equal(t, 8, warehouseMap.MapSize())
 	assert.Equal(t, Coordinate{3, 3}, warehouseMap.GetRobotPosition())

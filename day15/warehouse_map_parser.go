@@ -1,8 +1,12 @@
 package day15
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-func ParseWarehouseMapAndMoves(inputLines []string) (WarehouseMap, []Direction) {
+func ParseWarehouseMapAndMoves(inputFileContent string) (WarehouseMap, []Direction) {
+	var inputLines = linesFrom(inputFileContent)
 	var warehouseMap = WarehouseMap{}
 	var mapSize = len(inputLines[0]) // assuming always square non-empty map
 
@@ -54,4 +58,10 @@ func mapElementFrom(char rune) MapElement {
 	}
 
 	panic(fmt.Sprintf("Unexpected MapElement value: %c", char))
+}
+
+func linesFrom(s string) []string {
+	var rows = strings.Split(s, "\n")
+	rows = rows[:len(rows)-1]
+	return rows
 }
