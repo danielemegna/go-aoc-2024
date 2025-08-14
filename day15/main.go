@@ -1,5 +1,11 @@
 package day15
 
 func BoxesGPSCoordinatesSum(fileContent string) int {
-	return 2028
+	var warehouseMap, robotMoves = ParseWarehouseMapAndMoves(fileContent)
+
+	for _, move := range robotMoves {
+		warehouseMap.MoveRobot(move)
+	}
+
+	return warehouseMap.GetBoxesGPSCoordinatesSum()
 }

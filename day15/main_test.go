@@ -50,15 +50,13 @@ func TestSolveFirstPartWithSmallerProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithLargerProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 10092, BoxesGPSCoordinatesSum(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, BoxesGPSCoordinatesSum(fileContent))
+	assert.Equal(t, 1383666, BoxesGPSCoordinatesSum(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
