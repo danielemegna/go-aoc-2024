@@ -15,11 +15,30 @@ func ParseWarehouseMapAndMoves(inputLines []string) (WarehouseMap, []Direction) 
 		warehouseMap = append(warehouseMap, mapRow)
 	}
 
-	var moves = []Direction{
-		LEFT, UP, UP, RIGHT, RIGHT, RIGHT, DOWN, DOWN,
-		LEFT, DOWN, RIGHT, RIGHT, DOWN, LEFT, LEFT,
+	var moves = []Direction{}
+	for lineIndex := mapSize + 1; lineIndex < len(inputLines); lineIndex++ {
+		for charIndex := 0; charIndex < len(inputLines[lineIndex]); charIndex++ {
+			var char = rune(inputLines[lineIndex][charIndex])
+			moves = append(moves, directionFrom(char))
+		}
 	}
+
 	return warehouseMap, moves
+}
+
+func directionFrom(char rune) Direction {
+	switch char {
+	case '>':
+		return RIGHT
+	case '<':
+		return LEFT
+	case 'v':
+		return DOWN
+	case '^':
+		return UP
+	}
+
+	panic(fmt.Sprintf("Unexpected Direction value: %c", char))
 }
 
 func mapElementFrom(char rune) MapElement {
