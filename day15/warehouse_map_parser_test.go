@@ -28,6 +28,17 @@ func TestParseLargerProvidedExampleWarehouseMap(t *testing.T) {
 	assert.Equal(t, UP, moves[699])
 }
 
+func TestParseLargerProvidedExampleWarehouseMapInDoubleWide(t *testing.T) {
+	var warehouseMap, moves = ParseWarehouseMapAndMovesInDoubleWide(simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES))
+
+	var expectedMap = expectedLargerProvidedExampleParsedMapInDoubleWide()
+	assert.Equal(t, expectedMap, warehouseMap)
+	assert.Len(t, moves, 700)
+	assert.Equal(t, LEFT, moves[0])
+	assert.Equal(t, RIGHT, moves[46])
+	assert.Equal(t, UP, moves[699])
+}
+
 func expectedSmallerProvidedExampleParsedMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, BOX, EMPTY, BOX, EMPTY},
@@ -43,5 +54,18 @@ func expectedSmallerProvidedExampleParsedMoves() []Direction {
 	return []Direction{
 		LEFT, UP, UP, RIGHT, RIGHT, RIGHT, DOWN, DOWN,
 		LEFT, DOWN, RIGHT, RIGHT, DOWN, LEFT, LEFT,
+	}
+}
+
+func expectedLargerProvidedExampleParsedMapInDoubleWide() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},
+		{LBOX, RBOX, WALL, WALL, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
 }

@@ -11,7 +11,7 @@ func BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent string) int {
 }
 
 func BoxesGPSCoordinatesSumAfterAllRobotMovesInDoubleWide(fileContent string) int {
-	var warehouseMap, robotMoves = ParseWarehouseMapAndMoves(fileContent)
+	var warehouseMap, robotMoves = ParseWarehouseMapAndMovesInDoubleWide(fileContent)
 
 	for _, move := range robotMoves {
 		warehouseMap.MoveRobot(move)

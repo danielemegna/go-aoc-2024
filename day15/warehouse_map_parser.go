@@ -5,7 +5,17 @@ import (
 	"strings"
 )
 
+type MapRowAppendFunction = func([]MapElement, MapElement) []MapElement
+
 func ParseWarehouseMapAndMoves(inputFileContent string) (WarehouseMap, []Direction) {
+	return parseWith(inputFileContent, singleWideMapRowAppend)
+}
+
+func ParseWarehouseMapAndMovesInDoubleWide(inputFileContent string) (WarehouseMap, []Direction) {
+	return parseWith(inputFileContent, doubleWideMapRowAppend)
+}
+
+func parseWith(inputFileContent string, mapRowAppendFn MapRowAppendFunction) (WarehouseMap, []Direction) {
 	var inputLines = linesFrom(inputFileContent)
 	var warehouseMap = WarehouseMap{}
 	var mapSize = len(inputLines[0]) // assuming always square non-empty map
@@ -14,7 +24,8 @@ func ParseWarehouseMapAndMoves(inputFileContent string) (WarehouseMap, []Directi
 		var mapRow = []MapElement{}
 		for charIndex := 1; charIndex < mapSize-1; charIndex++ {
 			var char = rune(inputLines[lineIndex][charIndex])
-			mapRow = append(mapRow, mapElementFrom(char))
+			var mapElement = mapElementFrom(char)
+			mapRow = mapRowAppendFn(mapRow, mapElement)
 		}
 		warehouseMap = append(warehouseMap, mapRow)
 	}
@@ -58,6 +69,25 @@ func mapElementFrom(char rune) MapElement {
 	}
 
 	panic(fmt.Sprintf("Unexpected MapElement value: %c", char))
+}
+
+func singleWideMapRowAppend(row []MapElement, e MapElement) []MapElement {
+	return append(row, e)
+}
+
+func doubleWideMapRowAppend(row []MapElement, e MapElement) []MapElement {
+	switch e {
+	case BOX:
+		return append(append(row, LBOX), RBOX)
+	case EMPTY:
+		return append(append(row, EMPTY), EMPTY)
+	case WALL:
+		return append(append(row, WALL), WALL)
+	case ROBOT:
+		return append(append(row, ROBOT), EMPTY)
+	}
+
+	panic(fmt.Sprintf("Unexpected MapElement: %#v", e))
 }
 
 func linesFrom(s string) []string {

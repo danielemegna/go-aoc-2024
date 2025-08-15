@@ -6,9 +6,11 @@ type MapElement int
 
 const (
 	EMPTY MapElement = iota
-	BOX
 	ROBOT
 	WALL
+	BOX
+	LBOX
+	RBOX
 )
 
 type Direction int
