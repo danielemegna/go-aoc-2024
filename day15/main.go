@@ -1,6 +1,6 @@
 package day15
 
-func BoxesGPSCoordinatesSum(fileContent string) int {
+func BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent string) int {
 	var warehouseMap, robotMoves = ParseWarehouseMapAndMoves(fileContent)
 
 	for _, move := range robotMoves {

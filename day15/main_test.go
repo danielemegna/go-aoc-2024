@@ -46,17 +46,17 @@ var LARGER_PROVIDED_EXAMPLE_INPUT_LINES = []string{
 
 func TestSolveFirstPartWithSmallerProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(SMALLER_PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 2028, BoxesGPSCoordinatesSum(fileContent))
+	assert.Equal(t, 2028, BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent))
 }
 
 func TestSolveFirstPartWithLargerProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 10092, BoxesGPSCoordinatesSum(fileContent))
+	assert.Equal(t, 10092, BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
 	var fileContent = readFileContent()
-	assert.Equal(t, 1383666, BoxesGPSCoordinatesSum(fileContent))
+	assert.Equal(t, 1383666, BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
