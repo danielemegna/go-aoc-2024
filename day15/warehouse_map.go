@@ -39,7 +39,7 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 		return false
 	}
 
-	if destinationElement == BOX {
+	if destinationElement == BOX || destinationElement == LBOX || destinationElement == RBOX {
 		var shifted = this.shiftElementsIfPossible(destination, direction)
 		if !shifted {
 			return false
