@@ -39,10 +39,34 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 		return false
 	}
 
-	if destinationElement == BOX || destinationElement == LBOX || destinationElement == RBOX {
+	if destinationElement == BOX {
 		var shifted = this.shiftElementsIfPossible(destination, direction)
 		if !shifted {
 			return false
+		}
+	}
+
+	if destinationElement == LBOX || destinationElement == RBOX {
+		switch direction {
+		case RIGHT, LEFT:
+			var shifted = this.shiftElementsIfPossible(destination, direction)
+			if !shifted {
+				return false
+			}
+		case UP, DOWN:
+			// possibile problems here ... we are moving elements with no certainty we can complete the move
+			var shifted = this.shiftElementsIfPossible(destination, direction)
+
+			var secondElementToShift Direction
+			if destinationElement == LBOX {
+				secondElementToShift = RIGHT
+			} else {
+				secondElementToShift = LEFT
+			}
+			shifted = shifted && this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
+			if !shifted {
+				return false
+			}
 		}
 	}
 

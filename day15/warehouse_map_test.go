@@ -85,6 +85,41 @@ func TestRobotMovesToTheLeftCloseBigBoxWithHim(t *testing.T) {
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
 }
 
+func TestRobotMovesUpCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY},
+		{EMPTY, ROBOT, EMPTY, EMPTY},
+	}
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
+
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 0}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 0}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+}
+
+func TestRobotMovesDownCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, ROBOT, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 0}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
+
+	warehouseMap.MoveRobot(DOWN)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
+}
+
 func TestRobotCannotMoveCloseBoxesBlockedByMapBounds(t *testing.T) {
 	var warehouseMap = aSmallFullMap()
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{0, 1}))
