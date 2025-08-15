@@ -9,3 +9,13 @@ func BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent string) int {
 
 	return warehouseMap.GetBoxesGPSCoordinatesSum()
 }
+
+func BoxesGPSCoordinatesSumAfterAllRobotMovesInDoubleWide(fileContent string) int {
+	var warehouseMap, robotMoves = ParseWarehouseMapAndMoves(fileContent)
+
+	for _, move := range robotMoves {
+		warehouseMap.MoveRobot(move)
+	}
+
+	return warehouseMap.GetBoxesGPSCoordinatesSum()
+}
