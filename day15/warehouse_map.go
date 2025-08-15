@@ -21,31 +21,12 @@ const (
 )
 
 func (this WarehouseMap) MoveRobot(direction Direction) {
-	var start = this.GetRobotPosition()
-
-	var destination = start.NextFor(direction)
-	if destination.isOutOfBound(this.MapSize()) {
-		return
-	}
-
-	var destinationElement = this.ElementAt(destination)
-	if destinationElement == WALL {
-		return
-	}
-
-	if destinationElement == BOX {
-		var shifted = this.shiftBoxesIfPossible(destination, direction)
-		if !shifted {
-			return
-		}
-	}
-
-	this.setValueAt(start, EMPTY)
-	this.setValueAt(destination, ROBOT)
+	var startCoordinate = this.GetRobotPosition()
+	this.shiftElementsIfPossible(startCoordinate, direction)
 }
 
-func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, direction Direction) bool {
-	var destination = boxCoordinate.NextFor(direction)
+func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, direction Direction) bool {
+	var destination = startCoordinate.NextFor(direction)
 
 	if destination.isOutOfBound(this.MapSize()) {
 		return false
@@ -57,15 +38,14 @@ func (this WarehouseMap) shiftBoxesIfPossible(boxCoordinate Coordinate, directio
 	}
 
 	if destinationElement == BOX {
-		var shifted = this.shiftBoxesIfPossible(destination, direction)
+		var shifted = this.shiftElementsIfPossible(destination, direction)
 		if !shifted {
 			return false
 		}
 	}
 
-	this.setValueAt(boxCoordinate, EMPTY)
-	this.setValueAt(destination, BOX)
-
+	this.setValueAt(destination, this.ElementAt(startCoordinate))
+	this.setValueAt(startCoordinate, EMPTY)
 	return true
 }
 
