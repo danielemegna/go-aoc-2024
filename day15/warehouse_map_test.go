@@ -6,7 +6,7 @@ import (
 )
 
 func TestMoveRobotToTheRightInEmptyMap(t *testing.T) {
-	var warehouseMap = smallEmptyMap()
+	var warehouseMap = aSmallEmptyMap()
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
 	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{1, 2}))
 
@@ -17,7 +17,7 @@ func TestMoveRobotToTheRightInEmptyMap(t *testing.T) {
 }
 
 func TestMoveRobotUpInEmptyMap(t *testing.T) {
-	var warehouseMap = smallEmptyMap()
+	var warehouseMap = aSmallEmptyMap()
 	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0, 1}))
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
 
@@ -28,7 +28,7 @@ func TestMoveRobotUpInEmptyMap(t *testing.T) {
 }
 
 func TestRobotCannotMoveOutOfMapBounds(t *testing.T) {
-	var warehouseMap = smallEmptyMap()
+	var warehouseMap = aSmallEmptyMap()
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
 
 	warehouseMap.MoveRobot(LEFT)
@@ -37,7 +37,7 @@ func TestRobotCannotMoveOutOfMapBounds(t *testing.T) {
 }
 
 func TestRobotCannotMoveOnAWall(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
 
 	warehouseMap.MoveRobot(UP)
@@ -46,7 +46,7 @@ func TestRobotCannotMoveOnAWall(t *testing.T) {
 }
 
 func TestRobotMovesCloseBoxWithHim(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 2}))
 
 	warehouseMap.MoveRobot(DOWN)
@@ -56,7 +56,7 @@ func TestRobotMovesCloseBoxWithHim(t *testing.T) {
 }
 
 func TestRobotCannotMoveCloseBoxesBlockedByMapBounds(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{0, 1}))
 
 	warehouseMap.MoveRobot(LEFT)
@@ -66,7 +66,7 @@ func TestRobotCannotMoveCloseBoxesBlockedByMapBounds(t *testing.T) {
 }
 
 func TestRobotShiftCloseBoxesWhenMoves(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{2, 1}))
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
 
@@ -78,7 +78,7 @@ func TestRobotShiftCloseBoxesWhenMoves(t *testing.T) {
 }
 
 func TestRobotCannotMoveCloseBoxesBlockedByWalls(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	warehouseMap.MoveRobot(DOWN)
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 3}))
@@ -92,7 +92,7 @@ func TestRobotCannotMoveCloseBoxesBlockedByWalls(t *testing.T) {
 }
 
 func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	warehouseMap.MoveRobot(RIGHT)
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
 	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
@@ -106,30 +106,18 @@ func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
 }
 
 func TestMakeAllRobotMovesInSmallerProvidedExampleMap(t *testing.T) {
-	var warehouseMap = smallerProvidedExampleMap()
+	var warehouseMap = expectedSmallerProvidedExampleParsedMap()
 
-	warehouseMap.MoveRobot(LEFT)
-	warehouseMap.MoveRobot(UP)
-	warehouseMap.MoveRobot(UP)
-	warehouseMap.MoveRobot(RIGHT)
-	warehouseMap.MoveRobot(RIGHT)
-	warehouseMap.MoveRobot(RIGHT)
-	warehouseMap.MoveRobot(DOWN)
-	warehouseMap.MoveRobot(DOWN)
-	warehouseMap.MoveRobot(LEFT)
-	warehouseMap.MoveRobot(DOWN)
-	warehouseMap.MoveRobot(RIGHT)
-	warehouseMap.MoveRobot(RIGHT)
-	warehouseMap.MoveRobot(DOWN)
-	warehouseMap.MoveRobot(LEFT)
-	warehouseMap.MoveRobot(LEFT)
+	for _, direction := range expectedSmallerProvidedExampleParsedMoves() {
+		warehouseMap.MoveRobot(direction)
+	}
 
-	var expected = smallerProvidedExampleMapAfterAllRobotMoves()
+	var expected = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
 	assert.Equal(t, expected, warehouseMap)
 }
 
 func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
-	var warehouseMap = smallEmptyMap()
+	var warehouseMap = aSmallEmptyMap()
 	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
@@ -154,7 +142,7 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithASingleMiddleBox(t *testing.T) {
 }
 
 func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
-	var warehouseMap = smallFullMap()
+	var warehouseMap = aSmallFullMap()
 	var expected = ((100 * 2) + 1) +
 		((100 * 2) + 3) + ((100 * 2) + 4) +
 		((100 * 3) + 2)
@@ -162,7 +150,7 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
 }
 
 func TestGetBoxesGPSCoordinatesSumOfSmallerProvidedExampleAfterAllRobotMoves(t *testing.T) {
-	var warehouseMap = smallerProvidedExampleMapAfterAllRobotMoves()
+	var warehouseMap = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
 	assert.Equal(t, 2028, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
@@ -181,18 +169,18 @@ func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleAfterAllRobotMoves(t *t
 }
 
 func TestGetRobotPosition(t *testing.T) {
-	assert.Equal(t, Coordinate{0, 2}, smallEmptyMap().GetRobotPosition())
-	assert.Equal(t, Coordinate{1, 1}, smallFullMap().GetRobotPosition())
-	assert.Equal(t, Coordinate{1, 1}, smallerProvidedExampleMap().GetRobotPosition())
+	assert.Equal(t, Coordinate{0, 2}, aSmallEmptyMap().GetRobotPosition())
+	assert.Equal(t, Coordinate{1, 1}, aSmallFullMap().GetRobotPosition())
+	assert.Equal(t, Coordinate{1, 1}, expectedSmallerProvidedExampleParsedMap().GetRobotPosition())
 }
 
 func TestGetMapSize(t *testing.T) {
-	assert.Equal(t, 4, smallEmptyMap().MapSize())
-	assert.Equal(t, 5, smallFullMap().MapSize())
-	assert.Equal(t, 6, smallerProvidedExampleMap().MapSize())
+	assert.Equal(t, 4, aSmallEmptyMap().MapSize())
+	assert.Equal(t, 5, aSmallFullMap().MapSize())
+	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().MapSize())
 }
 
-func smallEmptyMap() WarehouseMap {
+func aSmallEmptyMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, EMPTY},
@@ -201,7 +189,7 @@ func smallEmptyMap() WarehouseMap {
 	}
 }
 
-func smallFullMap() WarehouseMap {
+func aSmallFullMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, WALL, EMPTY, EMPTY, EMPTY},
 		{BOX, ROBOT, BOX, BOX, EMPTY},
@@ -211,18 +199,7 @@ func smallFullMap() WarehouseMap {
 	}
 }
 
-func smallerProvidedExampleMap() WarehouseMap {
-	return WarehouseMap{
-		{EMPTY, EMPTY, BOX, EMPTY, BOX, EMPTY},
-		{WALL, ROBOT, EMPTY, BOX, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
-		{EMPTY, WALL, EMPTY, BOX, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-	}
-}
-
-func smallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
+func expectedSmallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
 		{WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},

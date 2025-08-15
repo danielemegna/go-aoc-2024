@@ -8,11 +8,8 @@ import (
 func TestParseSmallerProvidedExampleWarehouseMap(t *testing.T) {
 	var warehouseMap, moves = ParseWarehouseMapAndMoves(simulateFileContent(SMALLER_PROVIDED_EXAMPLE_INPUT_LINES))
 
-	var expectedMap = smallerProvidedExampleMap()
-	var expectedMoves = []Direction{
-		LEFT, UP, UP, RIGHT, RIGHT, RIGHT, DOWN, DOWN,
-		LEFT, DOWN, RIGHT, RIGHT, DOWN, LEFT, LEFT,
-	}
+	var expectedMap = expectedSmallerProvidedExampleParsedMap()
+	var expectedMoves = expectedSmallerProvidedExampleParsedMoves()
 	assert.Equal(t, expectedMap, warehouseMap)
 	assert.Equal(t, expectedMoves, moves)
 }
@@ -29,4 +26,22 @@ func TestParseLargerProvidedExampleWarehouseMap(t *testing.T) {
 	assert.Equal(t, LEFT, moves[0])
 	assert.Equal(t, DOWN, moves[1])
 	assert.Equal(t, UP, moves[699])
+}
+
+func expectedSmallerProvidedExampleParsedMap() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, BOX, EMPTY, BOX, EMPTY},
+		{WALL, ROBOT, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, WALL, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+}
+
+func expectedSmallerProvidedExampleParsedMoves() []Direction {
+	return []Direction{
+		LEFT, UP, UP, RIGHT, RIGHT, RIGHT, DOWN, DOWN,
+		LEFT, DOWN, RIGHT, RIGHT, DOWN, LEFT, LEFT,
+	}
 }
