@@ -214,6 +214,51 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
 	assert.Equal(t, expected, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
+// NEXT: delete me when part two will be completed!
+func TestManuallyVerifyBigBoxesGPSCoordinatesSum(t *testing.T) {
+	/*
+	####################
+	##[].......[].[][]##
+	##[]...........[].##
+	##[]........[][][]##
+	##[]......[]....[]##
+	##..##......[]....##
+	##..[]............##
+	##..@......[].[][]##
+	##......[][]..[]..##
+	####################
+	*/
+	var result = ((100 * 1) + 2) +
+		((100 * 1) + 11) +
+		((100 * 1) + 14) +
+		((100 * 1) + 16) +
+
+		((100 * 2) + 2) +
+		((100 * 2) + 15) +
+
+		((100 * 3) + 2) +
+		((100 * 3) + 12) +
+		((100 * 3) + 14) +
+		((100 * 3) + 16) +
+
+		((100 * 4) + 2) +
+		((100 * 4) + 10) +
+		((100 * 4) + 16) +
+
+		((100 * 5) + 12) +
+
+		((100 * 6) + 4) +
+
+		((100 * 7) + 11) +
+		((100 * 7) + 14) +
+		((100 * 7) + 16) +
+
+		((100 * 8) + 8) +
+		((100 * 8) + 10) +
+		((100 * 8) + 14)
+	assert.Equal(t, 9021, result)
+}
+
 func TestGetBoxesGPSCoordinatesSumOfSmallerProvidedExampleAfterAllRobotMoves(t *testing.T) {
 	var warehouseMap = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
 	assert.Equal(t, 2028, warehouseMap.GetBoxesGPSCoordinatesSum())
