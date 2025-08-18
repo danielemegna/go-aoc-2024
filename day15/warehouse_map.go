@@ -54,8 +54,12 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 				return false
 			}
 		case UP, DOWN:
-			// possibile problems here ... we are moving elements with no certainty we can complete the move
-			var shifted = this.shiftElementsIfPossible(destination, direction)
+			var cloneMap = this.Clone()
+			// try to shift first element in a cloned copy of the map
+			var firstElementShifted = cloneMap.shiftElementsIfPossible(destination, direction)
+			if !firstElementShifted {
+				return false
+			}
 
 			var secondElementToShift Direction
 			if destinationElement == LBOX {
@@ -63,10 +67,12 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 			} else {
 				secondElementToShift = LEFT
 			}
-			shifted = shifted && this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
-			if !shifted {
+			var secondElementShifted = this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
+			if !secondElementShifted {
 				return false
 			}
+			// now we can perform the shift of first element on the real map we tried on a copy before
+			this.shiftElementsIfPossible(destination, direction)
 		}
 	}
 
