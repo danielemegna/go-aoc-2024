@@ -290,6 +290,22 @@ func TestGetMapSize(t *testing.T) {
 	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().MapSize())
 }
 
+func TestClone(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	var clone = warehouseMap.Clone()
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{4, 1}))
+	assert.Equal(t, ROBOT, clone.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, EMPTY, clone.ElementAt(Coordinate{4, 1}))
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+	assert.Equal(t, ROBOT, clone.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, EMPTY, clone.ElementAt(Coordinate{4, 1}))
+}
+
 func aSmallEmptyMap() WarehouseMap {
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY},
