@@ -44,6 +44,18 @@ var LARGER_PROVIDED_EXAMPLE_INPUT_LINES = []string{
 	"v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^",
 }
 
+var SECOND_PART_SMALLER_EXAMPLE_INPUT_LINES = []string{
+	"#######",
+	"#...#.#",
+	"#.....#",
+	"#..OO@#",
+	"#..O..#",
+	"#.....#",
+	"#######",
+	"",
+	"<vv<<^^<<^^",
+}
+
 func TestSolveFirstPartWithSmallerProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(SMALLER_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 2028, BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent))
@@ -57,6 +69,12 @@ func TestSolveFirstPartWithLargerProvidedExample(t *testing.T) {
 func TestSolveFirstPartWithFile(t *testing.T) {
 	var fileContent = readFileContent()
 	assert.Equal(t, 1383666, BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent))
+}
+
+func TestSolveSecondPartWithSmallerProvidedExample(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = simulateFileContent(SECOND_PART_SMALLER_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 618, BoxesGPSCoordinatesSumAfterAllRobotMovesInDoubleWide(fileContent))
 }
 
 func TestSolveSecondPartWithLargerProvidedExample(t *testing.T) {
