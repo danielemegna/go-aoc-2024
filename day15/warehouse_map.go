@@ -54,9 +54,7 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 				return false
 			}
 		case UP, DOWN:
-			var cloneMap = this.Clone()
-			// try to shift first element in a cloned copy of the map
-			var firstElementShifted = cloneMap.shiftElementsIfPossible(destination, direction)
+			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
 			if !firstElementShifted {
 				return false
 			}
@@ -67,17 +65,66 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 			} else {
 				secondElementToShift = LEFT
 			}
-			var secondElementShifted = this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
+			var secondElementShifted = this.checkElementsShiftPossible(destination.NextFor(secondElementToShift), direction)
 			if !secondElementShifted {
 				return false
 			}
-			// now we can perform the shift of first element on the real map we tried on a copy before
+
 			this.shiftElementsIfPossible(destination, direction)
+			this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
 		}
 	}
 
 	this.setValueAt(destination, this.ElementAt(startCoordinate))
 	this.setValueAt(startCoordinate, EMPTY)
+	return true
+}
+
+func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, direction Direction) bool {
+	var destination = startCoordinate.NextFor(direction)
+
+	if destination.isOutOfBound(this.MapSize()) {
+		return false
+	}
+
+	var destinationElement = this.ElementAt(destination)
+	if destinationElement == WALL {
+		return false
+	}
+
+	if destinationElement == BOX {
+		var shifted = this.checkElementsShiftPossible(destination, direction)
+		if !shifted {
+			return false
+		}
+	}
+
+	if destinationElement == LBOX || destinationElement == RBOX {
+		switch direction {
+		case RIGHT, LEFT:
+			var shifted = this.checkElementsShiftPossible(destination, direction)
+			if !shifted {
+				return false
+			}
+		case UP, DOWN:
+			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
+			if !firstElementShifted {
+				return false
+			}
+
+			var secondElementToShift Direction
+			if destinationElement == LBOX {
+				secondElementToShift = RIGHT
+			} else {
+				secondElementToShift = LEFT
+			}
+			var secondElementShifted = this.checkElementsShiftPossible(destination.NextFor(secondElementToShift), direction)
+			if !secondElementShifted {
+				return false
+			}
+		}
+	}
+
 	return true
 }
 
