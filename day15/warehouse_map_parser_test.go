@@ -58,6 +58,18 @@ func expectedSmallerProvidedExampleParsedMoves() []Direction {
 }
 
 func expectedLargerProvidedExampleParsedMapInDoubleWide() WarehouseMap {
+	/*
+	####################
+	##....[]....[]..[]##
+	##............[]..##
+	##..[][]....[]..[]##
+	##....[]@.....[]..##
+	##[]##....[]......##
+	##[]....[]....[]..##
+	##..[][]..[]..[][]##
+	##........[]......##
+	####################
+	*/
 	return WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX},
 		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},

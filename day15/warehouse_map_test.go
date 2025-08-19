@@ -96,7 +96,6 @@ func TestRobotMovesUpCloseBigBoxWithHim(t *testing.T) {
 	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
 	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
 
-
 	warehouseMap.MoveRobot(UP)
 
 	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 0}))
@@ -254,51 +253,6 @@ func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
 	assert.Equal(t, expected, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
-// NEXT: delete me when part two will be completed!
-func TestManuallyVerifyBigBoxesGPSCoordinatesSum(t *testing.T) {
-	/*
-	####################
-	##[].......[].[][]##
-	##[]...........[].##
-	##[]........[][][]##
-	##[]......[]....[]##
-	##..##......[]....##
-	##..[]............##
-	##..@......[].[][]##
-	##......[][]..[]..##
-	####################
-	*/
-	var result = ((100 * 1) + 2) +
-		((100 * 1) + 11) +
-		((100 * 1) + 14) +
-		((100 * 1) + 16) +
-
-		((100 * 2) + 2) +
-		((100 * 2) + 15) +
-
-		((100 * 3) + 2) +
-		((100 * 3) + 12) +
-		((100 * 3) + 14) +
-		((100 * 3) + 16) +
-
-		((100 * 4) + 2) +
-		((100 * 4) + 10) +
-		((100 * 4) + 16) +
-
-		((100 * 5) + 12) +
-
-		((100 * 6) + 4) +
-
-		((100 * 7) + 11) +
-		((100 * 7) + 14) +
-		((100 * 7) + 16) +
-
-		((100 * 8) + 8) +
-		((100 * 8) + 10) +
-		((100 * 8) + 14)
-	assert.Equal(t, 9021, result)
-}
-
 func TestGetBoxesGPSCoordinatesSumOfSmallerProvidedExampleAfterAllRobotMoves(t *testing.T) {
 	var warehouseMap = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
 	assert.Equal(t, 2028, warehouseMap.GetBoxesGPSCoordinatesSum())
@@ -316,6 +270,11 @@ func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleAfterAllRobotMoves(t *t
 		{BOX, BOX, EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
 	}
 	assert.Equal(t, 10092, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleInDoubleWideAfterAllRobotMoves(t *testing.T) {
+	var warehouseMap = expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves()
+	assert.Equal(t, 9021, warehouseMap.GetBoxesGPSCoordinatesSum())
 }
 
 func TestGetRobotPosition(t *testing.T) {
@@ -373,5 +332,30 @@ func expectedSmallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
 		{EMPTY, WALL, BOX, ROBOT, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
 		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+	}
+}
+
+func expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves() WarehouseMap {
+	/*
+	####################
+	##[].......[].[][]##
+	##[]...........[].##
+	##[]........[][][]##
+	##[]......[]....[]##
+	##..##......[]....##
+	##..[]............##
+	##..@......[].[][]##
+	##......[][]..[]..##
+	####################
+	*/
+	return WarehouseMap{
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, LBOX, RBOX, LBOX, RBOX},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, LBOX, RBOX},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX},
+		{EMPTY, EMPTY, WALL, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, LBOX, RBOX, LBOX, RBOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},
 	}
 }

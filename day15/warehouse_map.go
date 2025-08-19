@@ -151,6 +151,9 @@ func (this WarehouseMap) GetBoxesGPSCoordinatesSum() int {
 			if mapElement == BOX {
 				sum += (100 * (y + 1)) + x + 1
 			}
+			if mapElement == LBOX {
+				sum += (100 * (y + 1)) + x + 2
+			}
 		}
 	}
 
