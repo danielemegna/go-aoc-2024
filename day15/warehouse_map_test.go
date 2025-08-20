@@ -287,6 +287,14 @@ func TestGetMapSize(t *testing.T) {
 	assert.Equal(t, 4, aSmallEmptyMap().MapSize())
 	assert.Equal(t, 5, aSmallFullMap().MapSize())
 	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().MapSize())
+	assert.Equal(t, 4, aSmallEmptyMap().GetWidth())
+	assert.Equal(t, 4, aSmallEmptyMap().GetHeight())
+	assert.Equal(t, 5, aSmallFullMap().GetWidth())
+	assert.Equal(t, 5, aSmallFullMap().GetHeight())
+	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().GetWidth())
+	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().GetHeight())
+	assert.Equal(t, 16, expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves().GetWidth())
+	assert.Equal(t, 8, expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves().GetHeight())
 }
 
 func TestClone(t *testing.T) {

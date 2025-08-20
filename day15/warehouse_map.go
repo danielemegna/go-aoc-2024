@@ -129,6 +129,8 @@ func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, 
 }
 
 func (this WarehouseMap) MapSize() int                          { return len(this) } // assuming always square maps
+func (this WarehouseMap) GetWidth() int                         { return len(this[0]) }
+func (this WarehouseMap) GetHeight() int                        { return len(this) }
 func (this WarehouseMap) ElementAt(c Coordinate) MapElement     { return this[c.y][c.x] }
 func (this WarehouseMap) setValueAt(c Coordinate, e MapElement) { this[c.y][c.x] = e }
 
@@ -169,4 +171,3 @@ func (this WarehouseMap) Clone() WarehouseMap {
 	}
 	return deepCopy
 }
-
