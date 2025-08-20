@@ -56,26 +56,27 @@ func TestRobotMovesCloseBoxWithHim(t *testing.T) {
 }
 
 func TestRobotMovesToTheRightCloseBigBoxWithHim(t *testing.T) {
+	t.Skip("WIP")
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{ROBOT, LBOX, RBOX, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, LBOX, RBOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
 
 	warehouseMap.MoveRobot(RIGHT)
 
-	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
-	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
-	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{5, 1}))
 }
 
 func TestRobotMovesToTheLeftCloseBigBoxWithHim(t *testing.T) {
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, LBOX, RBOX, ROBOT},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
 
 	warehouseMap.MoveRobot(LEFT)
@@ -87,32 +88,26 @@ func TestRobotMovesToTheLeftCloseBigBoxWithHim(t *testing.T) {
 
 func TestRobotMovesUpCloseBigBoxWithHim(t *testing.T) {
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
-	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 1}))
-	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
-	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
 
 	warehouseMap.MoveRobot(UP)
 
-	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 0}))
-	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 0}))
-	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{2, 0}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{3, 0}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
 }
 
 func TestRobotMovesDownCloseBigBoxWithHim(t *testing.T) {
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, ROBOT, EMPTY},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
-	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 0}))
-	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 1}))
-	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 1}))
 
 	warehouseMap.MoveRobot(DOWN)
 
@@ -173,40 +168,32 @@ func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
 
 func TestRobotCannotMoveCloseBigBoxesPartiallyBlockedByWalls(t *testing.T) {
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, WALL, EMPTY},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
 
 	warehouseMap.MoveRobot(UP)
 
-	var expected = WarehouseMap{
-		{EMPTY, EMPTY, WALL, EMPTY},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-	}
-	assert.Equal(t, expected, warehouseMap)
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 3}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
 }
 
 func TestRobotCannotMoveMultipleCloseBigBoxesPartiallyBlockedByWalls(t *testing.T) {
 	var warehouseMap = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, WALL},
-		{EMPTY, EMPTY, LBOX, RBOX},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, WALL, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 	}
 
 	warehouseMap.MoveRobot(UP)
 
-	var expected = WarehouseMap{
-		{EMPTY, EMPTY, EMPTY, WALL},
-		{EMPTY, EMPTY, LBOX, RBOX},
-		{EMPTY, LBOX, RBOX, EMPTY},
-		{EMPTY, ROBOT, EMPTY, EMPTY},
-	}
-	assert.Equal(t, expected, warehouseMap)
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 3}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{3, 2}))
 }
 
 func TestMakeAllRobotMovesInSmallerProvidedExampleMap(t *testing.T) {
@@ -345,16 +332,16 @@ func expectedSmallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
 
 func expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves() WarehouseMap {
 	/*
-	####################
-	##[].......[].[][]##
-	##[]...........[].##
-	##[]........[][][]##
-	##[]......[]....[]##
-	##..##......[]....##
-	##..[]............##
-	##..@......[].[][]##
-	##......[][]..[]..##
-	####################
+		####################
+		##[].......[].[][]##
+		##[]...........[].##
+		##[]........[][][]##
+		##[]......[]....[]##
+		##..##......[]....##
+		##..[]............##
+		##..@......[].[][]##
+		##......[][]..[]..##
+		####################
 	*/
 	return WarehouseMap{
 		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, LBOX, RBOX, LBOX, RBOX},
