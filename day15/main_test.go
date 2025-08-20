@@ -72,13 +72,11 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 }
 
 func TestSolveSecondPartWithSmallerProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(SECOND_PART_SMALLER_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 618, BoxesGPSCoordinatesSumAfterAllRobotMovesInDoubleWide(fileContent))
 }
 
 func TestSolveSecondPartWithLargerProvidedExample(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 9021, BoxesGPSCoordinatesSumAfterAllRobotMovesInDoubleWide(fileContent))
 }
