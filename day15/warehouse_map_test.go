@@ -56,7 +56,6 @@ func TestRobotMovesCloseBoxWithHim(t *testing.T) {
 }
 
 func TestRobotMovesToTheRightCloseBigBoxWithHim(t *testing.T) {
-	t.Skip("WIP")
 	var warehouseMap = WarehouseMap{
 		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
 		{EMPTY, EMPTY, ROBOT, LBOX, RBOX, EMPTY, EMPTY, EMPTY},
@@ -271,9 +270,6 @@ func TestGetRobotPosition(t *testing.T) {
 }
 
 func TestGetMapSize(t *testing.T) {
-	assert.Equal(t, 4, aSmallEmptyMap().MapSize())
-	assert.Equal(t, 5, aSmallFullMap().MapSize())
-	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().MapSize())
 	assert.Equal(t, 4, aSmallEmptyMap().GetWidth())
 	assert.Equal(t, 4, aSmallEmptyMap().GetHeight())
 	assert.Equal(t, 5, aSmallFullMap().GetWidth())

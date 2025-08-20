@@ -17,7 +17,6 @@ func TestParseSmallerProvidedExampleWarehouseMap(t *testing.T) {
 func TestParseLargerProvidedExampleWarehouseMap(t *testing.T) {
 	var warehouseMap, moves = ParseWarehouseMapAndMoves(simulateFileContent(LARGER_PROVIDED_EXAMPLE_INPUT_LINES))
 
-	assert.Equal(t, 8, warehouseMap.MapSize())
 	assert.Equal(t, 8, warehouseMap.GetWidth())
 	assert.Equal(t, 8, warehouseMap.GetHeight())
 	assert.Equal(t, Coordinate{3, 3}, warehouseMap.GetRobotPosition())

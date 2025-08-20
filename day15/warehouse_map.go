@@ -30,7 +30,7 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, direction Direction) bool {
 	var destination = startCoordinate.NextFor(direction)
 
-	if destination.isOutOfBound(this.MapSize()) {
+	if destination.isOutOfBoundFor(this) {
 		return false
 	}
 
@@ -83,7 +83,7 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, direction Direction) bool {
 	var destination = startCoordinate.NextFor(direction)
 
-	if destination.isOutOfBound(this.MapSize()) {
+	if destination.isOutOfBoundFor(this) {
 		return false
 	}
 
@@ -128,7 +128,6 @@ func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, 
 	return true
 }
 
-func (this WarehouseMap) MapSize() int                          { return len(this) } // assuming always square maps
 func (this WarehouseMap) GetWidth() int                         { return len(this[0]) }
 func (this WarehouseMap) GetHeight() int                        { return len(this) }
 func (this WarehouseMap) ElementAt(c Coordinate) MapElement     { return this[c.y][c.x] }
