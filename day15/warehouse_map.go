@@ -102,13 +102,3 @@ func (this WarehouseMap) GetBoxesGPSCoordinatesSum() int {
 
 	return sum
 }
-
-func (this WarehouseMap) Clone() WarehouseMap {
-	var deepCopy = make(WarehouseMap, len(this))
-
-	for rowIndex, row := range this {
-		deepCopy[rowIndex] = make([]MapElement, len(row))
-		copy(deepCopy[rowIndex], row)
-	}
-	return deepCopy
-}
