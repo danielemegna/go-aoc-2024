@@ -7,7 +7,11 @@ func (this WarehouseMap) MoveRobot(direction Direction) {
 	this.shiftElementsIfPossible(startCoordinate, direction)
 }
 
-func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, direction Direction) bool {
+func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, direction Direction) {
+	this.checkShiftIsPossibile(startCoordinate, direction, true)
+}
+
+func (this WarehouseMap) checkShiftIsPossibile(startCoordinate Coordinate, direction Direction, actuallyShiftElements bool) bool {
 	var destination = startCoordinate.NextFor(direction)
 
 	if destination.isOutOfBoundFor(this) {
@@ -20,7 +24,7 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 	}
 
 	if destinationElement.IsSmallBox() {
-		var shifted = this.shiftElementsIfPossible(destination, direction)
+		var shifted = this.checkShiftIsPossibile(destination, direction, actuallyShiftElements)
 		if !shifted {
 			return false
 		}
@@ -28,73 +32,42 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 
 	if destinationElement.IsBigBox() {
 		if direction.IsHorizontal() {
-			var shifted = this.shiftElementsIfPossible(destination, direction)
+			var shifted = this.checkShiftIsPossibile(destination, direction, actuallyShiftElements)
 			if !shifted {
 				return false
 			}
-		} else if direction.IsVertical() {
-			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
-			if !firstElementShifted {
+		}
+		if direction.IsVertical() {
+			var firstBoxPartDestination = destination
+			var secondBoxPartToShift = destinationElement.OtherBigBoxPart()
+			var secondBoxPartDestination = destination.NextFor(secondBoxPartToShift)
+
+			if !this.isBigBoxShiftPossibile(firstBoxPartDestination, secondBoxPartDestination, direction) {
 				return false
 			}
 
-			var secondElementToShift Direction = destinationElement.OtherBigBoxPart()
-			var secondElementShifted = this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
-			if !secondElementShifted {
-				return false
+			if actuallyShiftElements {
+				this.checkShiftIsPossibile(destination, direction, true)
+				this.checkShiftIsPossibile(secondBoxPartDestination, direction, true)
 			}
-
-			this.shiftElementsIfPossible(destination, direction)
 		}
 	}
 
-	this.setValueAt(destination, this.ElementAt(startCoordinate))
-	this.setValueAt(startCoordinate, EMPTY)
+	if actuallyShiftElements {
+		this.setValueAt(destination, this.ElementAt(startCoordinate))
+		this.setValueAt(startCoordinate, EMPTY)
+	}
+
 	return true
 }
 
-func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, direction Direction) bool {
-	var destination = startCoordinate.NextFor(direction)
-
-	if destination.isOutOfBoundFor(this) {
-		return false
-	}
-
-	var destinationElement = this.ElementAt(destination)
-	if destinationElement == WALL {
-		return false
-	}
-
-	if destinationElement.IsSmallBox() {
-		var shifted = this.checkElementsShiftPossible(destination, direction)
-		if !shifted {
-			return false
-		}
-	}
-
-	if destinationElement.IsBigBox() {
-		if direction.IsHorizontal() {
-			var shifted = this.checkElementsShiftPossible(destination, direction)
-			if !shifted {
-				return false
-			}
-		} else if direction.IsVertical() {
-			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
-			if !firstElementShifted {
-				return false
-			}
-
-			var secondElementToShift Direction = destinationElement.OtherBigBoxPart()
-			var secondElementShifted = this.checkElementsShiftPossible(destination.NextFor(secondElementToShift), direction)
-			if !secondElementShifted {
-				return false
-			}
-
-			this.checkElementsShiftPossible(destination, direction)
-		}
-	}
-
-	return true
+func (this WarehouseMap) isBigBoxShiftPossibile(
+	firstBoxPartDestination Coordinate,
+	secondBoxPartDestination Coordinate,
+	direction Direction,
+) bool {
+	return this.checkShiftIsPossibile(firstBoxPartDestination, direction, false) &&
+		this.checkShiftIsPossibile(secondBoxPartDestination, direction, false)
 }
 
 func (this WarehouseMap) GetWidth() int                         { return len(this[0]) }
