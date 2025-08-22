@@ -2,26 +2,6 @@ package day15
 
 type WarehouseMap [][]MapElement
 
-type MapElement int
-
-const (
-	EMPTY MapElement = iota
-	ROBOT
-	WALL
-	BOX
-	LBOX
-	RBOX
-)
-
-type Direction int
-
-const (
-	UP Direction = iota
-	DOWN
-	LEFT
-	RIGHT
-)
-
 func (this WarehouseMap) MoveRobot(direction Direction) {
 	var startCoordinate = this.GetRobotPosition()
 	this.shiftElementsIfPossible(startCoordinate, direction)
@@ -39,39 +19,32 @@ func (this WarehouseMap) shiftElementsIfPossible(startCoordinate Coordinate, dir
 		return false
 	}
 
-	if destinationElement == BOX {
+	if destinationElement.IsSmallBox() {
 		var shifted = this.shiftElementsIfPossible(destination, direction)
 		if !shifted {
 			return false
 		}
 	}
 
-	if destinationElement == LBOX || destinationElement == RBOX {
-		switch direction {
-		case RIGHT, LEFT:
+	if destinationElement.IsBigBox() {
+		if direction.IsHorizontal() {
 			var shifted = this.shiftElementsIfPossible(destination, direction)
 			if !shifted {
 				return false
 			}
-		case UP, DOWN:
+		} else if direction.IsVertical() {
 			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
 			if !firstElementShifted {
 				return false
 			}
 
-			var secondElementToShift Direction
-			if destinationElement == LBOX {
-				secondElementToShift = RIGHT
-			} else {
-				secondElementToShift = LEFT
-			}
-			var secondElementShifted = this.checkElementsShiftPossible(destination.NextFor(secondElementToShift), direction)
+			var secondElementToShift Direction = destinationElement.OtherBigBoxPart()
+			var secondElementShifted = this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
 			if !secondElementShifted {
 				return false
 			}
 
 			this.shiftElementsIfPossible(destination, direction)
-			this.shiftElementsIfPossible(destination.NextFor(secondElementToShift), direction)
 		}
 	}
 
@@ -92,36 +65,32 @@ func (this WarehouseMap) checkElementsShiftPossible(startCoordinate Coordinate, 
 		return false
 	}
 
-	if destinationElement == BOX {
+	if destinationElement.IsSmallBox() {
 		var shifted = this.checkElementsShiftPossible(destination, direction)
 		if !shifted {
 			return false
 		}
 	}
 
-	if destinationElement == LBOX || destinationElement == RBOX {
-		switch direction {
-		case RIGHT, LEFT:
+	if destinationElement.IsBigBox() {
+		if direction.IsHorizontal() {
 			var shifted = this.checkElementsShiftPossible(destination, direction)
 			if !shifted {
 				return false
 			}
-		case UP, DOWN:
+		} else if direction.IsVertical() {
 			var firstElementShifted = this.checkElementsShiftPossible(destination, direction)
 			if !firstElementShifted {
 				return false
 			}
 
-			var secondElementToShift Direction
-			if destinationElement == LBOX {
-				secondElementToShift = RIGHT
-			} else {
-				secondElementToShift = LEFT
-			}
+			var secondElementToShift Direction = destinationElement.OtherBigBoxPart()
 			var secondElementShifted = this.checkElementsShiftPossible(destination.NextFor(secondElementToShift), direction)
 			if !secondElementShifted {
 				return false
 			}
+
+			this.checkElementsShiftPossible(destination, direction)
 		}
 	}
 
