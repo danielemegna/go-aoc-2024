@@ -50,10 +50,10 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Coordin
 
 	for len(stack) > 0 {
 		var snapshot = stack.PopMinimumCost()
-		reindeer, cost = snapshot.reindeer, snapshot.cost
+		var snapshotReindeer, snapshotCost = snapshot.reindeer, snapshot.cost
 
 		for _, nextDirection := range []Direction{RIGHT, LEFT, UP, DOWN} {
-			var nextCoordinate = reindeer.Coordinate.NextFor(nextDirection)
+			var nextCoordinate = snapshotReindeer.Coordinate.NextFor(nextDirection)
 
 			if nextCoordinate.IsOutOfBoundFor(maze) {
 				continue
@@ -68,23 +68,23 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Coordin
 				continue
 			}
 
-			cost += 1
+			var nextCoordinateCost = snapshotCost + 1
 
-			if nextDirection != reindeer.Direction {
-				cost += 1000
+			if nextDirection != snapshotReindeer.Direction {
+				nextCoordinateCost += 1000
 			}
 
-			if nextDirection == reindeer.Direction.Opposite() {
-				cost += 1000
+			if nextDirection == snapshotReindeer.Direction.Opposite() {
+				nextCoordinateCost += 1000
 			}
 
 			if nextCoordinate == target {
-				return cost
+				return nextCoordinateCost
 			}
 
-			stack.Append(MomentSnapshot{updatedReindeer, cost})
+			stack.Append(MomentSnapshot{updatedReindeer, nextCoordinateCost})
 		}
-		completed = append(completed, reindeer)
+		completed = append(completed, snapshotReindeer)
 	}
 
 	return 0
@@ -102,7 +102,7 @@ func (this *SnapshotStack) PopMinimumCost() MomentSnapshot {
 	}
 
 	var pop = stack[minIndex]
-	(*this) = slices.Delete(stack, minIndex, minIndex)
+	(*this) = slices.Delete(stack, minIndex, minIndex+1)
 
 	return pop
 }
