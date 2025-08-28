@@ -11,7 +11,9 @@ type MomentSnapshot = struct {
 }
 type SnapshotStack []MomentSnapshot
 
-func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Coordinate) int {
+type Target = Coordinate
+
+func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target) int {
 	var stack = SnapshotStack{}
 	var completed = []Reindeer{}
 	var cost = 0
