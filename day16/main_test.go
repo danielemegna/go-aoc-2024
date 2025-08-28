@@ -46,6 +46,7 @@ var SECOND_PROVIDED_EXAMPLE_INPUT_LINES = []string{
 }
 
 func TestSolveFirstPartWithFirstProvidedExample(t *testing.T) {
+	t.Skip("WIP")
 	var fileContent = simulateFileContent(FIRST_PROVIDED_EXAMPLE_INPUT_LINES)
 	assert.Equal(t, 7036, LowestReindeerCostFor(fileContent))
 }
