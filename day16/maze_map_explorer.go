@@ -60,6 +60,10 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 				continue
 			}
 
+			if nextDirection == snapshotReindeer.Direction.Opposite() {
+				continue
+			}
+
 			if maze.ElementAt(nextCoordinate) == WALL {
 				continue
 			}
@@ -72,10 +76,6 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 			var nextCoordinateCost = snapshotCost + 1
 
 			if nextDirection != snapshotReindeer.Direction {
-				nextCoordinateCost += 1000
-			}
-
-			if nextDirection == snapshotReindeer.Direction.Opposite() {
 				nextCoordinateCost += 1000
 			}
 
