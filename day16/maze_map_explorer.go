@@ -1,7 +1,6 @@
 package day16
 
 import (
-	"math"
 	"slices"
 )
 
@@ -42,7 +41,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 			return cost
 		}
 
-		stack.Append(MomentSnapshot{
+		stack.AppendSortedByCost(MomentSnapshot{
 			Reindeer{nextCoordinate, nextDirection},
 			cost,
 		})
@@ -50,7 +49,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 	completed = append(completed, reindeer)
 
 	for len(stack) > 0 {
-		var snapshot = stack.PopMinimumCost()
+		var snapshot = stack.PopFirstElement()
 		var snapshotReindeer, snapshotCost = snapshot.reindeer, snapshot.cost
 
 		for _, nextDirection := range []Direction{RIGHT, LEFT, UP, DOWN} {
@@ -83,7 +82,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 				return nextCoordinateCost
 			}
 
-			stack.Append(MomentSnapshot{updatedReindeer, nextCoordinateCost})
+			stack.AppendSortedByCost(MomentSnapshot{updatedReindeer, nextCoordinateCost})
 		}
 		completed = append(completed, snapshotReindeer)
 	}
@@ -91,23 +90,21 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 	return 0
 }
 
-func (this *SnapshotStack) PopMinimumCost() MomentSnapshot {
+func (this *SnapshotStack) PopFirstElement() MomentSnapshot {
 	var stack = (*this)
-	var minIndex int = -1
-	var minCost int = math.MaxInt64
-	for index, snapshot := range stack {
-		if snapshot.cost < minCost {
-			minCost = snapshot.cost
-			minIndex = index
-		}
-	}
-
-	var pop = stack[minIndex]
-	(*this) = slices.Delete(stack, minIndex, minIndex+1)
-
+	var pop = stack[0]
+	(*this) = stack[1:]
 	return pop
 }
 
-func (this *SnapshotStack) Append(snapshot MomentSnapshot) {
-	(*this) = append((*this), snapshot)
+func (this *SnapshotStack) AppendSortedByCost(newSnapshot MomentSnapshot) {
+	var stack = (*this)
+	for index, snapshot := range stack {
+		if newSnapshot.cost <= snapshot.cost {
+			(*this) = slices.Insert(stack, index, newSnapshot)
+			return
+		}
+	}
+
+	(*this) = append(stack, newSnapshot)
 }
