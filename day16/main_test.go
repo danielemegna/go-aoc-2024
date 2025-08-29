@@ -56,9 +56,8 @@ func TestSolveFirstPartWithSecondProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, LowestReindeerCostFor(fileContent))
+	assert.Equal(t, 134588, LowestReindeerCostFor(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
