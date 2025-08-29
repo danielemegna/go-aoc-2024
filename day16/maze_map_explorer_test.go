@@ -44,6 +44,20 @@ func TestCostTwoStepAndATurn(t *testing.T) {
 	assert.Equal(t, 1003, cost)
 }
 
+func TestCostTwoStepDown(t *testing.T) {
+	var reindeer = Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT}
+	var target = Coordinate{0, 2}
+	var maze = MazeMap{
+		{EMPTY, EMPTY},
+		{EMPTY, EMPTY},
+		{EMPTY, EMPTY},
+	}
+
+	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+
+	assert.Equal(t, 1002, cost)
+}
+
 func TestCostWithEmptySmallMap(t *testing.T) {
 	var reindeer = Reindeer{Coordinate: Coordinate{0, 3}, Direction: RIGHT}
 	var target = Coordinate{3, 0}

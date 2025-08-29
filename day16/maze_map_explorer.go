@@ -16,7 +16,6 @@ type Target = Coordinate
 func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target) int {
 	var stack = SnapshotStack{}
 	var completed = []Reindeer{}
-	var cost = 0
 
 	for _, nextDirection := range []Direction{RIGHT, LEFT, UP, DOWN} {
 		var nextCoordinate = reindeer.Coordinate.NextFor(nextDirection)
@@ -29,7 +28,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 			continue
 		}
 
-		cost += 1
+		var cost = 1
 
 		if nextDirection != reindeer.Direction {
 			cost += 1000
