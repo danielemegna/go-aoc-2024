@@ -14,7 +14,6 @@ type Target = Coordinate
 
 func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target) int {
 	var stack = SnapshotStack{}
-	var completed = []Reindeer{}
 
 	for _, nextDirection := range []Direction{RIGHT, LEFT, UP, DOWN} {
 		var nextCoordinate = reindeer.Coordinate.NextFor(nextDirection)
@@ -46,8 +45,8 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 			cost,
 		})
 	}
-	completed = append(completed, reindeer)
 
+	var fullyVisited = []Reindeer{reindeer}
 	for len(stack) > 0 {
 		var snapshot = stack.PopFirstElement()
 		var snapshotReindeer, snapshotCost = snapshot.reindeer, snapshot.cost
@@ -68,7 +67,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 			}
 
 			var updatedReindeer = Reindeer{nextCoordinate, nextDirection}
-			if slices.Contains(completed, updatedReindeer) {
+			if slices.Contains(fullyVisited, updatedReindeer) {
 				continue
 			}
 
@@ -84,7 +83,7 @@ func FindLowestCostToReachTarget(maze MazeMap, reindeer Reindeer, target Target)
 
 			stack.AppendSortedByCost(MomentSnapshot{updatedReindeer, nextCoordinateCost})
 		}
-		completed = append(completed, snapshotReindeer)
+		fullyVisited = append(fullyVisited, snapshotReindeer)
 	}
 
 	return 0
