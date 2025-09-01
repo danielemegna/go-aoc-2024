@@ -22,10 +22,6 @@ func (this Coordinate) NextFor(direction Direction) Coordinate {
 	panic(fmt.Sprintf("Unexpected Direction value: %v", direction))
 }
 
-func (this Coordinate) IsOutOfBoundFor(m MazeMap) bool {
-	return this.X < 0 || this.Y < 0 || this.X >= m.GetWidth() || this.Y >= m.GetHeight()
-}
-
 func (this Coordinate) CloseCoordinates() []Coordinate {
 	return []Coordinate{
 		{this.X + 1, this.Y},
