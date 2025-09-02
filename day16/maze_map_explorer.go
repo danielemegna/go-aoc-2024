@@ -43,6 +43,7 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 			}
 
 			if nextDirection == snapshotReindeer.Direction.Opposite() {
+				// let's exclude to visit again
 				continue
 			}
 
@@ -74,18 +75,18 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 }
 
 func (this *MazeMapExplorer) InizializeSnapshotStack() {
-	// we know Reindeer initial direction always RIGHT
-	var reindeerCoordinate = this.reindeer.Coordinate
-	this.AppendToStackWithCostIfVisitable(reindeerCoordinate.NextFor(RIGHT), RIGHT, 1)
-	this.AppendToStackWithCostIfVisitable(reindeerCoordinate.NextFor(UP), UP, 1001)
-	this.AppendToStackWithCostIfVisitable(reindeerCoordinate.NextFor(DOWN), DOWN, 1001)
-	this.AppendToStackWithCostIfVisitable(reindeerCoordinate.NextFor(LEFT), LEFT, 2001)
+	var reindeerDirection = this.reindeer.Direction
+	this.AppendToStackWithCostIfVisitable(reindeerDirection, 1)
+	this.AppendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001)
+	this.AppendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001)
+	this.AppendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001)
 }
 
-func (this *MazeMapExplorer) AppendToStackWithCostIfVisitable(coordinate Coordinate, direction Direction, cost int) {
-	if !this.maze.isVisitable(coordinate) {
+func (this *MazeMapExplorer) AppendToStackWithCostIfVisitable(direction Direction, cost int) {
+	var nextCoordinate = this.reindeer.Coordinate.NextFor(direction)
+	if !this.maze.isVisitable(nextCoordinate) {
 		return
 	}
 
-	this.toVisitStack.AppendSortedByCost(coordinate, direction, cost)
+	this.toVisitStack.AppendSortedByCost(nextCoordinate, direction, cost)
 }
