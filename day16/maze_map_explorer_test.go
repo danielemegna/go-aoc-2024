@@ -6,69 +6,79 @@ import (
 )
 
 func TestCostOneStepForehand(t *testing.T) {
-	var reindeer = Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT}
-	var target = Coordinate{1, 0}
-	var maze = MazeMap{
-		{EMPTY, EMPTY},
-		{EMPTY, EMPTY},
-	}
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY},
+			{EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{1, 0},
+	)
 
-	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+	var cost = explorer.FindLowestCostToReachTarget()
 
 	assert.Equal(t, 1, cost)
 }
 
 func TestCostTwoStepForehand(t *testing.T) {
-	var reindeer = Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT}
-	var target = Coordinate{2, 0}
-	var maze = MazeMap{
-		{EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY},
-	}
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{2, 0},
+	)
 
-	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+	var cost = explorer.FindLowestCostToReachTarget()
 
 	assert.Equal(t, 2, cost)
 }
 
 func TestCostTwoStepAndATurn(t *testing.T) {
-	var reindeer = Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT}
-	var target = Coordinate{2, 1}
-	var maze = MazeMap{
-		{EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY},
-	}
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{2, 1},
+	)
 
-	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+	var cost = explorer.FindLowestCostToReachTarget()
 
 	assert.Equal(t, 1003, cost)
 }
 
 func TestCostTwoStepDown(t *testing.T) {
-	var reindeer = Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT}
-	var target = Coordinate{0, 2}
-	var maze = MazeMap{
-		{EMPTY, EMPTY},
-		{EMPTY, EMPTY},
-		{EMPTY, EMPTY},
-	}
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY},
+			{EMPTY, EMPTY},
+			{EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{0, 2},
+	)
 
-	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+	var cost = explorer.FindLowestCostToReachTarget()
 
 	assert.Equal(t, 1002, cost)
 }
 
 func TestCostWithEmptySmallMap(t *testing.T) {
-	var reindeer = Reindeer{Coordinate: Coordinate{0, 3}, Direction: RIGHT}
-	var target = Coordinate{3, 0}
-	var maze = MazeMap{
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-		{EMPTY, EMPTY, EMPTY, EMPTY},
-	}
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 3}, Direction: RIGHT},
+		Coordinate{3, 0},
+	)
 
-	var cost = FindLowestCostToReachTarget(maze, reindeer, target)
+	var cost = explorer.FindLowestCostToReachTarget()
 
 	assert.Equal(t, 1006, cost)
 }
