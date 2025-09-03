@@ -45,7 +45,7 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 		this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), snapshotCost+1001)
 		this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), snapshotCost+1001)
 
-		this.visited = append(this.visited, this.reindeer)
+		this.updateVisited()
 	}
 
 	return -1
@@ -66,10 +66,18 @@ func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Directio
 	}
 
 	var updatedReindeer = Reindeer{nextCoordinate, direction}
-	if slices.Contains(this.visited, updatedReindeer) {
+	if this.alreadyVisited(updatedReindeer) {
 		return
 	}
 
 	var momentSnapshot = MomentSnapshot{updatedReindeer, cost}
 	this.toVisitStack.AppendSortedByCost(momentSnapshot)
+}
+
+func (this *MazeMapExplorer) alreadyVisited(reindeer Reindeer) bool {
+	return slices.Contains(this.visited, reindeer)
+}
+
+func (this *MazeMapExplorer) updateVisited() {
+	this.visited = append(this.visited, this.reindeer)
 }
