@@ -2,9 +2,10 @@ package day16
 
 import "slices"
 
-type MomentSnapshot = struct {
-	reindeer Reindeer
-	cost     int
+type MomentSnapshot struct {
+	reindeer       Reindeer
+	cost           int
+	parentSnapshot *MomentSnapshot
 }
 
 type SnapshotStack []MomentSnapshot

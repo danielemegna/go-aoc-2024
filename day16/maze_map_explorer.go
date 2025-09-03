@@ -37,9 +37,9 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 
 		var reindeerDirection = this.reindeer.Direction
 		var snapshotCost = snapshot.cost
-		this.appendToStackWithCostIfVisitable(reindeerDirection, snapshotCost+1)
-		this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), snapshotCost+1001)
-		this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), snapshotCost+1001)
+		this.appendToStackWithCostIfVisitable(reindeerDirection, snapshotCost+1, &snapshot)
+		this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), snapshotCost+1001, &snapshot)
+		this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), snapshotCost+1001, &snapshot)
 
 		this.updateVisited()
 	}
@@ -49,13 +49,13 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 
 func (this *MazeMapExplorer) inizializeSnapshotStack() {
 	var reindeerDirection = this.reindeer.Direction
-	this.appendToStackWithCostIfVisitable(reindeerDirection, 1)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001)
+	this.appendToStackWithCostIfVisitable(reindeerDirection, 1, nil)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001, nil)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001, nil)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001, nil)
 }
 
-func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Direction, cost int) {
+func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Direction, cost int, parentSnapshot *MomentSnapshot) {
 	var nextCoordinate = this.reindeer.Coordinate.NextFor(direction)
 	if !this.maze.isVisitable(nextCoordinate) {
 		return
@@ -66,7 +66,7 @@ func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Directio
 		return
 	}
 
-	var momentSnapshot = MomentSnapshot{updatedReindeer, cost}
+	var momentSnapshot = MomentSnapshot{reindeer: updatedReindeer, cost: cost, parentSnapshot: parentSnapshot}
 	this.toVisitStack.AppendSortedByCost(momentSnapshot)
 }
 
