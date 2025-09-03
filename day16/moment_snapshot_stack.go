@@ -8,6 +8,16 @@ type MomentSnapshot struct {
 	parentSnapshot *MomentSnapshot
 }
 
+func (this MomentSnapshot) GetPathLength() int {
+	var s = &this
+	var length = 1
+	for s.parentSnapshot != nil {
+		length++
+		s = s.parentSnapshot
+	}
+	return length + 1
+}
+
 type SnapshotStack []MomentSnapshot
 
 func (this *SnapshotStack) PopFirstElement() MomentSnapshot {

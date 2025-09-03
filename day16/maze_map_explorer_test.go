@@ -82,3 +82,18 @@ func TestCostWithEmptySmallMap(t *testing.T) {
 
 	assert.Equal(t, 1006, cost)
 }
+
+func TestBestPathsCoordinatesCountTwoStepForehand(t *testing.T) {
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{2, 0},
+	)
+
+	var count = explorer.CoordinatesCountOfBestPaths()
+
+	assert.Equal(t, 3, count)
+}

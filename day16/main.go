@@ -8,6 +8,7 @@ func LowestReindeerCostFor(fileContent string) int {
 
 func TilesCountOfBestPaths(fileContent string) int {
 	var mazeMap, reindeer, target = ParseMazeMap(fileContent)
-	var _ = NewMazeMapExplorer(mazeMap, reindeer, target)
+	var explorer = NewMazeMapExplorer(mazeMap, reindeer, target)
+	var _ = explorer.CoordinatesCountOfBestPaths()
 	return 45
 }
