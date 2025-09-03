@@ -16,11 +16,8 @@ func (this *SnapshotStack) PopFirstElement() MomentSnapshot {
 	return pop
 }
 
-func (this *SnapshotStack) AppendSortedByCost(coordinate Coordinate, direction Direction, cost int) {
-	var newSnapshot = MomentSnapshot{
-		reindeer: Reindeer{coordinate, direction},
-		cost:     cost,
-	}
+func (this *SnapshotStack) AppendSortedByCost(newSnapshot MomentSnapshot) {
+	var cost = newSnapshot.cost
 	var stack = (*this)
 	for index, existingSnapshot := range stack {
 		if cost <= existingSnapshot.cost {

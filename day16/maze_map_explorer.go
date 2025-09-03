@@ -29,64 +29,47 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 		return 1
 	}
 
-	this.InizializeSnapshotStack()
+	this.inizializeSnapshotStack()
 
 	for len(this.toVisitStack) > 0 {
 		var snapshot = this.toVisitStack.PopFirstElement()
-		var snapshotReindeer, snapshotCost = snapshot.reindeer, snapshot.cost
+		this.reindeer = snapshot.reindeer
 
-		for _, nextDirection := range []Direction{RIGHT, LEFT, UP, DOWN} {
-			var nextCoordinate = snapshotReindeer.Coordinate.NextFor(nextDirection)
-
-			if this.maze.IsOutOfBound(nextCoordinate) {
-				continue
-			}
-
-			if nextDirection == snapshotReindeer.Direction.Opposite() {
-				// let's exclude to visit again
-				continue
-			}
-
-			if this.maze.ElementAt(nextCoordinate) == WALL {
-				continue
-			}
-
-			var updatedReindeer = Reindeer{nextCoordinate, nextDirection}
-			if slices.Contains(this.visited, updatedReindeer) {
-				continue
-			}
-
-			var nextCoordinateCost = snapshotCost + 1
-
-			if nextDirection != snapshotReindeer.Direction {
-				nextCoordinateCost += 1000
-			}
-
-			if nextCoordinate == this.target {
-				return nextCoordinateCost
-			}
-
-			this.toVisitStack.AppendSortedByCost(nextCoordinate, nextDirection, nextCoordinateCost)
+		if this.reindeer.Coordinate == this.target {
+			return snapshot.cost
 		}
-		this.visited = append(this.visited, snapshotReindeer)
+
+		var reindeerDirection = this.reindeer.Direction
+		var snapshotCost = snapshot.cost
+		this.appendToStackWithCostIfVisitable(reindeerDirection, snapshotCost+1)
+		this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), snapshotCost+1001)
+		this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), snapshotCost+1001)
+
+		this.visited = append(this.visited, this.reindeer)
 	}
 
-	return 0
+	return -1
 }
 
-func (this *MazeMapExplorer) InizializeSnapshotStack() {
+func (this *MazeMapExplorer) inizializeSnapshotStack() {
 	var reindeerDirection = this.reindeer.Direction
-	this.AppendToStackWithCostIfVisitable(reindeerDirection, 1)
-	this.AppendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001)
-	this.AppendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001)
-	this.AppendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001)
+	this.appendToStackWithCostIfVisitable(reindeerDirection, 1)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001)
+	this.appendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001)
 }
 
-func (this *MazeMapExplorer) AppendToStackWithCostIfVisitable(direction Direction, cost int) {
+func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Direction, cost int) {
 	var nextCoordinate = this.reindeer.Coordinate.NextFor(direction)
 	if !this.maze.isVisitable(nextCoordinate) {
 		return
 	}
 
-	this.toVisitStack.AppendSortedByCost(nextCoordinate, direction, cost)
+	var updatedReindeer = Reindeer{nextCoordinate, direction}
+	if slices.Contains(this.visited, updatedReindeer) {
+		return
+	}
+
+	var momentSnapshot = MomentSnapshot{updatedReindeer, cost}
+	this.toVisitStack.AppendSortedByCost(momentSnapshot)
 }
