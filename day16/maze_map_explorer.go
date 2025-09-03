@@ -15,22 +15,18 @@ type MazeMapExplorer struct {
 }
 
 func NewMazeMapExplorer(maze MazeMap, reindeer Reindeer, target Target) MazeMapExplorer {
-	return MazeMapExplorer{
+	var explorer = MazeMapExplorer{
 		maze:         maze,
 		reindeer:     reindeer,
 		target:       target,
 		toVisitStack: []MomentSnapshot{},
 		visited:      []Reindeer{},
 	}
+	explorer.inizializeSnapshotStack()
+	return explorer
 }
 
 func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
-	if this.reindeer.ForehandCoordinate() == this.target {
-		return 1
-	}
-
-	this.inizializeSnapshotStack()
-
 	for len(this.toVisitStack) > 0 {
 		var snapshot = this.toVisitStack.PopFirstElement()
 		this.reindeer = snapshot.reindeer
