@@ -60,6 +60,23 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 134588, LowestReindeerCostFor(fileContent))
 }
 
+func TestSolveSecondPartWithFirstProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(FIRST_PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 45, TilesCountOfBestPaths(fileContent))
+}
+
+func TestSolveSecondPartWithSecondProvidedExample(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = simulateFileContent(SECOND_PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 64, TilesCountOfBestPaths(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	assert.Equal(t, -1, TilesCountOfBestPaths(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
