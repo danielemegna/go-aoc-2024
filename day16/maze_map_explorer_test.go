@@ -113,3 +113,20 @@ func TestBestPathsCoordinatesCountTwoStepForehand(t *testing.T) {
 
 	assert.Equal(t, 3, count)
 }
+
+func TestCoordinatesCountOfBestPathsWithMultipleBestPaths(t *testing.T) {
+	var explorer = NewMazeMapExplorer(
+		MazeMap{
+			{EMPTY, EMPTY, WALL, EMPTY},
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, EMPTY, EMPTY},
+			{EMPTY, EMPTY, WALL, EMPTY},
+		},
+		Reindeer{Coordinate: Coordinate{0, 0}, Direction: RIGHT},
+		Coordinate{3, 3},
+	)
+
+	var count = explorer.CoordinatesCountOfBestPaths()
+
+	assert.Equal(t, 7+2+2, count)
+}

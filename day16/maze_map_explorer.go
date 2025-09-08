@@ -1,8 +1,6 @@
 package day16
 
-import (
-	"slices"
-)
+import "slices"
 
 type Target = Coordinate
 
@@ -49,10 +47,21 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 }
 
 func (this MazeMapExplorer) CoordinatesCountOfBestPaths() int {
+	var coordinatesOfBestPaths = map[Coordinate]struct{}{}
+	var bestPathsCost = 999999
+
 	for len(this.toVisitStack) > 0 {
 		var snapshot = this.toVisitStack.PopFirstElement()
+		if snapshot.cost > bestPathsCost {
+			break
+		}
+
 		if snapshot.reindeer.Coordinate == this.target {
-			return len(snapshot.GetPathCoordinates())
+			bestPathsCost = snapshot.cost
+			for _, c := range snapshot.GetPathCoordinates() {
+				coordinatesOfBestPaths[c] = struct{}{}
+			}
+			continue
 		}
 
 		var reindeerDirection = snapshot.reindeer.Direction
@@ -65,7 +74,7 @@ func (this MazeMapExplorer) CoordinatesCountOfBestPaths() int {
 		this.updateVisited()
 	}
 
-	return -1
+	return len(coordinatesOfBestPaths)
 }
 
 func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Direction, cost int, parentSnapshot *MomentSnapshot) {
