@@ -71,9 +71,8 @@ func TestSolveSecondPartWithSecondProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, TilesCountOfBestPaths(fileContent))
+	assert.Equal(t, 631, TilesCountOfBestPaths(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
