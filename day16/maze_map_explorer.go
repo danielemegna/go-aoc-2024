@@ -51,14 +51,13 @@ func (this MazeMapExplorer) FindLowestCostToReachTarget() int {
 func (this MazeMapExplorer) CoordinatesCountOfBestPaths() int {
 	for len(this.toVisitStack) > 0 {
 		var snapshot = this.toVisitStack.PopFirstElement()
-		this.reindeer = snapshot.reindeer
-
-		if this.reindeer.Coordinate == this.target {
-			return snapshot.GetPathLength()
+		if snapshot.reindeer.Coordinate == this.target {
+			return len(snapshot.GetPathCoordinates())
 		}
 
-		var reindeerDirection = this.reindeer.Direction
+		var reindeerDirection = snapshot.reindeer.Direction
 		var snapshotCost = snapshot.cost
+		this.reindeer = snapshot.reindeer
 		this.appendToStackWithCostIfVisitable(reindeerDirection, snapshotCost+1, &snapshot)
 		this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), snapshotCost+1001, &snapshot)
 		this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), snapshotCost+1001, &snapshot)

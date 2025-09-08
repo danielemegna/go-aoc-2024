@@ -8,14 +8,15 @@ type MomentSnapshot struct {
 	parentSnapshot *MomentSnapshot
 }
 
-func (this MomentSnapshot) GetPathLength() int {
-	var s = &this
-	var length = 0
-	for s.parentSnapshot != nil {
-		length++
-		s = s.parentSnapshot
+func (this MomentSnapshot) GetPathCoordinates() []Coordinate {
+	var pathCoordinates = []Coordinate{}
+
+	var current = &this
+	for current != nil {
+		pathCoordinates = append(pathCoordinates, current.reindeer.Coordinate)
+		current = current.parentSnapshot
 	}
-	return length + 1
+	return pathCoordinates
 }
 
 type SnapshotStack []MomentSnapshot
