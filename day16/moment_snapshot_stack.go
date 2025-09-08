@@ -10,7 +10,7 @@ type MomentSnapshot struct {
 
 func (this MomentSnapshot) GetPathLength() int {
 	var s = &this
-	var length = 1
+	var length = 0
 	for s.parentSnapshot != nil {
 		length++
 		s = s.parentSnapshot

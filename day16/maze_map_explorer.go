@@ -14,15 +14,16 @@ type MazeMapExplorer struct {
 	visited      []Reindeer
 }
 
-func NewMazeMapExplorer(maze MazeMap, reindeer Reindeer, target Target) MazeMapExplorer {
+func NewMazeMapExplorer(mazeMap MazeMap, startReindeer Reindeer, target Target) MazeMapExplorer {
 	var explorer = MazeMapExplorer{
-		maze:         maze,
-		reindeer:     reindeer,
-		target:       target,
-		toVisitStack: []MomentSnapshot{},
-		visited:      []Reindeer{},
+		maze:     mazeMap,
+		reindeer: startReindeer,
+		target:   target,
+		toVisitStack: []MomentSnapshot{
+			{reindeer: startReindeer, cost: 0, parentSnapshot: nil},
+		},
+		visited: []Reindeer{},
 	}
-	explorer.inizializeSnapshotStack()
 	return explorer
 }
 
@@ -66,14 +67,6 @@ func (this MazeMapExplorer) CoordinatesCountOfBestPaths() int {
 	}
 
 	return -1
-}
-
-func (this *MazeMapExplorer) inizializeSnapshotStack() {
-	var reindeerDirection = this.reindeer.Direction
-	this.appendToStackWithCostIfVisitable(reindeerDirection, 1, nil)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.Clockwise(), 1001, nil)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.CounterClockwise(), 1001, nil)
-	this.appendToStackWithCostIfVisitable(reindeerDirection.Opposite(), 2001, nil)
 }
 
 func (this *MazeMapExplorer) appendToStackWithCostIfVisitable(direction Direction, cost int, parentSnapshot *MomentSnapshot) {
