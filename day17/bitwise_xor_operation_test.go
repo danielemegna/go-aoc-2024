@@ -17,3 +17,8 @@ func TestZeroAndOne(t *testing.T) {
 func TestTwoOne(t *testing.T) {
 	assert.Equal(t, 0, BitwiseXor(1, 1))
 }
+
+func TestProvidedExamples(t *testing.T) {
+	t.Skip("WIP")
+	assert.Equal(t, 26, BitwiseXor(29, 7))
+}
