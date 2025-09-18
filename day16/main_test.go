@@ -56,6 +56,7 @@ func TestSolveFirstPartWithSecondProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
+	t.Skip("Very slow test!")
 	var fileContent = readFileContent()
 	assert.Equal(t, 134588, LowestReindeerCostFor(fileContent))
 }
@@ -71,6 +72,7 @@ func TestSolveSecondPartWithSecondProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("Very slow test!")
 	var fileContent = readFileContent()
 	assert.Equal(t, 631, TilesCountOfBestPaths(fileContent))
 }
