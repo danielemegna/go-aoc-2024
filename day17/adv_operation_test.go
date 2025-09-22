@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestOperation(t *testing.T) {
+func TestAdvOperation(t *testing.T) {
 	var testCases = []struct {
 		name      string
 		numerator int
