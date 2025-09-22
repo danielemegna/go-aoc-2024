@@ -1,6 +1,7 @@
 package day17
 
 import (
+	"math"
 	"strconv"
 )
 
@@ -35,10 +36,14 @@ func toBinaryArray(n int64) []bool {
 }
 
 func toInt(binaryArray []bool) int {
-	// TODO len(binaryArray) > 1
-	if binaryArray[0] {
-		return 1
+	var result = 0
+	var bottomIndex = len(binaryArray) - 1
+	for index := range binaryArray {
+		if binaryArray[bottomIndex] {
+			result += int(math.Pow(float64(2), float64(index)))
+		}
+		bottomIndex--
 	}
 
-	return 0
+	return result
 }
