@@ -11,14 +11,9 @@ func BitwiseXor(a int64, b int64) int {
 	var binaryB = toBinaryArray(b)
 
 	var result = []bool{}
-	for i := range binaryA {
-		var bitB = false
-		if len(binaryB) > i {
-			bitB = binaryB[i]
-		}
-		var bit = binaryA[i] != bitB
-		result = append(result, bit)
-	}
+
+	var bit = binaryA[0] != binaryB[0]
+	result = append(result, bit)
 
 	return toInt(result)
 }
