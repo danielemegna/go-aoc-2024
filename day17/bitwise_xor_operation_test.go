@@ -20,4 +20,7 @@ func TestTwoOne(t *testing.T) {
 
 func TestProvidedExamples(t *testing.T) {
 	assert.Equal(t, int64(26), BitwiseXor(29, 7))
+	assert.Equal(t, int64(26), BitwiseXor(7, 29))
+	assert.Equal(t, int64(44354), BitwiseXor(2024, 43690))
+	assert.Equal(t, int64(44354), BitwiseXor(43690, 2024))
 }
