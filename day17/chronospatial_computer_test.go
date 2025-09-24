@@ -24,3 +24,13 @@ func TestRunChronospatialComputerProgramWithSingleBxlInstruction(t *testing.T) {
 
 	assert.Equal(t, 26, computer.RegisterValue('B'))
 }
+
+func TestRunChronospatialComputerProgramWithSingleBxcInstruction(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		0, 2024, 43690, []int{4, 0},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, 44354, computer.RegisterValue('B'))
+}
