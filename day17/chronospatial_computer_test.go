@@ -14,3 +14,13 @@ func TestRunChronospatialComputerProgramWithSingleBstInstruction(t *testing.T) {
 
 	assert.Equal(t, 1, computer.RegisterValue('B'))
 }
+
+func TestRunChronospatialComputerProgramWithSingleBxlInstruction(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		0, 29, 0, []int{1, 7},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, 26, computer.RegisterValue('B'))
+}

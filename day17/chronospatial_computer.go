@@ -24,8 +24,16 @@ func NewChronospatialComputer(
 }
 
 func (this *ChronospatialComputer) RunProgram() {
+	var opcode = this.instructions[this.instructionPointer]
 	var operand = this.instructions[this.instructionPointer+1]
-	this.registerB = this.comboOperandMod8(operand)
+	switch opcode {
+	case 1:
+		this.registerB = int(BitwiseXor(int64(this.registerB), int64(operand)))
+	case 2:
+		this.registerB = this.comboOperandMod8(operand)
+	}
+
+	this.instructionPointer++
 }
 
 func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {
