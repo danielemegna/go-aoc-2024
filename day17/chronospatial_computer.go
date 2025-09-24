@@ -51,6 +51,10 @@ func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {
 	panic(fmt.Sprintf("Unexpected Register Value: %c", registerLabel))
 }
 
+func (this ChronospatialComputer) GetOutput() []int {
+	return this.output
+}
+
 func (this ChronospatialComputer) comboOperand(n int) int {
 	if n < 4 {
 		return n
