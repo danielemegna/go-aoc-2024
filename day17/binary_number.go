@@ -7,8 +7,8 @@ import (
 
 type BinaryNumber []bool
 
-func BinaryNumberFromInt(number int64) BinaryNumber {
-	var stringBinary = strconv.FormatInt(number, 2)
+func BinaryNumberFromInt(number int) BinaryNumber {
+	var stringBinary = strconv.FormatInt(int64(number), 2)
 
 	var result = []bool{}
 	for _, char := range stringBinary {
@@ -23,12 +23,12 @@ func BinaryNumberFromInt(number int64) BinaryNumber {
 	return result
 }
 
-func (this BinaryNumber) ToInt() int64 {
-	var result int64 = 0
+func (this BinaryNumber) ToInt() int {
+	var result = 0
 	var bottomIndex = len(this) - 1
 	for index := range this {
 		if this[bottomIndex] {
-			result += int64(math.Pow(float64(2), float64(index)))
+			result += int(math.Pow(float64(2), float64(index)))
 		}
 		bottomIndex--
 	}

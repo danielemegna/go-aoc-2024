@@ -9,7 +9,7 @@ import (
 
 func TestBinaryFromInt(t *testing.T) {
 	var testCases = []struct {
-		number   int64
+		number   int
 		expected BinaryNumber
 	}{
 		{0, BinaryNumber{false}},
@@ -30,7 +30,7 @@ func TestBinaryFromInt(t *testing.T) {
 func TestBinaryToInt(t *testing.T) {
 	var testCases = []struct {
 		binary   BinaryNumber
-		expected int64
+		expected int
 	}{
 		{BinaryNumber{false}, 0},
 		{BinaryNumber{true}, 1},
@@ -50,7 +50,7 @@ func TestBinaryToInt(t *testing.T) {
 }
 
 func TestBothWaysConversion(t *testing.T) {
-	var numbers = []int64{0, 1, 3, 9, 12, 34, 53, 64, 72, 128, 240, 255, 500, 1025, 2022}
+	var numbers = []int{0, 1, 3, 9, 12, 34, 53, 64, 72, 128, 240, 255, 500, 1025, 2022}
 	for _, number := range numbers {
 		t.Run(fmt.Sprintf("Both ways conversion %d", number), func(t *testing.T) {
 			var binary = BinaryNumberFromInt(number)

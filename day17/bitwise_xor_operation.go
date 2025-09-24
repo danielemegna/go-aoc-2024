@@ -1,6 +1,6 @@
 package day17
 
-func BitwiseXor(a int64, b int64) int64 {
+func BitwiseXor(a int, b int) int {
 	var binaryA = BinaryNumberFromInt(a)
 	var binaryB = BinaryNumberFromInt(b)
 	var lengthA = len(binaryA)

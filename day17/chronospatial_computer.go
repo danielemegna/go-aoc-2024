@@ -28,7 +28,7 @@ func (this *ChronospatialComputer) RunProgram() {
 	var operand = this.instructions[this.instructionPointer+1]
 	switch opcode {
 	case 1:
-		this.registerB = int(BitwiseXor(int64(this.registerB), int64(operand)))
+		this.registerB = BitwiseXor(this.registerB, operand)
 	case 2:
 		this.registerB = this.comboOperandMod8(operand)
 	}
