@@ -28,10 +28,17 @@ func (this *ChronospatialComputer) RunProgram() {
 		var opcode = this.instructions[this.instructionPointer]
 		var operand = this.instructions[this.instructionPointer+1]
 		switch opcode {
+		case 0:
+			this.registerA = AdvOperation(this.registerA, this.comboOperand(operand))
 		case 1:
 			this.registerB = BitwiseXor(this.registerB, operand)
 		case 2:
 			this.registerB = this.comboOperandMod8(operand)
+		case 3:
+			if(this.registerA > 0) {
+				this.instructionPointer = operand
+				continue
+			}
 		case 4:
 			this.registerB = BitwiseXor(this.registerB, this.registerC)
 		case 5:

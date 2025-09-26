@@ -44,3 +44,14 @@ func TestRunChronospatialComputerProgramWithThreeOutputInstructions(t *testing.T
 
 	assert.Equal(t, []int{0, 1, 2}, computer.GetOutput())
 }
+
+func TestRunChronospatialComputerProgramWithMixedInstructions(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		2024, 0, 0, []int{0, 1, 5, 4, 3, 0},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, []int{4, 2, 5, 6, 7, 7, 7, 7, 3, 1, 0}, computer.GetOutput())
+	assert.Equal(t, 0, computer.RegisterValue('A'))
+}
