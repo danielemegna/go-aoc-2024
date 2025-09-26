@@ -45,6 +45,18 @@ func TestRunChronospatialComputerProgramWithThreeOutputInstructions(t *testing.T
 	assert.Equal(t, []int{0, 1, 2}, computer.GetOutput())
 }
 
+func TestRunChronospatialComputerProgramWithSomeDivisionOperations(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		64, 0, 0, []int{0, 2, 6, 3, 7, 5},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, 64/(2*2), computer.RegisterValue('A'))
+	assert.Equal(t, 16/(2*2*2), computer.RegisterValue('B'))
+	assert.Equal(t, 16/(2*2), computer.RegisterValue('C'))
+}
+
 func TestRunChronospatialComputerProgramWithMixedInstructions(t *testing.T) {
 	var computer = NewChronospatialComputer(
 		2024, 0, 0, []int{0, 1, 5, 4, 3, 0},

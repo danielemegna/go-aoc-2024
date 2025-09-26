@@ -43,6 +43,10 @@ func (this *ChronospatialComputer) RunProgram() {
 			this.registerB = BitwiseXor(this.registerB, this.registerC)
 		case 5:
 			this.output = append(this.output, this.comboOperandMod8(operand))
+		case 6:
+			this.registerB = AdvOperation(this.registerA, this.comboOperand(operand))
+		case 7:
+			this.registerC = AdvOperation(this.registerA, this.comboOperand(operand))
 		}
 
 		this.instructionPointer += 2
