@@ -24,18 +24,22 @@ func NewChronospatialComputer(
 }
 
 func (this *ChronospatialComputer) RunProgram() {
-	var opcode = this.instructions[this.instructionPointer]
-	var operand = this.instructions[this.instructionPointer+1]
-	switch opcode {
-	case 1:
-		this.registerB = BitwiseXor(this.registerB, operand)
-	case 2:
-		this.registerB = this.comboOperandMod8(operand)
-	case 4:
-		this.registerB = BitwiseXor(this.registerB, this.registerC)
-	}
+	for this.instructionPointer < len(this.instructions) {
+		var opcode = this.instructions[this.instructionPointer]
+		var operand = this.instructions[this.instructionPointer+1]
+		switch opcode {
+		case 1:
+			this.registerB = BitwiseXor(this.registerB, operand)
+		case 2:
+			this.registerB = this.comboOperandMod8(operand)
+		case 4:
+			this.registerB = BitwiseXor(this.registerB, this.registerC)
+		case 5:
+			this.output = append(this.output, this.comboOperandMod8(operand))
+		}
 
-	this.instructionPointer++
+		this.instructionPointer += 2
+	}
 }
 
 func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {

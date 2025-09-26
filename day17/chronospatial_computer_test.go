@@ -36,7 +36,6 @@ func TestRunChronospatialComputerProgramWithSingleBxcInstruction(t *testing.T) {
 }
 
 func TestRunChronospatialComputerProgramWithThreeOutputInstructions(t *testing.T) {
-	t.Skip("WIP")
 	var computer = NewChronospatialComputer(
 		10, 0, 0, []int{5, 0, 5, 1, 5, 4},
 	)
