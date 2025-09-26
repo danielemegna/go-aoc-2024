@@ -21,9 +21,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, "-1", ChronospatialComputerOutputFor(fileContent))
+	assert.Equal(t, "7,5,4,3,4,5,3,4,6", ChronospatialComputerOutputFor(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {

@@ -1,5 +1,16 @@
 package day17
 
+import (
+	"fmt"
+	"strings"
+)
+
 func ChronospatialComputerOutputFor(inputContent string) string {
-	return "4,6,3,5,6,3,5,2,1,0"
+	var computer = ParseChronospatialComputer(inputContent)
+	computer.RunProgram()
+	return joinSliceOfIntToString(computer.GetOutput())
+}
+
+func joinSliceOfIntToString(slice []int) string {
+    return strings.Trim(strings.Join(strings.Split(fmt.Sprint(slice), " "), ","), "[]")
 }
