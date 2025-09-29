@@ -27,29 +27,7 @@ func (this *ChronospatialComputer) RunProgram() {
 	for this.instructionPointer < len(this.instructions) {
 		var opcode = this.instructions[this.instructionPointer]
 		var operand = this.instructions[this.instructionPointer+1]
-		switch opcode {
-		case 0:
-			this.registerA = AdvOperation(this.registerA, this.comboOperand(operand))
-		case 1:
-			this.registerB = BitwiseXor(this.registerB, operand)
-		case 2:
-			this.registerB = this.comboOperandMod8(operand)
-		case 3:
-			if(this.registerA > 0) {
-				this.instructionPointer = operand
-				continue
-			}
-		case 4:
-			this.registerB = BitwiseXor(this.registerB, this.registerC)
-		case 5:
-			this.output = append(this.output, this.comboOperandMod8(operand))
-		case 6:
-			this.registerB = AdvOperation(this.registerA, this.comboOperand(operand))
-		case 7:
-			this.registerC = AdvOperation(this.registerA, this.comboOperand(operand))
-		}
-
-		this.instructionPointer += 2
+		this.executeInstruction(opcode, operand)
 	}
 }
 
@@ -68,6 +46,32 @@ func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {
 
 func (this ChronospatialComputer) GetOutput() []int {
 	return this.output
+}
+
+func (this *ChronospatialComputer) executeInstruction(opcode int, operand int) {
+	switch opcode {
+	case 0:
+		this.registerA = AdvOperation(this.registerA, this.comboOperand(operand))
+	case 1:
+		this.registerB = BitwiseXor(this.registerB, operand)
+	case 2:
+		this.registerB = this.comboOperandMod8(operand)
+	case 3:
+		if this.registerA > 0 {
+			this.instructionPointer = operand
+			return
+		}
+	case 4:
+		this.registerB = BitwiseXor(this.registerB, this.registerC)
+	case 5:
+		this.output = append(this.output, this.comboOperandMod8(operand))
+	case 6:
+		this.registerB = AdvOperation(this.registerA, this.comboOperand(operand))
+	case 7:
+		this.registerC = AdvOperation(this.registerA, this.comboOperand(operand))
+	}
+
+	this.instructionPointer += 2
 }
 
 func (this ChronospatialComputer) comboOperand(n int) int {
