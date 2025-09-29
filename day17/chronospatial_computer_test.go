@@ -93,3 +93,13 @@ func TestRunBitComplexChronospatialComputerProgram(t *testing.T) {
 	assert.Equal(t, 6, computer.RegisterValue('B'))
 	assert.Equal(t, 0, computer.RegisterValue('C'))
 }
+
+func TestProgramThatOutputItself(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		117440, 0, 0, []int{0, 3, 5, 4, 3, 0},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, []int{0, 3, 5, 4, 3, 0}, computer.GetOutput())
+}
