@@ -1,6 +1,9 @@
 package day17
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type ChronospatialComputer struct {
 	registerA          int
@@ -29,6 +32,16 @@ func (this *ChronospatialComputer) RunProgram() {
 		var operand = this.instructions[this.instructionPointer+1]
 		this.executeInstruction(opcode, operand)
 	}
+}
+
+func (this ChronospatialComputer) RunProgramWithExpectedOutput(expectedOutput []int) bool {
+	for this.instructionPointer < len(this.instructions) {
+		var opcode = this.instructions[this.instructionPointer]
+		var operand = this.instructions[this.instructionPointer+1]
+		this.executeInstruction(opcode, operand)
+	}
+
+	return reflect.DeepEqual(expectedOutput, this.output)
 }
 
 func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {

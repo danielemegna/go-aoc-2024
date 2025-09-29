@@ -103,3 +103,14 @@ func TestProgramThatOutputItself(t *testing.T) {
 
 	assert.Equal(t, []int{0, 3, 5, 4, 3, 0}, computer.GetOutput())
 }
+
+func TestRunComputerProgramWithExpectedOutput(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		10, 0, 0, []int{5, 0, 5, 1, 5, 4},
+	)
+
+	assert.True(t, computer.RunProgramWithExpectedOutput([]int{0, 1, 2}))
+	assert.False(t, computer.RunProgramWithExpectedOutput([]int{2, 4}))
+	assert.False(t, computer.RunProgramWithExpectedOutput([]int{0, 1, 3}))
+	assert.False(t, computer.RunProgramWithExpectedOutput([]int{0, 1}))
+}
