@@ -2,7 +2,6 @@ package day17
 
 import (
 	"fmt"
-	"reflect"
 )
 
 type ChronospatialComputer struct {
@@ -35,13 +34,29 @@ func (this *ChronospatialComputer) RunProgram() {
 }
 
 func (this ChronospatialComputer) RunProgramWithExpectedOutput(expectedOutput []int) bool {
+	var outputCount = 0
 	for this.instructionPointer < len(this.instructions) {
 		var opcode = this.instructions[this.instructionPointer]
 		var operand = this.instructions[this.instructionPointer+1]
 		this.executeInstruction(opcode, operand)
+
+		if len(this.output) > outputCount {
+			if len(this.output) > len(expectedOutput) {
+				return false
+			}
+			if expectedOutput[outputCount] != this.output[outputCount] {
+				return false
+			}
+
+			outputCount++
+		}
 	}
 
-	return reflect.DeepEqual(expectedOutput, this.output)
+	if len(this.output) != len(expectedOutput) {
+		return false
+	}
+
+	return true
 }
 
 func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {
