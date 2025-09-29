@@ -72,9 +72,10 @@ func (this ChronospatialComputer) RegisterValue(registerLabel rune) int {
 	panic(fmt.Sprintf("Unexpected Register Value: %c", registerLabel))
 }
 
-func (this ChronospatialComputer) GetOutput() []int {
-	return this.output
-}
+func (this ChronospatialComputer) GetOutput() []int             { return this.output }
+func (this ChronospatialComputer) GetInstructions() []int       { return this.instructions }
+func (this *ChronospatialComputer) ResetInstructionPointer()    { this.instructionPointer = 0 }
+func (this *ChronospatialComputer) SetRegisterAValue(value int) { this.registerA = value }
 
 func (this *ChronospatialComputer) executeInstruction(opcode int, operand int) {
 	switch opcode {

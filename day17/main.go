@@ -11,8 +11,20 @@ func ChronospatialComputerOutputFor(inputContent string) string {
 	return joinSliceOfIntToString(computer.GetOutput())
 }
 
-func LowestRegisterValueToPrintOutTheProgramItself(fileContent string) int {
-	return 117440
+func LowestRegisterValueToPrintOutTheProgramItself(inputContent string) int {
+	var registerAValue = 1
+	var computer = ParseChronospatialComputer(inputContent)
+	var expectedOutput = computer.GetInstructions()
+	for {
+		computer.SetRegisterAValue(registerAValue)
+		var isMatching = computer.RunProgramWithExpectedOutput(expectedOutput)
+		if(isMatching) {
+			return registerAValue
+		}
+
+		computer.ResetInstructionPointer()
+		registerAValue++
+	}
 }
 
 func joinSliceOfIntToString(slice []int) string {
