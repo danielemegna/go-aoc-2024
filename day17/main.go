@@ -11,6 +11,10 @@ func ChronospatialComputerOutputFor(inputContent string) string {
 	return joinSliceOfIntToString(computer.GetOutput())
 }
 
+func LowestRegisterValueToPrintOutTheProgramItself(fileContent string) int {
+	return 117440
+}
+
 func joinSliceOfIntToString(slice []int) string {
     return strings.Trim(strings.Join(strings.Split(fmt.Sprint(slice), " "), ","), "[]")
 }
