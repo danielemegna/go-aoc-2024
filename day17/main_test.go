@@ -35,13 +35,16 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 
 func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(SECOND_PART_EXAMPLE_INPUT_LINES)
+	// general solution, valid for any kind of program
 	assert.Equal(t, 117440, LowestRegisterValueToPrintOutTheProgramItself(fileContent))
+	// this is valid only for program with a loop that consumes 3 bit each loop of the register
+	assert.Equal(t, 117440, LowestRegisterValueToPrintOutThe3BitConsumingLoopProgramItself(fileContent))
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, LowestRegisterValueToPrintOutTheProgramItself(fileContent))
+	var actual = LowestRegisterValueToPrintOutThe3BitConsumingLoopProgramItself(fileContent)
+	assert.Equal(t, 164278899142333, actual)
 }
 
 func simulateFileContent(inputLines []string) string {

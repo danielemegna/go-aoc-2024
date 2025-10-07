@@ -12,13 +12,14 @@ func ChronospatialComputerOutputFor(inputContent string) string {
 }
 
 func LowestRegisterValueToPrintOutTheProgramItself(inputContent string) int {
-	var registerAValue = 1
 	var computer = ParseChronospatialComputer(inputContent)
 	var expectedOutput = computer.GetInstructions()
+
+	var registerAValue = 1
 	for {
 		computer.SetRegisterAValue(registerAValue)
 		var isMatching = computer.RunProgramWithExpectedOutput(expectedOutput)
-		if(isMatching) {
+		if isMatching {
 			return registerAValue
 		}
 
@@ -27,6 +28,38 @@ func LowestRegisterValueToPrintOutTheProgramItself(inputContent string) int {
 	}
 }
 
+func LowestRegisterValueToPrintOutThe3BitConsumingLoopProgramItself(inputContent string) int {
+	var computer = ParseChronospatialComputer(inputContent)
+	var expectedOutput = computer.GetInstructions()
+	var expectedOutputLength = len(expectedOutput)
+
+	var registerAValue = 0
+	var matchedOutputCount = 0
+
+	for matchedOutputCount < expectedOutputLength {
+		registerAValue = registerAValue << 3
+		var valueAttempt = 0
+		var expectedOutputTail = expectedOutput[expectedOutputLength-1-matchedOutputCount:]
+
+		for {
+			var registerAValueCandidate = registerAValue | valueAttempt
+			computer.SetRegisterAValue(registerAValueCandidate)
+			var isMatching = computer.RunProgramWithExpectedOutput(expectedOutputTail)
+			if isMatching {
+				matchedOutputCount++
+				registerAValue = registerAValueCandidate
+				break
+			}
+
+			computer.ResetInstructionPointer()
+			valueAttempt++
+		}
+
+	}
+
+	return registerAValue
+}
+
 func joinSliceOfIntToString(slice []int) string {
-    return strings.Trim(strings.Join(strings.Split(fmt.Sprint(slice), " "), ","), "[]")
+	return strings.Trim(strings.Join(strings.Split(fmt.Sprint(slice), " "), ","), "[]")
 }
