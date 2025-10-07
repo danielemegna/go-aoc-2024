@@ -94,7 +94,7 @@ func TestRunBitComplexChronospatialComputerProgram(t *testing.T) {
 	assert.Equal(t, 0, computer.RegisterValue('C'))
 }
 
-func TestProgramThatOutputItself(t *testing.T) {
+func TestLoopProgramThatOutputItself(t *testing.T) {
 	var computer = NewChronospatialComputer(
 		117440, 0, 0, []int{0, 3, 5, 4, 3, 0},
 	)
@@ -113,4 +113,14 @@ func TestRunComputerProgramWithExpectedOutput(t *testing.T) {
 	assert.False(t, computer.RunProgramWithExpectedOutput([]int{2, 4}))
 	assert.False(t, computer.RunProgramWithExpectedOutput([]int{0, 1, 3}))
 	assert.False(t, computer.RunProgramWithExpectedOutput([]int{0, 1}))
+}
+
+func TestAnotherLoopProgramThatOutputItself(t *testing.T) {
+	var computer = NewChronospatialComputer(
+		164278899142333, 0, 0, []int{2, 4, 1, 1, 7, 5, 1, 5, 4, 3, 5, 5, 0, 3, 3, 0},
+	)
+
+	computer.RunProgram()
+
+	assert.Equal(t, []int{2, 4, 1, 1, 7, 5, 1, 5, 4, 3, 5, 5, 0, 3, 3, 0}, computer.GetOutput())
 }
