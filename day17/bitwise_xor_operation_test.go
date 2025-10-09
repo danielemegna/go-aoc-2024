@@ -7,15 +7,20 @@ import (
 
 func TestTwoZeros(t *testing.T) {
 	assert.Equal(t, 0, BitwiseXor(0, 0))
+	assert.Equal(t, 0, ManualBitwiseXor(0, 0))
 }
 
 func TestZeroAndOne(t *testing.T) {
 	assert.Equal(t, 1, BitwiseXor(0, 1))
 	assert.Equal(t, 1, BitwiseXor(1, 0))
+
+	assert.Equal(t, 1, ManualBitwiseXor(0, 1))
+	assert.Equal(t, 1, ManualBitwiseXor(1, 0))
 }
 
 func TestTwoOne(t *testing.T) {
 	assert.Equal(t, 0, BitwiseXor(1, 1))
+	assert.Equal(t, 0, ManualBitwiseXor(1, 1))
 }
 
 func TestProvidedExamples(t *testing.T) {
@@ -23,4 +28,9 @@ func TestProvidedExamples(t *testing.T) {
 	assert.Equal(t, 26, BitwiseXor(7, 29))
 	assert.Equal(t, 44354, BitwiseXor(2024, 43690))
 	assert.Equal(t, 44354, BitwiseXor(43690, 2024))
+
+	assert.Equal(t, 26, ManualBitwiseXor(29, 7))
+	assert.Equal(t, 26, ManualBitwiseXor(7, 29))
+	assert.Equal(t, 44354, ManualBitwiseXor(2024, 43690))
+	assert.Equal(t, 44354, ManualBitwiseXor(43690, 2024))
 }
