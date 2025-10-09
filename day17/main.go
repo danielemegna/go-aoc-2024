@@ -15,7 +15,7 @@ func LowestRegisterValueToPrintOutTheProgramItself(inputContent string) int {
 	var computer = ParseChronospatialComputer(inputContent)
 	var expectedOutput = computer.GetInstructions()
 
-	var registerAValue = 1
+	var registerAValue = 0
 	for {
 		computer.SetRegisterAValue(registerAValue)
 		var isMatching = computer.RunProgramWithExpectedOutput(expectedOutput)
@@ -38,16 +38,16 @@ func LowestRegisterValueToPrintOutThe3BitConsumingLoopProgramItself(inputContent
 
 	for matchedOutputCount < expectedOutputLength {
 		registerAValue = registerAValue << 3
-		var valueAttempt = 0
 		var expectedOutputTail = expectedOutput[expectedOutputLength-1-matchedOutputCount:]
 
+		var valueAttempt = 0
 		for {
 			var registerAValueCandidate = registerAValue | valueAttempt
 			computer.SetRegisterAValue(registerAValueCandidate)
 			var isMatching = computer.RunProgramWithExpectedOutput(expectedOutputTail)
 			if isMatching {
-				matchedOutputCount++
 				registerAValue = registerAValueCandidate
+				matchedOutputCount++
 				break
 			}
 
