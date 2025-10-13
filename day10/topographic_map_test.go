@@ -114,3 +114,29 @@ func TestSingleTrailheadWithFourReachedNineHeightPositions(t *testing.T) {
 	}, trailhead.reachableNineHeightPositions)
 	assert.Equal(t, 4, trailhead.GetScore())
 }
+
+func TestProvidedExample(t *testing.T) {
+	var topographicMap = TopographicMap{
+		{8, 9, 0, 1, 0, 1, 2, 3},
+		{7, 8, 1, 2, 1, 8, 7, 4},
+		{8, 7, 4, 3, 0, 9, 6, 5},
+		{9, 6, 5, 4, 9, 8, 7, 4},
+		{4, 5, 6, 7, 8, 9, 0, 3},
+		{3, 2, 0, 1, 9, 0, 1, 2},
+		{0, 1, 3, 2, 9, 8, 0, 1},
+		{1, 0, 4, 5, 6, 7, 3, 2},
+	}
+
+	var trailheads = topographicMap.FindTrailheads()
+
+	assert.Len(t, trailheads, 9)
+	assert.Equal(t, trailheads[0].GetScore(), 5)
+	assert.Equal(t, trailheads[1].GetScore(), 6)
+	assert.Equal(t, trailheads[2].GetScore(), 5)
+	assert.Equal(t, trailheads[3].GetScore(), 3)
+	assert.Equal(t, trailheads[4].GetScore(), 1)
+	assert.Equal(t, trailheads[5].GetScore(), 3)
+	assert.Equal(t, trailheads[6].GetScore(), 5)
+	assert.Equal(t, trailheads[7].GetScore(), 3)
+	assert.Equal(t, trailheads[8].GetScore(), 5)
+}
