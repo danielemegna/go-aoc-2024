@@ -28,11 +28,11 @@ func TestSingleTrailheadInMap(t *testing.T) {
 
 	var trailheads = topographicMap.FindTrailheads()
 
-	assert.Equal(t, []Trailhead{{
-		startingPosition:             Coordinate{0, 0},
-		reachableNineHeightPositions: []Coordinate{{0, 3}},
-	}}, trailheads)
-	assert.Equal(t, 1, trailheads[0].GetScore())
+	assert.Len(t, trailheads, 1)
+	var trailhead = trailheads[0]
+	assert.Equal(t, trailhead.startingPosition, Coordinate{0, 0})
+	assert.ElementsMatch(t, trailhead.reachableNineHeightPositions, []Coordinate{{0, 3}})
+	assert.Equal(t, 1, trailhead.GetScore())
 }
 
 func TestSingleTrailheadWithMultipleReachedNineHeightPositions(t *testing.T) {
@@ -45,11 +45,11 @@ func TestSingleTrailheadWithMultipleReachedNineHeightPositions(t *testing.T) {
 
 	var trailheads = topographicMap.FindTrailheads()
 
-	assert.Equal(t, []Trailhead{{
-		startingPosition:             Coordinate{0, 0},
-		reachableNineHeightPositions: []Coordinate{{0, 3}, {1, 2}},
-	}}, trailheads)
-	assert.Equal(t, 2, trailheads[0].GetScore())
+	assert.Len(t, trailheads, 1)
+	var trailhead = trailheads[0]
+	assert.Equal(t, trailhead.startingPosition, Coordinate{0, 0})
+	assert.ElementsMatch(t, trailhead.reachableNineHeightPositions, []Coordinate{{0, 3}, {1, 2}})
+	assert.Equal(t, 2, trailhead.GetScore())
 }
 
 func TestSingleTrailheadStartingBottomRight(t *testing.T) {
@@ -62,11 +62,11 @@ func TestSingleTrailheadStartingBottomRight(t *testing.T) {
 
 	var trailheads = topographicMap.FindTrailheads()
 
-	assert.Equal(t, []Trailhead{{
-		startingPosition:             Coordinate{3, 3},
-		reachableNineHeightPositions: []Coordinate{{2, 3}},
-	}}, trailheads)
-	assert.Equal(t, 1, trailheads[0].GetScore())
+	assert.Len(t, trailheads, 1)
+	var trailhead = trailheads[0]
+	assert.Equal(t, trailhead.startingPosition, Coordinate{3, 3})
+	assert.ElementsMatch(t, trailhead.reachableNineHeightPositions, []Coordinate{{2, 3}})
+	assert.Equal(t, 1, trailhead.GetScore())
 }
 
 func TestTwoTrailheadInMap(t *testing.T) {
@@ -111,6 +111,6 @@ func TestSingleTrailheadWithFourReachedNineHeightPositions(t *testing.T) {
 	assert.ElementsMatch(t, []Coordinate{
 		{6, 0}, {5, 1},
 		{4, 4}, {0, 6},
-		}, trailhead.reachableNineHeightPositions)
+	}, trailhead.reachableNineHeightPositions)
 	assert.Equal(t, 4, trailhead.GetScore())
 }
