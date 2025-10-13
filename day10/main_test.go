@@ -24,9 +24,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, SumOfTrailheadScores(fileContent))
+	assert.Equal(t, 786, SumOfTrailheadScores(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
