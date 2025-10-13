@@ -94,7 +94,6 @@ func TestTwoTrailheadInMap(t *testing.T) {
 }
 
 func TestSingleTrailheadWithFourReachedNineHeightPositions(t *testing.T) {
-	t.Skip("WIP remove duplicate in reached nine height positions")
 	var topographicMap = TopographicMap{
 		{1, 1, 9, 0, 9, 1, 9},
 		{1, 1, 1, 1, 1, 9, 8},
@@ -108,5 +107,10 @@ func TestSingleTrailheadWithFourReachedNineHeightPositions(t *testing.T) {
 	var trailheads = topographicMap.FindTrailheads()
 
 	assert.Len(t, trailheads, 1)
-	assert.Equal(t, 4, trailheads[0].GetScore())
+	var trailhead = trailheads[0]
+	assert.ElementsMatch(t, []Coordinate{
+		{6, 0}, {5, 1},
+		{4, 4}, {0, 6},
+		}, trailhead.reachableNineHeightPositions)
+	assert.Equal(t, 4, trailhead.GetScore())
 }

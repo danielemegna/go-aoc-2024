@@ -25,7 +25,7 @@ func (this TopographicMap) FindTrailheads() []Trailhead {
 			if len(reachableNineHeightPositions) > 0 {
 				result = append(result, Trailhead{
 					startingPosition,
-					reachableNineHeightPositions,
+					reachableNineHeightPositions.ToSlice(),
 				})
 			}
 
@@ -35,8 +35,8 @@ func (this TopographicMap) FindTrailheads() []Trailhead {
 	return result
 }
 
-func (this TopographicMap) reachableNineHeightPositionsFrom(currentPosition Coordinate, currentHeight int) []Coordinate {
-	var result = []Coordinate{}
+func (this TopographicMap) reachableNineHeightPositionsFrom(currentPosition Coordinate, currentHeight int) CoordinateSet {
+	var result = CoordinateSet{}
 	var targetHeigth = currentHeight + 1
 
 	for _, closeCoordinate := range currentPosition.CloseCoordinates() {
@@ -49,14 +49,11 @@ func (this TopographicMap) reachableNineHeightPositionsFrom(currentPosition Coor
 		}
 
 		if targetHeigth == 9 {
-			result = append(result, closeCoordinate)
+			result.Add(closeCoordinate)
 			continue
 		}
 
-		result = append(
-			result,
-			this.reachableNineHeightPositionsFrom(closeCoordinate, currentHeight+1)...,
-		)
+		result.Merge(this.reachableNineHeightPositionsFrom(closeCoordinate, currentHeight+1))
 	}
 	return result
 }
