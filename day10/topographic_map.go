@@ -5,6 +5,11 @@ type TopographicMap [][]int
 type Trailhead struct {
 	startingPosition             Coordinate
 	reachableNineHeightPositions []Coordinate
+	rate                         int
+}
+
+func (this Trailhead) GetRate() int {
+	return this.rate
 }
 
 func (this Trailhead) GetScore() int {
@@ -22,10 +27,11 @@ func (this TopographicMap) FindTrailheads() []Trailhead {
 			}
 
 			var reachableNineHeightPositions = this.reachableNineHeightPositionsFrom(startingPosition, 0)
-			if len(reachableNineHeightPositions) > 0 {
+			if reachableNineHeightPositions.GetLength() > 0 {
 				result = append(result, Trailhead{
 					startingPosition,
 					reachableNineHeightPositions.ToSlice(),
+					reachableNineHeightPositions.GetLengthWithDuplicates(),
 				})
 			}
 
@@ -36,7 +42,7 @@ func (this TopographicMap) FindTrailheads() []Trailhead {
 }
 
 func (this TopographicMap) reachableNineHeightPositionsFrom(currentPosition Coordinate, currentHeight int) CoordinateSet {
-	var result = CoordinateSet{}
+	var result = NewCoordinateSet()
 	var targetHeigth = currentHeight + 1
 
 	for _, closeCoordinate := range currentPosition.CloseCoordinates() {

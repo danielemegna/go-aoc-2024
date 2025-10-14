@@ -115,6 +115,41 @@ func TestSingleTrailheadWithFourReachedNineHeightPositions(t *testing.T) {
 	assert.Equal(t, 4, trailhead.GetScore())
 }
 
+func TestSingleTrailheadWithRateThirteen(t *testing.T) {
+	var topographicMap = TopographicMap{
+		{1, 1, 9, 0, 9, 1, 9},
+		{1, 1, 1, 1, 1, 9, 8},
+		{1, 1, 1, 2, 1, 1, 7},
+		{6, 5, 4, 3, 4, 5, 6},
+		{7, 6, 5, 1, 9, 8, 7},
+		{8, 7, 6, 1, 1, 1, 1},
+		{9, 8, 7, 1, 1, 1, 1},
+	}
+
+	var trailheads = topographicMap.FindTrailheads()
+
+	assert.Len(t, trailheads, 1)
+	var trailhead = trailheads[0]
+	assert.Equal(t, 13, trailhead.GetRate())
+}
+
+func TestSingleTrailheadWithHugeRate(t *testing.T) {
+	var topographicMap = TopographicMap{
+		{0, 1, 2, 3, 4, 5},
+		{1, 2, 3, 4, 5, 6},
+		{2, 3, 4, 5, 6, 7},
+		{3, 4, 5, 6, 7, 8},
+		{4, 1, 6, 7, 8, 9},
+		{5, 6, 7, 8, 9, 1},
+	}
+
+	var trailheads = topographicMap.FindTrailheads()
+
+	assert.Len(t, trailheads, 1)
+	var trailhead = trailheads[0]
+	assert.Equal(t, 227, trailhead.GetRate())
+}
+
 func TestProvidedExample(t *testing.T) {
 	var topographicMap = TopographicMap{
 		{8, 9, 0, 1, 0, 1, 2, 3},
@@ -131,12 +166,21 @@ func TestProvidedExample(t *testing.T) {
 
 	assert.Len(t, trailheads, 9)
 	assert.Equal(t, trailheads[0].GetScore(), 5)
+	assert.Equal(t, trailheads[0].GetRate(), 20)
 	assert.Equal(t, trailheads[1].GetScore(), 6)
+	assert.Equal(t, trailheads[1].GetRate(), 24)
 	assert.Equal(t, trailheads[2].GetScore(), 5)
+	assert.Equal(t, trailheads[2].GetRate(), 10)
 	assert.Equal(t, trailheads[3].GetScore(), 3)
+	assert.Equal(t, trailheads[3].GetRate(), 4)
 	assert.Equal(t, trailheads[4].GetScore(), 1)
+	assert.Equal(t, trailheads[4].GetRate(), 1)
 	assert.Equal(t, trailheads[5].GetScore(), 3)
+	assert.Equal(t, trailheads[5].GetRate(), 4)
 	assert.Equal(t, trailheads[6].GetScore(), 5)
+	assert.Equal(t, trailheads[6].GetRate(), 5)
 	assert.Equal(t, trailheads[7].GetScore(), 3)
+	assert.Equal(t, trailheads[7].GetRate(), 8)
 	assert.Equal(t, trailheads[8].GetScore(), 5)
+	assert.Equal(t, trailheads[8].GetRate(), 5)
 }
