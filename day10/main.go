@@ -14,6 +14,15 @@ func SumOfTrailheadScores(fileContent string) int {
 	})
 }
 
+func SumOfTrailheadRates(fileContent string) int {
+	var topographicMap = parseTopographicMap(fileContent)
+	var trailheads = topographicMap.FindTrailheads()
+	return lo.SumBy(trailheads, func(a Trailhead) int {
+		return a.GetRate()
+	})
+}
+
+
 func parseTopographicMap(fileContent string) TopographicMap {
 	var fileRows = rowsFrom(fileContent)
 	return lo.Map(fileRows, func(row string, _ int) []int {
