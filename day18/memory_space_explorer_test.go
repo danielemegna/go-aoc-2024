@@ -11,15 +11,14 @@ func TestSafeSmallMapShortestPath(t *testing.T) {
 		{SAFE, SAFE, SAFE},
 		{SAFE, SAFE, SAFE},
 	}
+	var explorer = NewMemorySpaceExplorer(memorySpace)
 
-	var actual = memorySpace.ShortestPathLengthFromTopLeftToBottomRightCorners()
+	var actual = explorer.ShortestPathFromTopLeftToBottomRight()
 
 	assert.Equal(t, 4, actual)
 }
 
-
 func TestProvidedExampleMemorySpace(t *testing.T) {
-	t.Skip("WIP")
 	var memorySpace = MemorySpace{
 		{SAFE, SAFE, SAFE, CORRUPTED, SAFE, SAFE, SAFE},
 		{SAFE, SAFE, CORRUPTED, SAFE, SAFE, CORRUPTED, SAFE},
@@ -29,8 +28,9 @@ func TestProvidedExampleMemorySpace(t *testing.T) {
 		{SAFE, CORRUPTED, SAFE, SAFE, CORRUPTED, SAFE, SAFE},
 		{CORRUPTED, SAFE, CORRUPTED, SAFE, SAFE, SAFE, SAFE},
 	}
+	var explorer = NewMemorySpaceExplorer(memorySpace)
 
-	var actual = memorySpace.ShortestPathLengthFromTopLeftToBottomRightCorners()
+	var actual = explorer.ShortestPathFromTopLeftToBottomRight()
 
 	assert.Equal(t, 22, actual)
 }
