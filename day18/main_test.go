@@ -36,7 +36,7 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 }
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
-	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES[:12])
 	assert.Equal(t, 22, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent))
 }
 
