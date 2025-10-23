@@ -15,10 +15,10 @@ const (
 
 type MemorySpace [][]MemoryState
 
-func BuildMemorySpaceFrom(fileContent string, memorySpaceSize int) MemorySpace {
+func BuildMemorySpaceFrom(fileContent string, memorySpaceSize int, inputBytesToRead int) MemorySpace {
 	var memorySpace = initSafeMemorySpace(memorySpaceSize)
 	var lines = linesFrom(fileContent)
-	for _, line := range lines {
+	for _, line := range lines[:inputBytesToRead] {
 		var r, _ = regexp.Compile(`(\d+),(\d+)`)
 		var matches = r.FindStringSubmatch(line)
 		var X, _ = strconv.Atoi(matches[1])

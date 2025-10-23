@@ -36,14 +36,14 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 }
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
-	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES[:12])
-	assert.Equal(t, 22, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 7))
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 22, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 7, 12))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
 	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 71))
+	assert.Equal(t, 0, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 71, 1024))
 }
 
 func simulateFileContent(inputLines []string) string {
