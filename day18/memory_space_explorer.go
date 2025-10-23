@@ -21,10 +21,9 @@ func NewMemorySpaceExplorer(memorySpace MemorySpace) MemorySpaceExplorer {
 		memorySpace:       memorySpace,
 		currentCoordinate: Coordinate{0, 0},
 		toVisitStack: []CoordinateWithCost{
-			{coordinate: Coordinate{0, 1}, cost: 1},
-			{coordinate: Coordinate{1, 0}, cost: 1},
+			{coordinate: Coordinate{0, 0}, cost: 0},
 		},
-		visited: []Coordinate{{0, 0}},
+		visited: []Coordinate{},
 	}
 	return explorer
 }
