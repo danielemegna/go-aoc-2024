@@ -41,9 +41,8 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 0, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 71, 1024))
+	assert.Equal(t, 264, ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent, 71, 1024))
 }
 
 func simulateFileContent(inputLines []string) string {

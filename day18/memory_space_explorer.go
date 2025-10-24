@@ -72,10 +72,12 @@ func (this *ToVisitStack) PopFirstElement() CoordinateWithCost {
 }
 
 func (this *ToVisitStack) AppendSortedByCost(toAppend CoordinateWithCost) {
-	var cost = toAppend.cost
 	var stack = (*this)
 	for index, existingElement := range stack {
-		if cost <= existingElement.cost {
+		if existingElement.coordinate == toAppend.coordinate {
+			return
+		}
+		if toAppend.cost < existingElement.cost {
 			(*this) = slices.Insert(stack, index, toAppend)
 			return
 		}
