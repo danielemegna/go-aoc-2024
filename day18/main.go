@@ -1,15 +1,35 @@
 package day18
 
+import "strings"
+
 func ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent string, memorySpaceSize int, inputBytesToRead int) int {
-	var memorySpace = BuildMemorySpaceFrom(fileContent, memorySpaceSize, inputBytesToRead)
+	var memorySpace = NewSafeMemorySpace(memorySpaceSize)
 	var explorer = NewMemorySpaceExplorer(memorySpace)
+	var lines = linesFrom(fileContent)
+
+	for i := 0; i < inputBytesToRead; i++ {
+		var corruptedCoordinate = ParseCoordinateFrom(lines[i])
+		memorySpace.Corrupt(corruptedCoordinate)
+	}
+
 	return explorer.ShortestPathFromTopLeftToBottomRight()
 }
 
 func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceSize int) Coordinate {
-	var inputBytesToRead = 22 // loop on this
-	var memorySpace = BuildMemorySpaceFrom(fileContent, memorySpaceSize, inputBytesToRead)
+	var memorySpace = NewSafeMemorySpace(memorySpaceSize)
 	var explorer = NewMemorySpaceExplorer(memorySpace)
+	var lines = linesFrom(fileContent)
+
+	for i := 0; i < 22; i++ {
+		var corruptedCoordinate = ParseCoordinateFrom(lines[i])
+		memorySpace.Corrupt(corruptedCoordinate)
+	}
+
 	explorer.ShortestPathFromTopLeftToBottomRight()
-	return Coordinate{6, 1}
+	return Coordinate{6,1}
+}
+
+func linesFrom(s string) []string {
+	var lines = strings.Split(s, "\n")
+	return lines[:len(lines)-1]
 }

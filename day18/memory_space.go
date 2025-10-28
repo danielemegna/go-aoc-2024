@@ -1,11 +1,5 @@
 package day18
 
-import (
-	"regexp"
-	"strconv"
-	"strings"
-)
-
 type MemoryState int
 
 const (
@@ -15,26 +9,16 @@ const (
 
 type MemorySpace [][]MemoryState
 
-func BuildMemorySpaceFrom(fileContent string, memorySpaceSize int, inputBytesToRead int) MemorySpace {
-	var memorySpace = initSafeMemorySpace(memorySpaceSize)
-	var lines = linesFrom(fileContent)
-	for _, line := range lines[:inputBytesToRead] {
-		var r, _ = regexp.Compile(`(\d+),(\d+)`)
-		var matches = r.FindStringSubmatch(line)
-		var X, _ = strconv.Atoi(matches[1])
-		var Y, _ = strconv.Atoi(matches[2])
-		memorySpace[Y][X] = CORRUPTED
-	}
-
-	return memorySpace
-}
-
-func initSafeMemorySpace(size int) MemorySpace {
+func NewSafeMemorySpace(size int) MemorySpace {
 	var memorySpace = make(MemorySpace, size)
 	for y := 0; y < size; y++ {
 		memorySpace[y] = make([]MemoryState, size)
 	}
 	return memorySpace
+}
+
+func (this MemorySpace) Corrupt(c Coordinate) {
+	this[c.Y][c.X] = CORRUPTED
 }
 
 func (this MemorySpace) StateAt(c Coordinate) MemoryState {
@@ -59,9 +43,4 @@ func (this MemorySpace) Height() int {
 
 func (this MemorySpace) BottomRightCoordinate() Coordinate {
 	return Coordinate{this.Width() - 1, this.Height() - 1}
-}
-
-func linesFrom(s string) []string {
-	var lines = strings.Split(s, "\n")
-	return lines[:len(lines)-1]
 }
