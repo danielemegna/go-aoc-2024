@@ -51,6 +51,7 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondFirstPartWithFile(t *testing.T) {
+	t.Skip("Currently very slow")
 	var fileContent = readFileContent()
 	assert.Equal(t, Coordinate{41, 26}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 71))
 }

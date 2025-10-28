@@ -23,6 +23,9 @@ func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceS
 	for i := 0; ; i++ {
 		var corruptedCoordinate = ParseCoordinateFrom(lines[i])
 		memorySpace.Corrupt(corruptedCoordinate)
+		// here we could check if the new corrupted coordinate
+		// is present in the shortest found path
+		// and skip to the next if not
 		var shortestPathLength = explorer.ShortestPathFromTopLeftToBottomRight()
 		if shortestPathLength == -1 {
 			return corruptedCoordinate
