@@ -47,13 +47,12 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 
 func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, Coordinate{6,1}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 7))
+	assert.Equal(t, Coordinate{6, 1}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 7))
 }
 
 func TestSolveSecondFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, Coordinate{-1,-1}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 71))
+	assert.Equal(t, Coordinate{41, 26}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 71))
 }
 
 func simulateFileContent(inputLines []string) string {

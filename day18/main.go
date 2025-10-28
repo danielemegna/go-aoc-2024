@@ -20,13 +20,14 @@ func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceS
 	var explorer = NewMemorySpaceExplorer(memorySpace)
 	var lines = linesFrom(fileContent)
 
-	for i := 0; i < 22; i++ {
+	for i := 0; ; i++ {
 		var corruptedCoordinate = ParseCoordinateFrom(lines[i])
 		memorySpace.Corrupt(corruptedCoordinate)
+		var shortestPathLength = explorer.ShortestPathFromTopLeftToBottomRight()
+		if shortestPathLength == -1 {
+			return corruptedCoordinate
+		}
 	}
-
-	explorer.ShortestPathFromTopLeftToBottomRight()
-	return Coordinate{6,1}
 }
 
 func linesFrom(s string) []string {
