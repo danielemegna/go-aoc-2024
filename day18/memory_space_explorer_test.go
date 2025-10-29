@@ -13,10 +13,10 @@ func TestSafeSmallMapShortestPath(t *testing.T) {
 	}
 	var explorer = NewMemorySpaceExplorer(memorySpace)
 
-	var length, pathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
+	var actual = explorer.ShortestPathFromTopLeftToBottomRight()
 
-	assert.Equal(t, 4, length)
-	assert.ElementsMatch(t, []Coordinate{{0, 0}, {1, 0}, {2, 0}, {2, 1}, {2, 2}}, pathCoordinates)
+	assert.Len(t, actual, 4 + 1)
+	assert.ElementsMatch(t, []Coordinate{{0, 0}, {1, 0}, {2, 0}, {2, 1}, {2, 2}}, actual)
 }
 
 func TestSmallMapWithSomeCorrupted(t *testing.T) {
@@ -29,13 +29,13 @@ func TestSmallMapWithSomeCorrupted(t *testing.T) {
 	}
 	var explorer = NewMemorySpaceExplorer(memorySpace)
 
-	var length, pathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
+	var actual = explorer.ShortestPathFromTopLeftToBottomRight()
 
-	assert.Equal(t, 10, length)
+	assert.Len(t, actual, 10 + 1)
 	assert.ElementsMatch(t, []Coordinate{
 		{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4},
 		{1, 4}, {2, 4}, {2, 3}, {3, 3}, {4, 3}, {4, 4},
-	}, pathCoordinates)
+	}, actual)
 }
 
 func TestProvidedExampleMemorySpace(t *testing.T) {
@@ -50,8 +50,7 @@ func TestProvidedExampleMemorySpace(t *testing.T) {
 	}
 	var explorer = NewMemorySpaceExplorer(memorySpace)
 
-	var length, pathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
+	var actual = explorer.ShortestPathFromTopLeftToBottomRight()
 
-	assert.Equal(t, 22, length)
-	assert.Len(t, pathCoordinates, 23)
+	assert.Len(t, actual, 22 + 1)
 }

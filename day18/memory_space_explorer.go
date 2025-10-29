@@ -44,13 +44,13 @@ func NewMemorySpaceExplorer(memorySpace MemorySpace) MemorySpaceExplorer {
 	return explorer
 }
 
-func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() (int, []Coordinate) {
+func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() []Coordinate {
 	var targetCoordinate = this.memorySpace.BottomRightCoordinate()
 	for len(this.toVisitStack) > 0 {
 		var toVisit = this.toVisitStack.PopFirstElement()
 
 		if toVisit.coordinate == targetCoordinate {
-			return toVisit.cost, toVisit.PathCoordinates()
+			return toVisit.PathCoordinates()
 		}
 
 		for _, closeCoordinate := range toVisit.coordinate.CloseCoordinates() {
@@ -61,7 +61,7 @@ func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() (int, []C
 		this.visited = append(this.visited, toVisit.coordinate)
 	}
 
-	return -1, []Coordinate{}
+	return []Coordinate{}
 }
 
 func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(toAppend CoordinateWithCost) {
