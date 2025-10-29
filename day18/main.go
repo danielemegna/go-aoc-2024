@@ -12,7 +12,8 @@ func ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent string, memor
 		memorySpace.Corrupt(corruptedCoordinate)
 	}
 
-	return explorer.ShortestPathFromTopLeftToBottomRight()
+	var length, _ = explorer.ShortestPathFromTopLeftToBottomRight()
+	return length
 }
 
 func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceSize int) Coordinate {
@@ -26,7 +27,7 @@ func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceS
 		// here we could check if the new corrupted coordinate
 		// is present in the shortest found path
 		// and skip to the next if not
-		var shortestPathLength = explorer.ShortestPathFromTopLeftToBottomRight()
+		var shortestPathLength, _ = explorer.ShortestPathFromTopLeftToBottomRight()
 		if shortestPathLength == -1 {
 			return corruptedCoordinate
 		}
