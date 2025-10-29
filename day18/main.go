@@ -1,6 +1,9 @@
 package day18
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 func ShortestPathLengthFromTopLeftToBottomRightCorners(fileContent string, memorySpaceSize int, inputBytesToRead int) int {
 	var memorySpace = NewSafeMemorySpace(memorySpaceSize)
@@ -21,14 +24,15 @@ func FirstByteMakesBottomRightCornerUnreachable(fileContent string, memorySpaceS
 	var explorer = NewMemorySpaceExplorer(memorySpace)
 	var lines = linesFrom(fileContent)
 
+	var latestFoundPathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
 	for i := 0; ; i++ {
 		var corruptedCoordinate = ParseCoordinateFrom(lines[i])
 		memorySpace.Corrupt(corruptedCoordinate)
-		// here we could check if the new corrupted coordinate
-		// is present in the shortest found path
-		// and skip to the next if not
-		var pathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
-		if len(pathCoordinates) == 0 {
+		if !slices.Contains(latestFoundPathCoordinates, corruptedCoordinate) {
+			continue
+		}
+		latestFoundPathCoordinates = explorer.ShortestPathFromTopLeftToBottomRight()
+		if len(latestFoundPathCoordinates) == 0 {
 			return corruptedCoordinate
 		}
 	}
