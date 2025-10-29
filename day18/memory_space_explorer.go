@@ -38,7 +38,8 @@ func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() int {
 		}
 
 		for _, closeCoordinate := range toVisit.coordinate.CloseCoordinates() {
-			this.appendToStackWithCostIfVisitable(closeCoordinate, toVisit.cost+1)
+			var closeCoordinateWithCost = CoordinateWithCost{closeCoordinate, toVisit.cost + 1}
+			this.appendToStackWithCostIfVisitable(closeCoordinateWithCost)
 		}
 
 		this.visited = append(this.visited, toVisit.coordinate)
@@ -47,17 +48,16 @@ func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() int {
 	return -1
 }
 
-func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(coordinate Coordinate, cost int) {
-	if !this.memorySpace.IsVisitable(coordinate) {
+func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(toAppend CoordinateWithCost) {
+	if !this.memorySpace.IsVisitable(toAppend.coordinate) {
 		return
 	}
 
-	if this.alreadyVisited(coordinate) {
+	if this.alreadyVisited(toAppend.coordinate) {
 		return
 	}
 
-	var coordinateWithCost = CoordinateWithCost{coordinate, cost}
-	this.toVisitStack.AppendSortedByCost(coordinateWithCost)
+	this.toVisitStack.AppendSortedByCost(toAppend)
 }
 
 func (this *MemorySpaceExplorer) alreadyVisited(c Coordinate) bool {
