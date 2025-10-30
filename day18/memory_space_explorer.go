@@ -2,38 +2,15 @@ package day18
 
 import "slices"
 
-type CoordinateWithCost struct {
-	coordinate Coordinate
-	cost       int
-	parent     *CoordinateWithCost
-}
-
-func (this CoordinateWithCost) PathCoordinates() []Coordinate {
-	var result = []Coordinate{}
-	var currentNode *CoordinateWithCost = &this
-	for {
-		if currentNode == nil {
-			break
-		}
-
-		result = append(result, currentNode.coordinate)
-		currentNode = currentNode.parent
-	}
-
-	return result
-}
-
 type MemorySpaceExplorer struct {
 	memorySpace       MemorySpace
 	currentCoordinate Coordinate
-	toVisitStack      ToVisitStack
+	toVisitStack      CoordinatesToVisitStack
 	visited           []Coordinate
 }
 
-type ToVisitStack []CoordinateWithCost
-
 func NewMemorySpaceExplorer(memorySpace MemorySpace) MemorySpaceExplorer {
-	var explorer = MemorySpaceExplorer{
+	return MemorySpaceExplorer{
 		memorySpace:       memorySpace,
 		currentCoordinate: Coordinate{0, 0},
 		toVisitStack: []CoordinateWithCost{
@@ -41,7 +18,6 @@ func NewMemorySpaceExplorer(memorySpace MemorySpace) MemorySpaceExplorer {
 		},
 		visited: []Coordinate{},
 	}
-	return explorer
 }
 
 func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() []Coordinate {
@@ -78,26 +54,4 @@ func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(toAppend Coord
 
 func (this *MemorySpaceExplorer) alreadyVisited(c Coordinate) bool {
 	return slices.Contains(this.visited, c)
-}
-
-func (this *ToVisitStack) PopFirstElement() CoordinateWithCost {
-	var stack = (*this)
-	var pop = stack[0]
-	(*this) = stack[1:]
-	return pop
-}
-
-func (this *ToVisitStack) AppendSortedByCost(toAppend CoordinateWithCost) {
-	var stack = (*this)
-	for index, existingElement := range stack {
-		if existingElement.coordinate == toAppend.coordinate {
-			return
-		}
-		if toAppend.cost < existingElement.cost {
-			(*this) = slices.Insert(stack, index, toAppend)
-			return
-		}
-	}
-
-	(*this) = append(stack, toAppend)
 }

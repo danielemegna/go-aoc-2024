@@ -26,3 +26,19 @@ func (c Coordinate) CloseCoordinates() []Coordinate {
 		{c.X, c.Y + 1},
 	}
 }
+
+type CoordinateWithCost struct {
+	coordinate Coordinate
+	cost       int
+	parent     *CoordinateWithCost
+}
+
+func (this CoordinateWithCost) PathCoordinates() []Coordinate {
+	var currentNode *CoordinateWithCost = &this
+	var result = []Coordinate{}
+	for currentNode != nil {
+		result = append(result, currentNode.coordinate)
+		currentNode = currentNode.parent
+	}
+	return result
+}
