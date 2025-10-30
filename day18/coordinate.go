@@ -27,14 +27,22 @@ func (c Coordinate) CloseCoordinates() []Coordinate {
 	}
 }
 
-type CoordinateWithCost struct {
+type CoordinateInPath struct {
 	coordinate Coordinate
-	cost       int
-	parent     *CoordinateWithCost
+	parent     *CoordinateInPath
+	pathLength int
 }
 
-func (this CoordinateWithCost) PathCoordinates() []Coordinate {
-	var currentNode *CoordinateWithCost = &this
+func LinkCoordinateInPath(coordinate Coordinate, parent *CoordinateInPath) CoordinateInPath {
+	return CoordinateInPath{
+		coordinate: coordinate,
+		parent:     parent,
+		pathLength: parent.pathLength + 1,
+	}
+}
+
+func (this CoordinateInPath) PathCoordinates() []Coordinate {
+	var currentNode *CoordinateInPath = &this
 	var result = []Coordinate{}
 	for currentNode != nil {
 		result = append(result, currentNode.coordinate)

@@ -13,8 +13,8 @@ func NewMemorySpaceExplorer(memorySpace MemorySpace) MemorySpaceExplorer {
 	return MemorySpaceExplorer{
 		memorySpace:       memorySpace,
 		currentCoordinate: Coordinate{0, 0},
-		toVisitStack: []CoordinateWithCost{
-			{coordinate: Coordinate{0, 0}, cost: 0, parent: nil},
+		toVisitStack: []CoordinateInPath{
+			{coordinate: Coordinate{0, 0}, parent: nil, pathLength: 0},
 		},
 		visited: []Coordinate{},
 	}
@@ -30,8 +30,8 @@ func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() []Coordin
 		}
 
 		for _, closeCoordinate := range toVisit.coordinate.CloseCoordinates() {
-			var closeCoordinateWithCost = CoordinateWithCost{closeCoordinate, toVisit.cost + 1, &toVisit}
-			this.appendToStackWithCostIfVisitable(closeCoordinateWithCost)
+			var closeCoordinateInPath = LinkCoordinateInPath(closeCoordinate, &toVisit)
+			this.appendToStackIfVisitable(closeCoordinateInPath)
 		}
 
 		this.visited = append(this.visited, toVisit.coordinate)
@@ -40,7 +40,7 @@ func (this MemorySpaceExplorer) ShortestPathFromTopLeftToBottomRight() []Coordin
 	return []Coordinate{}
 }
 
-func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(toAppend CoordinateWithCost) {
+func (this *MemorySpaceExplorer) appendToStackIfVisitable(toAppend CoordinateInPath) {
 	if !this.memorySpace.IsVisitable(toAppend.coordinate) {
 		return
 	}
@@ -49,7 +49,7 @@ func (this *MemorySpaceExplorer) appendToStackWithCostIfVisitable(toAppend Coord
 		return
 	}
 
-	this.toVisitStack.AppendSortedByCost(toAppend)
+	this.toVisitStack.AppendSortedByPathLength(toAppend)
 }
 
 func (this *MemorySpaceExplorer) alreadyVisited(c Coordinate) bool {
