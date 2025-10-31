@@ -16,10 +16,14 @@ func InitAvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
 	return patterns
 }
 
-func (this AvailableTowelPatterns) IsStringPatternAvailable(stringPattern string) bool {
-	var firstColorByte = stringPattern[0]
+func (this AvailableTowelPatterns) IsAvailable(towelPattern TowelPattern) bool {
+	var firstColorByte = towelPattern[0]
 	var patterns, keyExists = this[firstColorByte]
-	return keyExists && slices.Contains(patterns, stringPattern)
+	return keyExists && slices.Contains(patterns, string(towelPattern))
+}
+
+func (this AvailableTowelPatterns) IsStringPatternAvailable(stringPattern string) bool {
+	return this.IsAvailable(TowelPattern(stringPattern))
 }
 
 func (this AvailableTowelPatterns) add(pattern string) {
