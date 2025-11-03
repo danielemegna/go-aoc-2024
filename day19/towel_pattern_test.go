@@ -21,4 +21,20 @@ func TestSimpleImpossiblePatterns(t *testing.T) {
 
 func TestSimplePossibleComposedPatterns(t *testing.T) {
 	assert.True(t, TowelPattern("bg").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("rbgb").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("wrbr").IsDesignPossibleWith(patterns))
+}
+
+func TestProvidedPossiblePatterns(t *testing.T) {
+	assert.True(t, TowelPattern("brwrr").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("bggr").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("gbbr").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("rrbgbr").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("bwurrg").IsDesignPossibleWith(patterns))
+	assert.True(t, TowelPattern("brgr").IsDesignPossibleWith(patterns))
+}
+
+func TestProvidedImpossiblePatterns(t *testing.T) {
+	assert.False(t, TowelPattern("ubwu").IsDesignPossibleWith(patterns))
+	assert.False(t, TowelPattern("bbrgwb").IsDesignPossibleWith(patterns))
 }

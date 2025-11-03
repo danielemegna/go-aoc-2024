@@ -7,11 +7,28 @@ func (this TowelPattern) IsDesignPossibleWith(availableTowelPatterns AvailableTo
 		return true
 	}
 
-	var firstColor = TowelPattern(this[0])
-	if !availableTowelPatterns.IsAvailable(firstColor) {
+	var maxPatternLength = availableTowelPatterns.MaxPatternLengthFor(string(this))
+	if maxPatternLength == 0 {
 		return false
 	}
 
-	var rest TowelPattern = this[1:]
-	return rest.IsDesignPossibleWith(availableTowelPatterns)
+	var pieceSize = maxPatternLength
+	if(maxPatternLength > len(this)) {
+		pieceSize = len(this)
+	}
+
+	for ; pieceSize > 0 ; pieceSize-- {
+		var patternPiece = this[:pieceSize]
+		if !availableTowelPatterns.IsAvailable(patternPiece) {
+			continue
+		}
+
+		var rest = this[pieceSize:]
+		var isDesignPossible = rest.IsDesignPossibleWith(availableTowelPatterns)
+		if isDesignPossible {
+			return true
+		}
+	}
+
+	return false
 }
