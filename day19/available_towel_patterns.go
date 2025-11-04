@@ -32,10 +32,6 @@ func (this AvailableTowelPatterns) MaxPatternLengthFor(colorByte ColorByte) int 
 	return len(patterns[0])
 }
 
-func (this AvailableTowelPatterns) IsStringPatternAvailable(stringPattern string) bool {
-	return this.IsAvailable(TowelPattern(stringPattern))
-}
-
 func (this AvailableTowelPatterns) add(pattern string) {
 	var firstColorByte = pattern[0]
 	var existingSlice, keyExists = this[firstColorByte]
