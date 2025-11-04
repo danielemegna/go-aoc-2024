@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-type AvailableTowelPatterns map[byte][]string
+type AvailableTowelPatterns map[ColorByte][]string
+type ColorByte = byte
 
 func InitAvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
 	var patterns = AvailableTowelPatterns{}
@@ -22,9 +23,8 @@ func (this AvailableTowelPatterns) IsAvailable(towelPattern TowelPattern) bool {
 	return keyExists && slices.Contains(patterns, string(towelPattern))
 }
 
-func (this AvailableTowelPatterns) MaxPatternLengthFor(pattern TowelPattern) int {
-	var firstColorByte = pattern[0]
-	var patterns, keyExists = this[firstColorByte]
+func (this AvailableTowelPatterns) MaxPatternLengthFor(colorByte ColorByte) int {
+	var patterns, keyExists = this[colorByte]
 	if !keyExists {
 		return 0
 	}

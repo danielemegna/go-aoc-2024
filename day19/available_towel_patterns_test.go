@@ -20,9 +20,9 @@ func TestIsPatternAvailable(t *testing.T) {
 func TestMaxPatternLength(t *testing.T) {
 	var patterns = InitAvailableTowelPatternsFrom("r, wr, b, g, bwu, rb, br")
 
-	assert.Equal(t, 1, patterns.MaxPatternLengthFor("g"))
-	assert.Equal(t, 2, patterns.MaxPatternLengthFor("w"))
-	assert.Equal(t, 2, patterns.MaxPatternLengthFor("r"))
-	assert.Equal(t, 3, patterns.MaxPatternLengthFor("b"))
-	assert.Equal(t, 0, patterns.MaxPatternLengthFor("u"))
+	assert.Equal(t, 1, patterns.MaxPatternLengthFor('g'))
+	assert.Equal(t, 2, patterns.MaxPatternLengthFor('w'))
+	assert.Equal(t, 2, patterns.MaxPatternLengthFor('r'))
+	assert.Equal(t, 3, patterns.MaxPatternLengthFor('b'))
+	assert.Equal(t, 0, patterns.MaxPatternLengthFor('u'))
 }
