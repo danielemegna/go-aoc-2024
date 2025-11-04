@@ -12,20 +12,20 @@ func (this TowelPattern) IsDesignPossibleWith(availableTowelPatterns AvailableTo
 		return false
 	}
 
-	var pieceSize = maxPatternLength
-	if(maxPatternLength > len(this)) {
-		pieceSize = len(this)
+	var partialPatternLength = maxPatternLength
+	if(partialPatternLength > len(this)) {
+		partialPatternLength = len(this)
 	}
 
-	for ; pieceSize > 0 ; pieceSize-- {
-		var patternPiece = this[:pieceSize]
-		if !availableTowelPatterns.IsAvailable(patternPiece) {
+	for ; partialPatternLength > 0 ; partialPatternLength-- {
+		var partialPattern = this[:partialPatternLength]
+		if !availableTowelPatterns.IsAvailable(partialPattern) {
 			continue
 		}
 
-		var rest = this[pieceSize:]
-		var isDesignPossible = rest.IsDesignPossibleWith(availableTowelPatterns)
-		if isDesignPossible {
+		var rest = this[partialPatternLength:]
+		var isRestDesignPossible = rest.IsDesignPossibleWith(availableTowelPatterns)
+		if isRestDesignPossible {
 			return true
 		}
 	}
