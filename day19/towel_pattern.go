@@ -7,7 +7,7 @@ func (this TowelPattern) IsDesignPossibleWith(availableTowelPatterns AvailableTo
 		return true
 	}
 
-	var maxPatternLength = availableTowelPatterns.MaxPatternLengthFor(string(this))
+	var maxPatternLength = availableTowelPatterns.MaxPatternLengthFor(this)
 	if maxPatternLength == 0 {
 		return false
 	}
