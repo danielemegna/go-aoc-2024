@@ -4,12 +4,12 @@ import "strings"
 
 func CountPossibleDesigns(fileContent string) int {
 	var fileContentLines = linesFrom(fileContent)
-	var availableTowelPatterns = InitAvailableTowelPatternsFrom(fileContentLines[0])
+	var availableTowelPatterns = AvailableTowelPatternsFrom(fileContentLines[0])
 
 	var possibleDesigns = 0
 	for _, towelStringPattern := range fileContentLines[2:] {
 		var towelPattern = TowelPattern(towelStringPattern)
-		if towelPattern.IsDesignPossibleWith(availableTowelPatterns) {
+		if availableTowelPatterns.IsDesignPossible(towelPattern) {
 			possibleDesigns++
 		}
 	}

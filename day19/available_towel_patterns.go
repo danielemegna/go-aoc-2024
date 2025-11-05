@@ -1,50 +1,24 @@
 package day19
 
 import (
-	"slices"
+	"regexp"
 	"strings"
 )
 
-type AvailableTowelPatterns map[ColorByte][]string
+type TowelPattern = string
 type ColorByte = byte
 
-func InitAvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
-	var patterns = AvailableTowelPatterns{}
-	for pattern := range strings.SplitSeq(raw, ", ") {
-		patterns.add(pattern)
-	}
-
-	return patterns
+type AvailableTowelPatterns struct {
+	regex *regexp.Regexp
 }
 
-func (this AvailableTowelPatterns) IsAvailable(towelPattern TowelPattern) bool {
-	var firstColorByte = towelPattern[0]
-	var patterns, keyExists = this[firstColorByte]
-	return keyExists && slices.Contains(patterns, string(towelPattern))
+func AvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
+	var stringRegexp = "^(" + strings.ReplaceAll(raw, ", ", "|") + ")+$"
+	var regexp = regexp.MustCompile(stringRegexp)
+	return AvailableTowelPatterns{regexp}
 }
 
-func (this AvailableTowelPatterns) MaxPatternLengthFor(colorByte ColorByte) int {
-	var patterns, keyExists = this[colorByte]
-	if !keyExists {
-		return 0
-	}
-
-	return len(patterns[0])
-}
-
-func (this AvailableTowelPatterns) add(pattern string) {
-	var firstColorByte = pattern[0]
-	var existingSlice, keyExists = this[firstColorByte]
-	if !keyExists {
-		this[firstColorByte] = []string{pattern}
-		return
-	}
-
-	for index, existingElement := range existingSlice {
-		if len(pattern) >= len(existingElement) {
-			this[firstColorByte] = slices.Insert(existingSlice, index, pattern)
-			return
-		}
-	}
-	this[firstColorByte] = append(existingSlice, pattern)
+func (this AvailableTowelPatterns) IsDesignPossible(towelPattern TowelPattern) bool {
+	var matches = this.regex.FindStringSubmatch(towelPattern)
+	return len(matches) > 0 && matches[0] == towelPattern
 }
