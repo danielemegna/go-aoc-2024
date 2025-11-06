@@ -30,6 +30,17 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 283, CountPossibleDesigns(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 2+1+4+6+1+2, SumOfPossibleDesignsCombinations(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	assert.Equal(t, -1, SumOfPossibleDesignsCombinations(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }

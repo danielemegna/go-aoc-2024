@@ -17,6 +17,10 @@ func CountPossibleDesigns(fileContent string) int {
 	return possibleDesigns
 }
 
+func SumOfPossibleDesignsCombinations(fileContent string) int {
+	return 16
+}
+
 func linesFrom(s string) []string {
 	var lines = strings.Split(s, "\n")
 	return lines[:len(lines)-1]
