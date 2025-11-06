@@ -22,3 +22,11 @@ func (this AvailableTowelPatterns) IsDesignPossible(towelPattern TowelPattern) b
 	var matches = this.regex.FindStringSubmatch(towelPattern)
 	return len(matches) > 0 && matches[0] == towelPattern
 }
+
+func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern TowelPattern) int {
+	if(this.IsDesignPossible(towelPattern)) {
+		return 1
+	}
+
+	return 0
+}

@@ -39,3 +39,18 @@ func TestProvidedImpossiblePatterns(t *testing.T) {
 	assert.False(t, patterns.IsDesignPossible(TowelPattern("ubwu")))
 	assert.False(t, patterns.IsDesignPossible(TowelPattern("bbrgwb")))
 }
+
+func TestNoPossibleDesignsCombinations(t *testing.T) {
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("w")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("w")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("rw")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("bru")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("ubwu")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("bbrgwb")))
+	assert.Equal(t, 0, patterns.PossibleDesignCombinationsFor(TowelPattern("pippo")))
+}
+
+func TestOnePossibleDesignsCombinations(t *testing.T) {
+	assert.Equal(t, 1, patterns.PossibleDesignCombinationsFor(TowelPattern("bggr")))
+	assert.Equal(t, 1, patterns.PossibleDesignCombinationsFor(TowelPattern("bwurrg")))
+}
