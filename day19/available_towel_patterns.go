@@ -35,7 +35,30 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 		return 0
 	}
 
-	return 1
+	var firstColorByte ColorByte = towelPattern[0]
+	var partialPatternLength = len(this.patterns[firstColorByte][0])
+	if partialPatternLength > len(towelPattern) {
+		partialPatternLength = len(towelPattern)
+	}
+
+	var possibleDesign = 0
+	for ; partialPatternLength > 0; partialPatternLength-- {
+		var partialPattern = towelPattern[:partialPatternLength]
+		var rest = towelPattern[partialPatternLength:]
+
+		if !slices.Contains(this.patterns[firstColorByte], partialPattern) {
+			continue
+		}
+
+		if len(rest) > 0 {
+			possibleDesign += this.PossibleDesignCombinationsFor(rest)
+			continue
+		}
+
+		possibleDesign++
+	}
+
+	return possibleDesign
 }
 
 func (this *AvailableTowelPatterns) add(rawStringPattern string) {

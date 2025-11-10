@@ -56,13 +56,11 @@ func TestOnePossibleDesignsCombinations(t *testing.T) {
 }
 
 func TestTwoPossibleDesignsCombinations(t *testing.T) {
-	t.Skip("WIP")
 	assert.Equal(t, 2, patterns.PossibleDesignCombinationsFor(TowelPattern("brwrr")))
 	assert.Equal(t, 2, patterns.PossibleDesignCombinationsFor(TowelPattern("brgr")))
 }
 
 func TestManyPossibleDesignsCombinations(t *testing.T) {
-	t.Skip("WIP")
 	assert.Equal(t, 4, patterns.PossibleDesignCombinationsFor(TowelPattern("gbbr")))
 	assert.Equal(t, 6, patterns.PossibleDesignCombinationsFor(TowelPattern("rrbgbr")))
 }
