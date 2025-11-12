@@ -10,14 +10,19 @@ type TowelPattern = string
 type ColorByte = byte
 
 type AvailableTowelPatterns struct {
-	regex    *regexp.Regexp
-	patterns map[ColorByte][]TowelPattern
+	regex                               *regexp.Regexp
+	patterns                            map[ColorByte][]TowelPattern
+	possibleDesignCombinationsByPattern map[TowelPattern]int
 }
 
 func AvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
 	var stringRegexp = "^(" + strings.ReplaceAll(raw, ", ", "|") + ")+$"
-	var regexp = regexp.MustCompile(stringRegexp)
-	var patterns = AvailableTowelPatterns{regexp, map[ColorByte][]string{}}
+	var regex = regexp.MustCompile(stringRegexp)
+	var patterns = AvailableTowelPatterns{
+		regex:                               regex,
+		patterns:                            make(map[ColorByte][]TowelPattern),
+		possibleDesignCombinationsByPattern: make(map[TowelPattern]int),
+	}
 	for pattern := range strings.SplitSeq(raw, ", ") {
 		patterns.add(pattern)
 	}
@@ -31,7 +36,13 @@ func (this AvailableTowelPatterns) IsDesignPossible(towelPattern TowelPattern) b
 }
 
 func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern TowelPattern) int {
+	var cachedResult, cachedResultExists = this.possibleDesignCombinationsByPattern[towelPattern]
+	if cachedResultExists {
+		return cachedResult
+	}
+
 	if !this.IsDesignPossible(towelPattern) {
+		this.possibleDesignCombinationsByPattern[towelPattern] = 0
 		return 0
 	}
 
@@ -41,7 +52,7 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 		partialPatternLength = len(towelPattern)
 	}
 
-	var possibleDesign = 0
+	var possibleCombination = 0
 	for ; partialPatternLength > 0; partialPatternLength-- {
 		var partialPattern = towelPattern[:partialPatternLength]
 		var rest = towelPattern[partialPatternLength:]
@@ -51,14 +62,15 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 		}
 
 		if len(rest) > 0 {
-			possibleDesign += this.PossibleDesignCombinationsFor(rest)
+			possibleCombination += this.PossibleDesignCombinationsFor(rest)
 			continue
 		}
 
-		possibleDesign++
+		possibleCombination++
 	}
 
-	return possibleDesign
+	this.possibleDesignCombinationsByPattern[towelPattern] = possibleCombination
+	return possibleCombination
 }
 
 func (this *AvailableTowelPatterns) add(rawStringPattern string) {
