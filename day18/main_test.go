@@ -50,7 +50,7 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 	assert.Equal(t, Coordinate{6, 1}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 7))
 }
 
-func TestSolveSecondFirstPartWithFile(t *testing.T) {
+func TestSolveSecondPartWithFile(t *testing.T) {
 	var fileContent = readFileContent()
 	assert.Equal(t, Coordinate{41, 26}, FirstByteMakesBottomRightCornerUnreachable(fileContent, 71))
 }
