@@ -18,7 +18,16 @@ func CountPossibleDesigns(fileContent string) int {
 }
 
 func SumOfPossibleDesignsCombinations(fileContent string) int {
-	return 16
+	var fileContentLines = linesFrom(fileContent)
+	var availableTowelPatterns = AvailableTowelPatternsFrom(fileContentLines[0])
+
+	var possibleDesigns = 0
+	for _, towelStringPattern := range fileContentLines[2:] {
+		var towelPattern = TowelPattern(towelStringPattern)
+		possibleDesigns += availableTowelPatterns.PossibleDesignCombinationsFor(towelPattern)
+	}
+
+	return possibleDesigns
 }
 
 func linesFrom(s string) []string {
