@@ -10,28 +10,47 @@ type TowelPattern = string
 type ColorByte = byte
 
 type AvailableTowelPatterns struct {
-	regex                               *regexp.Regexp
-	patterns                            map[ColorByte][]TowelPattern
+	isDesignPossibleRegex               *regexp.Regexp
+	patternsByFirstColorDescSorted      map[ColorByte][]TowelPattern
 	possibleDesignCombinationsByPattern map[TowelPattern]int
 }
 
 func AvailableTowelPatternsFrom(raw string) AvailableTowelPatterns {
 	var stringRegexp = "^(" + strings.ReplaceAll(raw, ", ", "|") + ")+$"
 	var regex = regexp.MustCompile(stringRegexp)
-	var patterns = AvailableTowelPatterns{
-		regex:                               regex,
-		patterns:                            make(map[ColorByte][]TowelPattern),
+
+	var availableTowelPatterns = AvailableTowelPatterns{
+		isDesignPossibleRegex:               regex,
+		patternsByFirstColorDescSorted:      make(map[ColorByte][]TowelPattern),
 		possibleDesignCombinationsByPattern: make(map[TowelPattern]int),
 	}
-	for pattern := range strings.SplitSeq(raw, ", ") {
-		patterns.add(pattern)
+
+	for rawPattern := range strings.SplitSeq(raw, ", ") {
+		availableTowelPatterns.addDescSortedByLength(rawPattern)
 	}
 
-	return patterns
+	return availableTowelPatterns
+}
+
+func (this AvailableTowelPatterns) IsAvailable(towelPattern TowelPattern) bool {
+	var firstColorByte ColorByte = towelPattern[0]
+	var existingSlice, keyExists = this.patternsByFirstColorDescSorted[firstColorByte]
+	if !keyExists {
+		return false
+	}
+	return slices.Contains(existingSlice, towelPattern)
+}
+
+func (this AvailableTowelPatterns) MaxPatternLengthFor(colorByte ColorByte) int {
+	var existingSlice, keyExists = this.patternsByFirstColorDescSorted[colorByte]
+	if !keyExists || len(existingSlice) == 0 {
+		return 0
+	}
+	return len(existingSlice[0])
 }
 
 func (this AvailableTowelPatterns) IsDesignPossible(towelPattern TowelPattern) bool {
-	var matches = this.regex.FindStringSubmatch(towelPattern)
+	var matches = this.isDesignPossibleRegex.FindStringSubmatch(towelPattern)
 	return len(matches) > 0 && matches[0] == towelPattern
 }
 
@@ -46,8 +65,7 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 		return 0
 	}
 
-	var firstColorByte ColorByte = towelPattern[0]
-	var partialPatternLength = len(this.patterns[firstColorByte][0])
+	var partialPatternLength = this.MaxPatternLengthFor(towelPattern[0])
 	if partialPatternLength > len(towelPattern) {
 		partialPatternLength = len(towelPattern)
 	}
@@ -57,7 +75,7 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 		var partialPattern = towelPattern[:partialPatternLength]
 		var rest = towelPattern[partialPatternLength:]
 
-		if !slices.Contains(this.patterns[firstColorByte], partialPattern) {
+		if !this.IsAvailable(partialPattern) {
 			continue
 		}
 
@@ -73,19 +91,19 @@ func (this AvailableTowelPatterns) PossibleDesignCombinationsFor(towelPattern To
 	return possibleCombination
 }
 
-func (this *AvailableTowelPatterns) add(rawStringPattern string) {
+func (this *AvailableTowelPatterns) addDescSortedByLength(rawStringPattern string) {
 	var firstColorByte = rawStringPattern[0]
-	var existingSlice, keyExists = this.patterns[firstColorByte]
+	var existingSlice, keyExists = this.patternsByFirstColorDescSorted[firstColorByte]
 	if !keyExists {
-		this.patterns[firstColorByte] = []string{rawStringPattern}
+		this.patternsByFirstColorDescSorted[firstColorByte] = []string{rawStringPattern}
 		return
 	}
 
 	for index, existingElement := range existingSlice {
 		if len(rawStringPattern) >= len(existingElement) {
-			this.patterns[firstColorByte] = slices.Insert(existingSlice, index, rawStringPattern)
+			this.patternsByFirstColorDescSorted[firstColorByte] = slices.Insert(existingSlice, index, rawStringPattern)
 			return
 		}
 	}
-	this.patterns[firstColorByte] = append(existingSlice, rawStringPattern)
+	this.patternsByFirstColorDescSorted[firstColorByte] = append(existingSlice, rawStringPattern)
 }
