@@ -24,16 +24,12 @@ var PROVIDED_EXAMPLE_INPUT_LINES = []string{
 
 func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
-	assert.Equal(t, 14, AntinodesInMap(fileContent))
+	assert.Equal(t, 14, SolveFirstPart(fileContent))
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	// sorry but i am tired of 2x2 two dimensional problems
-	// let me skip to day 09 and keep this for the future
-	// ... a future where i'll like to solve 2D map problems
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, 5409, AntinodesInMap(fileContent))
+	assert.Equal(t, 259, SolveFirstPart(fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
