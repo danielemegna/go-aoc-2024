@@ -1,6 +1,10 @@
 package day15
 
 func BoxesGPSCoordinatesSumAfterAllRobotMoves(fileContent string) int {
-	return 2028
+	warehouse, moves := parseWarehouse(fileContent)
+	for _, move := range moves {
+		warehouse.Move(move)
+	}
+	return warehouse.GpsCoordinatesSum()
 }
 
