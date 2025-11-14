@@ -7,8 +7,7 @@ type AntennaGroup struct {
 }
 
 func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
-	if len(this.locations) > 0 {
-		var alreadyPresent = this.locations[0]
+	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
 		this.antinodes = append(this.antinodes, Coordinate{alreadyPresent.X - xDifference, alreadyPresent.Y - yDifference})

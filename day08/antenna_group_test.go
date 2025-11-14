@@ -50,3 +50,18 @@ func TestTwoDiagonalAntennaGroup_TwoDiagonalAntinodes(t *testing.T) {
 	assert.Len(t, group.locations, 2)
 	assert.ElementsMatch(t, []Coordinate{{3, 1}, {6, 7}}, group.antinodes)
 }
+
+func TestThreeAntennaGroup_SixAntinodes(t *testing.T) {
+	var group = AntennaGroup{}
+
+	group.AddAntennaAt(Coordinate{4, 3})
+	group.AddAntennaAt(Coordinate{5, 5})
+	group.AddAntennaAt(Coordinate{8, 4})
+
+	assert.Len(t, group.locations, 3)
+	assert.ElementsMatch(t, []Coordinate{
+		{3, 1}, {6, 7},
+		{0, 2}, {12, 5},
+		{2, 6}, {11, 3},
+	}, group.antinodes)
+}
