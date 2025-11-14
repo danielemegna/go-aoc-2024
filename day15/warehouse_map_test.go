@@ -54,19 +54,16 @@ func TestWarehouseMap_CalculateBoxesGPSSum(t *testing.T) {
 	assert.Equal(t, 1, box.Row)
 	assert.Equal(t, 4, box.Col)
 	
-	// With our updated GPS calculation, the coordinates should be:
-	// 100 * (1 + 1) + (4 + 1) = 100 * 2 + 5 = 205
-	// The example says it should be 104, but that doesn't match with the description
-	// stating we should measure from the edges (including walls)
-	assert.Equal(t, 205, box.GPSCoordinate(), "GPS coordinate should match the description")
+	// The GPS coordinate for a box at (1, 4) should be 100*1 + 4 = 104
+	assert.Equal(t, 104, box.GPSCoordinate(), "GPS coordinate should match the example")
 	
 	// Test the sum
-	assert.Equal(t, 205, warehouseMap.CalculateBoxesGPSSum(), "GPS sum should match")
+	assert.Equal(t, 104, warehouseMap.CalculateBoxesGPSSum(), "GPS sum should match")
 	
 	// Add another box
 	warehouseMap.BoxesPos[Coordinate{Row: 2, Col: 3}] = true
 	
-	// The new box should have GPS coordinate 100 * (2 + 1) + (3 + 1) = 304
-	expectedSum := 205 + 304
+	// The new box should have GPS coordinate 100*2 + 3 = 203
+	expectedSum := 104 + 203
 	assert.Equal(t, expectedSum, warehouseMap.CalculateBoxesGPSSum(), "GPS sum should match after adding box")
 }

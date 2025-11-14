@@ -26,8 +26,8 @@ func (c Coordinate) Equals(other Coordinate) bool {
 
 // GPSCoordinate calculates the GPS coordinate value as described in the problem.
 // It's 100 * (distance from top) + (distance from left).
-// The problem says to measure all the way to the edges of the map, including wall tiles.
-// This means row+1 and col+1 because our arrays are 0-indexed.
+// The distance is measured from the top-left corner (0,0), not counting the wall.
+// For example, a box at (row=1, col=4) has a GPS of 100*1 + 4 = 104.
 func (c Coordinate) GPSCoordinate() int {
-	return 100*(c.Row+1) + (c.Col+1)
+	return 100*c.Row + c.Col
 }
