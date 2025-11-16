@@ -1,69 +1,336 @@
 package day15
 
 import (
-	"testing"
-	
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
-func TestWarehouseMap_MoveRobot(t *testing.T) {
-	// Create a simple map for testing
-	warehouseMap := NewWarehouseMap()
-	warehouseMap.AddRow("####")
-	warehouseMap.AddRow("#@.#")
-	warehouseMap.AddRow("#..#")
-	warehouseMap.AddRow("####")
-	
-	// Test moving right
-	assert.True(t, warehouseMap.MoveRobot(Right))
-	assert.Equal(t, Coordinate{Row: 1, Col: 2}, warehouseMap.RobotPos)
-	
-	// Test moving into a wall (should fail)
-	assert.False(t, warehouseMap.MoveRobot(Right))
-	assert.Equal(t, Coordinate{Row: 1, Col: 2}, warehouseMap.RobotPos)
-	
-	// Test moving down
-	assert.True(t, warehouseMap.MoveRobot(Down))
-	assert.Equal(t, Coordinate{Row: 2, Col: 2}, warehouseMap.RobotPos)
+func TestMoveRobotToTheRightInEmptyMap(t *testing.T) {
+	var warehouseMap = aSmallEmptyMap()
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{1, 2}))
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0, 2}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
 }
 
-func TestWarehouseMap_MoveRobotPushingBox(t *testing.T) {
-	// Skip this test for now, there's an issue with pushing boxes that we need to fix later
-	t.Skip("Skipping test until box pushing is fixed")
+func TestMoveRobotUpInEmptyMap(t *testing.T) {
+	var warehouseMap = aSmallEmptyMap()
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0, 1}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 1}))
+	assert.Equal(t, EMPTY, warehouseMap.ElementAt(Coordinate{0, 2}))
 }
 
-func TestWarehouseMap_CalculateBoxesGPSSum(t *testing.T) {
-	// Example from the problem description:
-	// The box shown below has a distance of 1 from the top edge of the map and 4 from the left edge of the map,
-	// resulting in a GPS coordinate of 100 * 1 + 4 = 104.
-	//
-	// #######
-	// #...O..
-	// #......
-	
-	warehouseMap := NewWarehouseMap()
-	warehouseMap.AddRow("#######")
-	warehouseMap.AddRow("#...O..") // Box at (1, 4) in 0-indexed coordinates
-	warehouseMap.AddRow("#......")
-	
-	// We need to check if our implementation matches this example from the problem
-	boxPositions := warehouseMap.GetBoxPositions()
-	assert.Len(t, boxPositions, 1)
-	
-	box := boxPositions[0]
-	assert.Equal(t, 1, box.Row)
-	assert.Equal(t, 4, box.Col)
-	
-	// The GPS coordinate for a box at (1, 4) should be 100*1 + 4 = 104
-	assert.Equal(t, 104, box.GPSCoordinate(), "GPS coordinate should match the example")
-	
-	// Test the sum
-	assert.Equal(t, 104, warehouseMap.CalculateBoxesGPSSum(), "GPS sum should match")
-	
-	// Add another box
-	warehouseMap.BoxesPos[Coordinate{Row: 2, Col: 3}] = true
-	
-	// The new box should have GPS coordinate 100*2 + 3 = 203
-	expectedSum := 104 + 203
-	assert.Equal(t, expectedSum, warehouseMap.CalculateBoxesGPSSum(), "GPS sum should match after adding box")
+func TestRobotCannotMoveOutOfMapBounds(t *testing.T) {
+	var warehouseMap = aSmallEmptyMap()
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
+
+	warehouseMap.MoveRobot(LEFT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{0, 2}))
+}
+
+func TestRobotCannotMoveOnAWall(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+}
+
+func TestRobotMovesCloseBoxWithHim(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 2}))
+
+	warehouseMap.MoveRobot(DOWN)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 3}))
+}
+
+func TestRobotMovesToTheRightCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, LBOX, RBOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{5, 1}))
+}
+
+func TestRobotMovesToTheLeftCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(LEFT)
+
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{0, 1}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+}
+
+func TestRobotMovesUpCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{2, 0}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{3, 0}))
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+}
+
+func TestRobotMovesDownCloseBigBoxWithHim(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(DOWN)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
+}
+
+func TestRobotCannotMoveCloseBoxesBlockedByMapBounds(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{0, 1}))
+
+	warehouseMap.MoveRobot(LEFT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{0, 1}))
+}
+
+func TestRobotShiftCloseBoxesWhenMoves(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+}
+
+func TestRobotCannotMoveCloseBoxesBlockedByWalls(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	warehouseMap.MoveRobot(DOWN)
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 3}))
+	assert.Equal(t, WALL, warehouseMap.ElementAt(Coordinate{1, 4}))
+
+	warehouseMap.MoveRobot(DOWN)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{1, 3}))
+	assert.Equal(t, WALL, warehouseMap.ElementAt(Coordinate{1, 4}))
+}
+
+func TestRobotCannotMoveMultipleCloseBoxesBlockedByMapBounds(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	warehouseMap.MoveRobot(RIGHT)
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+
+	warehouseMap.MoveRobot(RIGHT)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{3, 1}))
+	assert.Equal(t, BOX, warehouseMap.ElementAt(Coordinate{4, 1}))
+}
+
+func TestRobotCannotMoveCloseBigBoxesPartiallyBlockedByWalls(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{1, 3}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{1, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
+}
+
+func TestRobotCannotMoveMultipleCloseBigBoxesPartiallyBlockedByWalls(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, WALL, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+
+	warehouseMap.MoveRobot(UP)
+
+	assert.Equal(t, ROBOT, warehouseMap.ElementAt(Coordinate{2, 3}))
+	assert.Equal(t, LBOX, warehouseMap.ElementAt(Coordinate{2, 2}))
+	assert.Equal(t, RBOX, warehouseMap.ElementAt(Coordinate{3, 2}))
+}
+
+func TestMakeAllRobotMovesInSmallerProvidedExampleMap(t *testing.T) {
+	var warehouseMap = expectedSmallerProvidedExampleParsedMap()
+
+	for _, direction := range expectedSmallerProvidedExampleParsedMoves() {
+		warehouseMap.MoveRobot(direction)
+	}
+
+	var expected = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
+	assert.Equal(t, expected, warehouseMap)
+}
+
+func TestGetBoxesGPSCoordinatesSumOfAnEmptyMap(t *testing.T) {
+	var warehouseMap = aSmallEmptyMap()
+	assert.Equal(t, 0, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfAMapWithASingleBoxAtTopLeftEdge(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{BOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, ROBOT, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+	assert.Equal(t, ((100 * 1) + 1), warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfAMapWithASingleMiddleBox(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, ROBOT, BOX, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+	assert.Equal(t, ((100 * 3) + 3), warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfAMapWithSomeBoxes(t *testing.T) {
+	var warehouseMap = aSmallFullMap()
+	var expected = ((100 * 2) + 1) +
+		((100 * 2) + 3) + ((100 * 2) + 4) +
+		((100 * 3) + 2)
+	assert.Equal(t, expected, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfSmallerProvidedExampleAfterAllRobotMoves(t *testing.T) {
+	var warehouseMap = expectedSmallerProvidedExampleMapAfterAllRobotMoves()
+	assert.Equal(t, 2028, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleAfterAllRobotMoves(t *testing.T) {
+	var warehouseMap = WarehouseMap{
+		{EMPTY, BOX, EMPTY, BOX, EMPTY, BOX, BOX, BOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{BOX, BOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{BOX, BOX, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{BOX, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX},
+		{BOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
+		{BOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
+		{BOX, BOX, EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
+	}
+	assert.Equal(t, 10092, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetBoxesGPSCoordinatesSumOfLargerProvidedExampleInDoubleWideAfterAllRobotMoves(t *testing.T) {
+	var warehouseMap = expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves()
+	assert.Equal(t, 9021, warehouseMap.GetBoxesGPSCoordinatesSum())
+}
+
+func TestGetRobotPosition(t *testing.T) {
+	assert.Equal(t, Coordinate{0, 2}, aSmallEmptyMap().GetRobotPosition())
+	assert.Equal(t, Coordinate{1, 1}, aSmallFullMap().GetRobotPosition())
+	assert.Equal(t, Coordinate{1, 1}, expectedSmallerProvidedExampleParsedMap().GetRobotPosition())
+}
+
+func TestGetMapSize(t *testing.T) {
+	assert.Equal(t, 4, aSmallEmptyMap().GetWidth())
+	assert.Equal(t, 4, aSmallEmptyMap().GetHeight())
+	assert.Equal(t, 5, aSmallFullMap().GetWidth())
+	assert.Equal(t, 5, aSmallFullMap().GetHeight())
+	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().GetWidth())
+	assert.Equal(t, 6, expectedSmallerProvidedExampleParsedMap().GetHeight())
+	assert.Equal(t, 16, expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves().GetWidth())
+	assert.Equal(t, 8, expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves().GetHeight())
+}
+
+func aSmallEmptyMap() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+		{ROBOT, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY},
+	}
+}
+
+func aSmallFullMap() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, WALL, EMPTY, EMPTY, EMPTY},
+		{BOX, ROBOT, BOX, BOX, EMPTY},
+		{EMPTY, BOX, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, WALL, EMPTY, EMPTY, EMPTY},
+	}
+}
+
+func expectedSmallerProvidedExampleMapAfterAllRobotMoves() WarehouseMap {
+	return WarehouseMap{
+		{EMPTY, EMPTY, EMPTY, EMPTY, BOX, BOX},
+		{WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BOX},
+		{EMPTY, WALL, BOX, ROBOT, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+		{EMPTY, EMPTY, EMPTY, BOX, EMPTY, EMPTY},
+	}
+}
+
+func expectedLargerProvidedExampleMapInDoubleWideAfterAllRobotMoves() WarehouseMap {
+	/*
+		####################
+		##[].......[].[][]##
+		##[]...........[].##
+		##[]........[][][]##
+		##[]......[]....[]##
+		##..##......[]....##
+		##..[]............##
+		##..@......[].[][]##
+		##......[][]..[]..##
+		####################
+	*/
+	return WarehouseMap{
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, LBOX, RBOX, LBOX, RBOX},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, LBOX, RBOX},
+		{LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX},
+		{EMPTY, EMPTY, WALL, WALL, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+		{EMPTY, EMPTY, ROBOT, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, EMPTY, LBOX, RBOX, LBOX, RBOX},
+		{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, LBOX, RBOX, LBOX, RBOX, EMPTY, EMPTY, LBOX, RBOX, EMPTY, EMPTY},
+	}
 }

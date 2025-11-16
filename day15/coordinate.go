@@ -1,33 +1,27 @@
 package day15
 
-// Coordinate represents a position in the warehouse map.
+import "fmt"
+
 type Coordinate struct {
-	Row int
-	Col int
+	x int
+	y int
 }
 
-// NewCoordinate creates a new coordinate with the given row and column.
-func NewCoordinate(row, col int) Coordinate {
-	return Coordinate{Row: row, Col: col}
-}
-
-// Add returns a new coordinate by adding the given delta to this coordinate.
-func (c Coordinate) Add(other Coordinate) Coordinate {
-	return Coordinate{
-		Row: c.Row + other.Row,
-		Col: c.Col + other.Col,
+func (this Coordinate) NextFor(direction Direction) Coordinate {
+	switch direction {
+	case RIGHT:
+		return Coordinate{this.x + 1, this.y}
+	case LEFT:
+		return Coordinate{this.x - 1, this.y}
+	case UP:
+		return Coordinate{this.x, this.y - 1}
+	case DOWN:
+		return Coordinate{this.x, this.y + 1}
 	}
+
+	panic(fmt.Sprintf("Unexpected Direction value: %v", direction))
 }
 
-// Equals checks if two coordinates are the same.
-func (c Coordinate) Equals(other Coordinate) bool {
-	return c.Row == other.Row && c.Col == other.Col
-}
-
-// GPSCoordinate calculates the GPS coordinate value as described in the problem.
-// It's 100 * (distance from top) + (distance from left).
-// The distance is measured from the top-left corner (0,0), not counting the wall.
-// For example, a box at (row=1, col=4) has a GPS of 100*1 + 4 = 104.
-func (c Coordinate) GPSCoordinate() int {
-	return 100*c.Row + c.Col
+func (this Coordinate) isOutOfBoundFor(m WarehouseMap) bool {
+	return this.x < 0 || this.y < 0 || this.x >= m.GetWidth() || this.y >= m.GetHeight()
 }
