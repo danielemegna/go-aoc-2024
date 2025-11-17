@@ -1,6 +1,10 @@
 package day08
 
-import "strings"
+import (
+	"maps"
+	"slices"
+	"strings"
+)
 
 type CityMap struct {
 	size          int
@@ -50,12 +54,20 @@ func (this CityMap) Antennas() []Coordinate {
 }
 
 func (this CityMap) AntinodesInMap() []Coordinate {
-	var result = []Coordinate{}
+	var result = map[Coordinate]bool{}
 	for _, antennaGroup := range this.antennaGroups {
-		// TODO exclude out of bound antinodes
-		result = append(result, antennaGroup.antinodes...)
+		for _, antinode := range antennaGroup.antinodes {
+			if this.IsOutOfBounds(antinode) {
+				continue
+			}
+			result[antinode] = true
+		}
 	}
-	return result
+	return slices.Collect(maps.Keys(result))
+}
+
+func (this CityMap) IsOutOfBounds(c Coordinate) bool {
+	return c.X < 0 || c.X >= this.size || c.Y < 0 || c.Y >= this.size
 }
 
 func linesFrom(s string) []string {

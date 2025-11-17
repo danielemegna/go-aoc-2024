@@ -42,6 +42,5 @@ func TestParseAndInspectProvidedExampleMap(t *testing.T) {
 
 	assert.Equal(t, 12, cityMap.Size())
 	assert.ElementsMatch(t, []Coordinate{{8, 1}, {5, 2}, {7, 3}, {4, 4}, {6, 5}, {8, 8}, {9, 9}}, cityMap.Antennas())
-	// TODO exclude duplicated and out of bound antinodes
-	// assert.Len(t, cityMap.AntinodesInMap(), 13+1)
+	assert.Len(t, cityMap.AntinodesInMap(), 13+1)
 }
