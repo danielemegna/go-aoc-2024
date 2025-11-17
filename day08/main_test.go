@@ -32,6 +32,17 @@ func TestSolveFirstPartWithFile(t *testing.T) {
 	assert.Equal(t, 259, AntinodesCountInMap(fileContent))
 }
 
+func TestSolveSecondPartWithProvidedExample(t *testing.T) {
+	var fileContent = simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES)
+	assert.Equal(t, 34, AntinodesCountWithUpdatedModel(fileContent))
+}
+
+func TestSolveSecondPartWithFile(t *testing.T) {
+	t.Skip("WIP")
+	var fileContent = readFileContent()
+	assert.Equal(t, 34, AntinodesCountWithUpdatedModel(fileContent))
+}
+
 func simulateFileContent(inputLines []string) string {
 	return strings.Join(inputLines, "\n") + "\n"
 }
