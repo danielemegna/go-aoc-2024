@@ -28,7 +28,6 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	assert.Equal(t, 259, AntinodesInMap(fileContent))
 }

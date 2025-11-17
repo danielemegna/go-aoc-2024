@@ -1,5 +1,6 @@
 package day08
 
 func AntinodesInMap(fileContent string) int {
-	return 14
+	var cityMap = ParseCityMap(fileContent)
+	return len(cityMap.AntinodesInMap())
 }
