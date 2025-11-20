@@ -67,7 +67,7 @@ func (this CityMap) AntinodesInMap() []Coordinate {
 }
 
 func (this CityMap) IsOutOfBounds(c Coordinate) bool {
-	return c.X < 0 || c.X >= this.size || c.Y < 0 || c.Y >= this.size
+	return c.IsOutOfBounds(this.size)
 }
 
 func linesFrom(s string) []string {
