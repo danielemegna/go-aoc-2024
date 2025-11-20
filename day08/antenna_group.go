@@ -9,8 +9,16 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
-		this.antinodes = append(this.antinodes, Coordinate{alreadyPresent.X - xDifference, alreadyPresent.Y - yDifference})
-		this.antinodes = append(this.antinodes, Coordinate{toAdd.X + xDifference, toAdd.Y + yDifference})
+		var firstAntinode = Coordinate{
+			alreadyPresent.X - xDifference,
+			alreadyPresent.Y - yDifference,
+		}
+		var secondAntinode = Coordinate{
+			toAdd.X + xDifference,
+			toAdd.Y + yDifference,
+		}
+		this.antinodes = append(this.antinodes, firstAntinode)
+		this.antinodes = append(this.antinodes, secondAntinode)
 	}
 
 	this.locations = append(this.locations, toAdd)
