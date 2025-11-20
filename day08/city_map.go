@@ -30,7 +30,7 @@ func ParseCityMap(rawMapContent string) CityMap {
 
 			var antennaGroup, groupExists = cityMap.antennaGroups[frequency]
 			if !groupExists {
-				antennaGroup = AntennaGroup{frequency: frequency}
+				antennaGroup = AntennaGroup{}
 			}
 
 			antennaGroup.AddAntennaAt(Coordinate{X: x, Y: y})

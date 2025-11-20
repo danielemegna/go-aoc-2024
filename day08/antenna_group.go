@@ -1,7 +1,6 @@
 package day08
 
 type AntennaGroup struct {
-	frequency rune
 	locations []Coordinate
 	antinodes []Coordinate
 }

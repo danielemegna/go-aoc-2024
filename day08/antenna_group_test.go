@@ -6,8 +6,7 @@ import (
 )
 
 func TestEmptyAntennaGroup(t *testing.T) {
-	var group = AntennaGroup{frequency: 'a'}
-	assert.Equal(t, 'a', group.frequency)
+	var group = AntennaGroup{}
 	assert.Empty(t, group.locations)
 	assert.Empty(t, group.antinodes)
 }
