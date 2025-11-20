@@ -15,3 +15,38 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 
 	this.locations = append(this.locations, toAdd)
 }
+
+func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate, mapSize int) {
+	for _, alreadyPresent := range this.locations {
+		this.antinodes = append(this.antinodes, toAdd)
+		this.antinodes = append(this.antinodes, alreadyPresent)
+
+		var xDifference = toAdd.X - alreadyPresent.X
+		var yDifference = toAdd.Y - alreadyPresent.Y
+
+		var continueLoop = true
+		for i := 1; continueLoop; i++ {
+			var firstAntinode = Coordinate{
+				alreadyPresent.X - (xDifference * i),
+				alreadyPresent.Y - (yDifference * i),
+			}
+			var secondAntinode = Coordinate{
+				toAdd.X + (xDifference * i),
+				toAdd.Y + (yDifference * i),
+			}
+
+			continueLoop = false
+			if !firstAntinode.IsOutOfBounds(mapSize) {
+				this.antinodes = append(this.antinodes, firstAntinode)
+				continueLoop = true
+			}
+			if !secondAntinode.IsOutOfBounds(mapSize) {
+				this.antinodes = append(this.antinodes, secondAntinode)
+				continueLoop = true
+			}
+		}
+
+	}
+
+	this.locations = append(this.locations, toAdd)
+}
