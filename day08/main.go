@@ -6,5 +6,6 @@ func AntinodesCountInMap(fileContent string) int {
 }
 
 func AntinodesCountWithUpdatedModel(fileContent string) int {
-	return 34
+	var cityMap = ParseCityMap(fileContent, true)
+	return len(cityMap.AntinodesInMap())
 }
