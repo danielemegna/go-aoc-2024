@@ -38,7 +38,7 @@ func (this CityMap) parseCityMapCoordinate(rawMapChar rune, coordinate Coordinat
 	}
 
 	var frequency = Frequency(rawMapChar)
-	var antennaGroup = this.antennaGroups[frequency]
+	var antennaGroup = this.antennaGroups[frequency] // inject map size in construction?
 	if withResonantHarmonics {
 		antennaGroup.AddAntennaAtWithResonantHarmonics(coordinate, this.size)
 	} else {
@@ -56,10 +56,10 @@ func (this CityMap) Antennas() []Coordinate {
 }
 
 func (this CityMap) AntinodesInMap() []Coordinate {
-	var result = map[Coordinate]bool{}
+	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set
 	for _, antennaGroup := range this.antennaGroups {
 		for _, antinode := range antennaGroup.antinodes {
-			if this.IsOutOfBounds(antinode) {
+			if this.IsOutOfBounds(antinode) { // we can avoid this check if we pass mapsize as field in groups
 				continue
 			}
 			result[antinode] = true
@@ -68,10 +68,12 @@ func (this CityMap) AntinodesInMap() []Coordinate {
 	return slices.Collect(maps.Keys(result))
 }
 
+// delete me when out of bound check will be in AntennaGroup add functions
 func (this CityMap) IsOutOfBounds(c Coordinate) bool {
 	return c.IsOutOfBounds(this.size)
 }
 
+// maybe not needed after the refactoring
 func (this CityMap) Size() int {
 	return this.size
 }

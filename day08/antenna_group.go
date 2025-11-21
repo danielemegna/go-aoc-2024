@@ -2,9 +2,11 @@ package day08
 
 type AntennaGroup struct {
 	locations []Coordinate
-	antinodes []Coordinate
+	antinodes []Coordinate // maybe a set (map with no duplicates) would be better
+	// add map size as field?
 }
 
+// with a map size field we can avoid outofbound antinodes
 func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X
@@ -24,8 +26,10 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	this.locations = append(this.locations, toAdd)
 }
 
+// if we inject map size in construction we could avoid the mapSize param
 func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate, mapSize int) {
 
+	// with a set (map with no duplicates) antinodes field we can avoid these checks
 	if len(this.locations) > 0 {
 		this.antinodes = append(this.antinodes, toAdd)
 		if len(this.locations) == 1 {
