@@ -25,12 +25,20 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 }
 
 func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate, mapSize int) {
+
+	if len(this.locations) > 0 {
+		this.antinodes = append(this.antinodes, toAdd)
+		if len(this.locations) == 1 {
+			this.antinodes = append(this.antinodes, this.locations[0])
+		}
+	}
+
 	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
 
 		var continueLoop = true
-		for i := 0; continueLoop; i++ {
+		for i := 1; continueLoop; i++ {
 			var firstAntinode = Coordinate{
 				alreadyPresent.X - (xDifference * i),
 				alreadyPresent.Y - (yDifference * i),

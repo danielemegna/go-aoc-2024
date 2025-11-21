@@ -90,4 +90,19 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}, {4, 1}, {4, 7}, {4, 9}}, group.antinodes)
 	})
 
+	t.Run("ThreeAntennaGroup_TenSizeMap_NineAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{}
+
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{0, 0}, 10)
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{1, 2}, 10)
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{3, 1}, 10)
+
+		assert.Len(t, group.locations, 3)
+		assert.ElementsMatch(t, []Coordinate{
+			{0, 0}, {1, 2}, {3, 1},
+			{5, 0}, {6, 2}, {9, 3},
+			{2, 4}, {3, 6}, {4, 8},
+		}, group.antinodes)
+	})
+
 }
