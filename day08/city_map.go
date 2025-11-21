@@ -23,30 +23,28 @@ func ParseCityMap(rawMapContent string, withResonantHarmonics bool) CityMap {
 	for y := 0; y < len(lines); y++ {
 		var line = lines[y]
 		for x := 0; x < len(line); x++ {
-			var frequency = rune(line[x])
-			if frequency == '.' {
-				continue
-			}
-
-			var antennaGroup, groupExists = cityMap.antennaGroups[frequency]
-			if !groupExists {
-				antennaGroup = AntennaGroup{}
-			}
-
-			if withResonantHarmonics {
-				antennaGroup.AddAntennaAtWithResonantHarmonics(Coordinate{X: x, Y: y}, cityMap.size)
-			} else {
-				antennaGroup.AddAntennaAt(Coordinate{X: x, Y: y})
-			}
-			cityMap.antennaGroups[frequency] = antennaGroup
+			var rawMapChar = rune(line[x])
+			var coordinate = Coordinate{X: x, Y: y}
+			cityMap.parseCityMapCoordinate(rawMapChar, coordinate, withResonantHarmonics)
 		}
 	}
 
 	return cityMap
 }
 
-func (this CityMap) Size() int {
-	return this.size
+func (this CityMap) parseCityMapCoordinate(rawMapChar rune, coordinate Coordinate, withResonantHarmonics bool) {
+	if rawMapChar == '.' {
+		return
+	}
+
+	var frequency = Frequency(rawMapChar)
+	var antennaGroup = this.antennaGroups[frequency]
+	if withResonantHarmonics {
+		antennaGroup.AddAntennaAtWithResonantHarmonics(coordinate, this.size)
+	} else {
+		antennaGroup.AddAntennaAt(coordinate)
+	}
+	this.antennaGroups[frequency] = antennaGroup
 }
 
 func (this CityMap) Antennas() []Coordinate {
@@ -72,6 +70,10 @@ func (this CityMap) AntinodesInMap() []Coordinate {
 
 func (this CityMap) IsOutOfBounds(c Coordinate) bool {
 	return c.IsOutOfBounds(this.size)
+}
+
+func (this CityMap) Size() int {
+	return this.size
 }
 
 func linesFrom(s string) []string {
