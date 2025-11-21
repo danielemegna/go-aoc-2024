@@ -13,7 +13,7 @@ type CityMap struct {
 
 type Frequency = rune
 
-func ParseCityMap(rawMapContent string) CityMap {
+func ParseCityMap(rawMapContent string, withResonantHarmonics bool) CityMap {
 	var lines = linesFrom(rawMapContent)
 	var cityMap = CityMap{
 		size:          len(lines), // assuming always square map here
@@ -33,7 +33,11 @@ func ParseCityMap(rawMapContent string) CityMap {
 				antennaGroup = AntennaGroup{}
 			}
 
-			antennaGroup.AddAntennaAt(Coordinate{X: x, Y: y})
+			if withResonantHarmonics {
+				antennaGroup.AddAntennaAtWithResonantHarmonics(Coordinate{X: x, Y: y}, cityMap.size)
+			} else {
+				antennaGroup.AddAntennaAt(Coordinate{X: x, Y: y})
+			}
 			cityMap.antennaGroups[frequency] = antennaGroup
 		}
 	}
