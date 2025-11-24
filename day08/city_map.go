@@ -8,7 +8,7 @@ import (
 
 type CityMap struct {
 	size          int
-	antennaGroups map[Frequency]AntennaGroup
+	antennaGroups map[Frequency]*AntennaGroup
 }
 
 type Frequency = rune
@@ -17,7 +17,7 @@ func ParseCityMap(rawMapContent string, withResonantHarmonics bool) CityMap {
 	var lines = linesFrom(rawMapContent)
 	var cityMap = CityMap{
 		size:          len(lines), // assuming always square map here
-		antennaGroups: make(map[Frequency]AntennaGroup),
+		antennaGroups: make(map[Frequency]*AntennaGroup),
 	}
 
 	for y := 0; y < len(lines); y++ {
@@ -38,13 +38,23 @@ func (this CityMap) parseCityMapCoordinate(rawMapChar rune, coordinate Coordinat
 	}
 
 	var frequency = Frequency(rawMapChar)
-	var antennaGroup = this.antennaGroups[frequency] // inject map size in construction?
+	var antennaGroup = this.getAntennaGroupFor(frequency)
 	if withResonantHarmonics {
 		antennaGroup.AddAntennaAtWithResonantHarmonics(coordinate, this.size)
 	} else {
 		antennaGroup.AddAntennaAt(coordinate)
 	}
-	this.antennaGroups[frequency] = antennaGroup
+}
+
+func (this CityMap) getAntennaGroupFor(frequency Frequency) *AntennaGroup {
+	var antennaGroup, exists = this.antennaGroups[frequency]
+	if exists {
+		return antennaGroup
+	}
+
+	var newAntennaGroup = AntennaGroup{} // inject map size in construction?
+	this.antennaGroups[frequency] = &newAntennaGroup
+	return &newAntennaGroup
 }
 
 func (this CityMap) Antennas() []Coordinate {
