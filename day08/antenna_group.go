@@ -3,7 +3,7 @@ package day08
 type AntennaGroup struct {
 	locations []Coordinate
 	antinodes []Coordinate // maybe a set (map with no duplicates) would be better
-	// add map size as field?
+	mapSize   int
 }
 
 // with a map size field we can avoid outofbound antinodes

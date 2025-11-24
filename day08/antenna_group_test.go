@@ -14,7 +14,7 @@ func TestEmptyAntennaGroup(t *testing.T) {
 func TestAddAntennaAt(t *testing.T) {
 
 	t.Run("SingleAntennaGroup_NoAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+		var group = AntennaGroup{mapSize: 10}
 
 		group.AddAntennaAt(Coordinate{4, 3})
 
@@ -22,8 +22,8 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.Empty(t, group.antinodes)
 	})
 
-	t.Run("TwoVerticalAntennaGroup_TwoVerticalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+	t.Run("TwoVerticalAntennaGroup_TenSizeMap_TwoVerticalAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 10}
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{4, 5})
@@ -32,8 +32,8 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{4, 1}, {4, 7}}, group.antinodes)
 	})
 
-	t.Run("TwoHorizontalAntennaGroup_TwoHorizontalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+	t.Run("TwoHorizontalAntennaGroup_TenSizeMap_TwoHorizontalAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 10}
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 3})
@@ -42,8 +42,8 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{3, 3}, {6, 3}}, group.antinodes)
 	})
 
-	t.Run("TwoDiagonalAntennaGroup_TwoDiagonalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+	t.Run("TwoDiagonalAntennaGroup_TenSizeMap_TwoDiagonalAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 10}
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
@@ -52,8 +52,8 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{3, 1}, {6, 7}}, group.antinodes)
 	})
 
-	t.Run("ThreeAntennaGroup_SixAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+	t.Run("ThreeAntennaGroupExample_BigMap_SixAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 14}
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
