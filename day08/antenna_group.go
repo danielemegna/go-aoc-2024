@@ -6,7 +6,6 @@ type AntennaGroup struct {
 	mapSize   int
 }
 
-// with a map size field we can avoid outofbound antinodes
 func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X
@@ -19,8 +18,12 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 			toAdd.X + xDifference,
 			toAdd.Y + yDifference,
 		}
-		this.antinodes = append(this.antinodes, firstAntinode)
-		this.antinodes = append(this.antinodes, secondAntinode)
+		if !firstAntinode.IsOutOfBounds(this.mapSize) {
+			this.antinodes = append(this.antinodes, firstAntinode)
+		}
+		if !secondAntinode.IsOutOfBounds(this.mapSize) {
+			this.antinodes = append(this.antinodes, secondAntinode)
+		}
 	}
 
 	this.locations = append(this.locations, toAdd)

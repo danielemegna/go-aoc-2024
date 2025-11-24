@@ -42,6 +42,16 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{3, 3}, {6, 3}}, group.antinodes)
 	})
 
+	t.Run("TwoHorizontalAntennaGroup_FourSizeMap_AllAntinodesAreOutOfBounds", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 4}
+
+		group.AddAntennaAt(Coordinate{1, 1})
+		group.AddAntennaAt(Coordinate{3, 1})
+
+		assert.Len(t, group.locations, 2)
+		assert.ElementsMatch(t, []Coordinate{}, group.antinodes)
+	})
+
 	t.Run("TwoDiagonalAntennaGroup_TenSizeMap_TwoDiagonalAntinodes", func(t *testing.T) {
 		var group = AntennaGroup{mapSize: 10}
 
@@ -52,7 +62,21 @@ func TestAddAntennaAt(t *testing.T) {
 		assert.ElementsMatch(t, []Coordinate{{3, 1}, {6, 7}}, group.antinodes)
 	})
 
-	t.Run("ThreeAntennaGroupExample_BigMap_SixAntinodes", func(t *testing.T) {
+	t.Run("ThreeAntennaGroupExample_TenSizeMap_OnlyFourAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 10}
+
+		group.AddAntennaAt(Coordinate{4, 3})
+		group.AddAntennaAt(Coordinate{5, 5})
+		group.AddAntennaAt(Coordinate{8, 4})
+
+		assert.Len(t, group.locations, 3)
+		assert.ElementsMatch(t, []Coordinate{
+			{3, 1}, {6, 7},
+			{0, 2}, {2, 6},
+		}, group.antinodes)
+	})
+
+	t.Run("ThreeAntennaGroupProvidedExample_BigMap_SixAntinodes", func(t *testing.T) {
 		var group = AntennaGroup{mapSize: 14}
 
 		group.AddAntennaAt(Coordinate{4, 3})
