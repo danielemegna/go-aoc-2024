@@ -69,18 +69,10 @@ func (this CityMap) AntinodesInMap() []Coordinate {
 	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set
 	for _, antennaGroup := range this.antennaGroups {
 		for _, antinode := range antennaGroup.antinodes {
-			if this.IsOutOfBounds(antinode) { // we can avoid this check if we pass mapsize as field in groups
-				continue
-			}
 			result[antinode] = true
 		}
 	}
 	return slices.Collect(maps.Keys(result))
-}
-
-// delete me when out of bound check will be in AntennaGroup add functions
-func (this CityMap) IsOutOfBounds(c Coordinate) bool {
-	return c.IsOutOfBounds(this.size)
 }
 
 // maybe not needed after the refactoring
