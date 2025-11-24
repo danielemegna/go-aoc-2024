@@ -60,7 +60,7 @@ func (this CityMap) getAntennaGroupFor(frequency Frequency) *AntennaGroup {
 func (this CityMap) Antennas() []Coordinate {
 	var result = []Coordinate{}
 	for _, antennaGroup := range this.antennaGroups {
-		result = append(result, antennaGroup.locations...)
+		result = append(result, antennaGroup.GetAntennas()...)
 	}
 	return result
 }
@@ -68,7 +68,7 @@ func (this CityMap) Antennas() []Coordinate {
 func (this CityMap) AntinodesInMap() []Coordinate {
 	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set
 	for _, antennaGroup := range this.antennaGroups {
-		for _, antinode := range antennaGroup.antinodes {
+		for _, antinode := range antennaGroup.GetAntinodes() {
 			result[antinode] = true
 		}
 	}

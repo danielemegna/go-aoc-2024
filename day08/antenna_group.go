@@ -77,3 +77,11 @@ func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 
 	this.locations = append(this.locations, toAdd)
 }
+
+func (this AntennaGroup) GetAntennas() []Coordinate {
+	return this.locations
+}
+
+func (this AntennaGroup) GetAntinodes() []Coordinate {
+	return this.antinodes
+}

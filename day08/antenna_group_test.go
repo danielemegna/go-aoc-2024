@@ -7,8 +7,8 @@ import (
 
 func TestEmptyAntennaGroup(t *testing.T) {
 	var group = NewAntennaGroup(2)
-	assert.Empty(t, group.locations)
-	assert.Empty(t, group.antinodes)
+	assert.Empty(t, group.GetAntennas())
+	assert.Empty(t, group.GetAntinodes())
 }
 
 func TestAddAntennaAt(t *testing.T) {
@@ -18,8 +18,8 @@ func TestAddAntennaAt(t *testing.T) {
 
 		group.AddAntennaAt(Coordinate{4, 3})
 
-		assert.Equal(t, []Coordinate{{4, 3}}, group.locations)
-		assert.Empty(t, group.antinodes)
+		assert.Equal(t, []Coordinate{{4, 3}}, group.GetAntennas())
+		assert.Empty(t, group.GetAntinodes())
 	})
 
 	t.Run("TwoVerticalAntennaGroup_TenSizeMap_TwoVerticalAntinodes", func(t *testing.T) {
@@ -28,8 +28,8 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{4, 5})
 
-		assert.Len(t, group.locations, 2)
-		assert.ElementsMatch(t, []Coordinate{{4, 1}, {4, 7}}, group.antinodes)
+		assert.Len(t, group.GetAntennas(), 2)
+		assert.ElementsMatch(t, []Coordinate{{4, 1}, {4, 7}}, group.GetAntinodes())
 	})
 
 	t.Run("TwoHorizontalAntennaGroup_TenSizeMap_TwoHorizontalAntinodes", func(t *testing.T) {
@@ -38,8 +38,8 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 3})
 
-		assert.Len(t, group.locations, 2)
-		assert.ElementsMatch(t, []Coordinate{{3, 3}, {6, 3}}, group.antinodes)
+		assert.Len(t, group.GetAntennas(), 2)
+		assert.ElementsMatch(t, []Coordinate{{3, 3}, {6, 3}}, group.GetAntinodes())
 	})
 
 	t.Run("TwoHorizontalAntennaGroup_FourSizeMap_AllAntinodesAreOutOfBounds", func(t *testing.T) {
@@ -48,8 +48,8 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{1, 1})
 		group.AddAntennaAt(Coordinate{3, 1})
 
-		assert.Len(t, group.locations, 2)
-		assert.ElementsMatch(t, []Coordinate{}, group.antinodes)
+		assert.Len(t, group.GetAntennas(), 2)
+		assert.ElementsMatch(t, []Coordinate{}, group.GetAntinodes())
 	})
 
 	t.Run("TwoDiagonalAntennaGroup_TenSizeMap_TwoDiagonalAntinodes", func(t *testing.T) {
@@ -58,8 +58,8 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
 
-		assert.Len(t, group.locations, 2)
-		assert.ElementsMatch(t, []Coordinate{{3, 1}, {6, 7}}, group.antinodes)
+		assert.Len(t, group.GetAntennas(), 2)
+		assert.ElementsMatch(t, []Coordinate{{3, 1}, {6, 7}}, group.GetAntinodes())
 	})
 
 	t.Run("ThreeAntennaGroupExample_TenSizeMap_OnlyFourAntinodes", func(t *testing.T) {
@@ -69,11 +69,11 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{5, 5})
 		group.AddAntennaAt(Coordinate{8, 4})
 
-		assert.Len(t, group.locations, 3)
+		assert.Len(t, group.GetAntennas(), 3)
 		assert.ElementsMatch(t, []Coordinate{
 			{3, 1}, {6, 7},
 			{0, 2}, {2, 6},
-		}, group.antinodes)
+		}, group.GetAntinodes())
 	})
 
 	t.Run("ThreeAntennaGroupProvidedExample_BigMap_SixAntinodes", func(t *testing.T) {
@@ -83,12 +83,12 @@ func TestAddAntennaAt(t *testing.T) {
 		group.AddAntennaAt(Coordinate{5, 5})
 		group.AddAntennaAt(Coordinate{8, 4})
 
-		assert.Len(t, group.locations, 3)
+		assert.Len(t, group.GetAntennas(), 3)
 		assert.ElementsMatch(t, []Coordinate{
 			{3, 1}, {6, 7},
 			{0, 2}, {12, 5},
 			{2, 6}, {11, 3},
-		}, group.antinodes)
+		}, group.GetAntinodes())
 	})
 
 }
@@ -100,8 +100,8 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
 
-		assert.Equal(t, []Coordinate{{4, 3}}, group.locations)
-		assert.Empty(t, group.antinodes)
+		assert.Equal(t, []Coordinate{{4, 3}}, group.GetAntennas())
+		assert.Empty(t, group.GetAntinodes())
 	})
 
 	t.Run("TwoVerticalAntennaGroup_TenSizeMap_FiveVerticalAntinodes", func(t *testing.T) {
@@ -110,8 +110,8 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 5})
 
-		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}}, group.locations)
-		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}, {4, 1}, {4, 7}, {4, 9}}, group.antinodes)
+		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}}, group.GetAntennas())
+		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}, {4, 1}, {4, 7}, {4, 9}}, group.GetAntinodes())
 	})
 
 	t.Run("ThreeAntennaGroupProvidedExample_TenSizeMap_NineAntinodes", func(t *testing.T) {
@@ -121,12 +121,12 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{1, 2})
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{3, 1})
 
-		assert.Len(t, group.locations, 3)
+		assert.Len(t, group.GetAntennas(), 3)
 		assert.ElementsMatch(t, []Coordinate{
 			{0, 0}, {1, 2}, {3, 1},
 			{5, 0}, {6, 2}, {9, 3},
 			{2, 4}, {3, 6}, {4, 8},
-		}, group.antinodes)
+		}, group.GetAntinodes())
 	})
 
 }
