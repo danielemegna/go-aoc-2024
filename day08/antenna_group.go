@@ -6,6 +6,14 @@ type AntennaGroup struct {
 	mapSize   int
 }
 
+func NewAntennaGroup(mapSize int) AntennaGroup {
+	return AntennaGroup{
+		locations: []Coordinate{},
+		antinodes: []Coordinate{},
+		mapSize:   mapSize,
+	}
+}
+
 func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
 		var xDifference = toAdd.X - alreadyPresent.X

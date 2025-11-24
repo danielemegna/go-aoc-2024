@@ -52,7 +52,7 @@ func (this CityMap) getAntennaGroupFor(frequency Frequency) *AntennaGroup {
 		return antennaGroup
 	}
 
-	var newAntennaGroup = AntennaGroup{mapSize: this.size}
+	var newAntennaGroup = NewAntennaGroup(this.size)
 	this.antennaGroups[frequency] = &newAntennaGroup
 	return &newAntennaGroup
 }

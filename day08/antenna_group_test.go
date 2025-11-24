@@ -6,7 +6,7 @@ import (
 )
 
 func TestEmptyAntennaGroup(t *testing.T) {
-	var group = AntennaGroup{}
+	var group = NewAntennaGroup(2)
 	assert.Empty(t, group.locations)
 	assert.Empty(t, group.antinodes)
 }
@@ -14,7 +14,7 @@ func TestEmptyAntennaGroup(t *testing.T) {
 func TestAddAntennaAt(t *testing.T) {
 
 	t.Run("SingleAntennaGroup_NoAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 
@@ -23,7 +23,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("TwoVerticalAntennaGroup_TenSizeMap_TwoVerticalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{4, 5})
@@ -33,7 +33,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("TwoHorizontalAntennaGroup_TenSizeMap_TwoHorizontalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 3})
@@ -43,7 +43,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("TwoHorizontalAntennaGroup_FourSizeMap_AllAntinodesAreOutOfBounds", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 4}
+		var group = NewAntennaGroup(4)
 
 		group.AddAntennaAt(Coordinate{1, 1})
 		group.AddAntennaAt(Coordinate{3, 1})
@@ -53,7 +53,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("TwoDiagonalAntennaGroup_TenSizeMap_TwoDiagonalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
@@ -63,7 +63,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("ThreeAntennaGroupExample_TenSizeMap_OnlyFourAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
@@ -77,7 +77,7 @@ func TestAddAntennaAt(t *testing.T) {
 	})
 
 	t.Run("ThreeAntennaGroupProvidedExample_BigMap_SixAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 14}
+		var group = NewAntennaGroup(14)
 
 		group.AddAntennaAt(Coordinate{4, 3})
 		group.AddAntennaAt(Coordinate{5, 5})
@@ -96,7 +96,7 @@ func TestAddAntennaAt(t *testing.T) {
 func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 
 	t.Run("SingleAntennaGroup_NoAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
 
@@ -105,7 +105,7 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 	})
 
 	t.Run("TwoVerticalAntennaGroup_TenSizeMap_FiveVerticalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 5})
@@ -115,7 +115,7 @@ func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 	})
 
 	t.Run("ThreeAntennaGroupProvidedExample_TenSizeMap_NineAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{mapSize: 10}
+		var group = NewAntennaGroup(10)
 
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{0, 0})
 		group.AddAntennaAtWithResonantHarmonics(Coordinate{1, 2})
