@@ -29,8 +29,7 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 	this.locations = append(this.locations, toAdd)
 }
 
-// if we inject map size in construction we could avoid the mapSize param
-func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate, mapSize int) {
+func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 
 	// with a set (map with no duplicates) antinodes field we can avoid these checks
 	if len(this.locations) > 0 {
@@ -56,11 +55,11 @@ func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate, ma
 			}
 
 			continueLoop = false
-			if !firstAntinode.IsOutOfBounds(mapSize) {
+			if !firstAntinode.IsOutOfBounds(this.mapSize) {
 				this.antinodes = append(this.antinodes, firstAntinode)
 				continueLoop = true
 			}
-			if !secondAntinode.IsOutOfBounds(mapSize) {
+			if !secondAntinode.IsOutOfBounds(this.mapSize) {
 				this.antinodes = append(this.antinodes, secondAntinode)
 				continueLoop = true
 			}

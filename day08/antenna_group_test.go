@@ -96,30 +96,30 @@ func TestAddAntennaAt(t *testing.T) {
 func TestAddAntennaWithResonantHarmonics(t *testing.T) {
 
 	t.Run("SingleAntennaGroup_NoAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+		var group = AntennaGroup{mapSize: 10}
 
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3}, 10)
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
 
 		assert.Equal(t, []Coordinate{{4, 3}}, group.locations)
 		assert.Empty(t, group.antinodes)
 	})
 
 	t.Run("TwoVerticalAntennaGroup_TenSizeMap_FiveVerticalAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+		var group = AntennaGroup{mapSize: 10}
 
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3}, 10)
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 5}, 10)
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 3})
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{4, 5})
 
 		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}}, group.locations)
 		assert.ElementsMatch(t, []Coordinate{{4, 3}, {4, 5}, {4, 1}, {4, 7}, {4, 9}}, group.antinodes)
 	})
 
-	t.Run("ThreeAntennaGroup_TenSizeMap_NineAntinodes", func(t *testing.T) {
-		var group = AntennaGroup{}
+	t.Run("ThreeAntennaGroupProvidedExample_TenSizeMap_NineAntinodes", func(t *testing.T) {
+		var group = AntennaGroup{mapSize: 10}
 
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{0, 0}, 10)
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{1, 2}, 10)
-		group.AddAntennaAtWithResonantHarmonics(Coordinate{3, 1}, 10)
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{0, 0})
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{1, 2})
+		group.AddAntennaAtWithResonantHarmonics(Coordinate{3, 1})
 
 		assert.Len(t, group.locations, 3)
 		assert.ElementsMatch(t, []Coordinate{

@@ -40,7 +40,7 @@ func (this CityMap) parseCityMapCoordinate(rawMapChar rune, coordinate Coordinat
 	var frequency = Frequency(rawMapChar)
 	var antennaGroup = this.getAntennaGroupFor(frequency)
 	if withResonantHarmonics {
-		antennaGroup.AddAntennaAtWithResonantHarmonics(coordinate, this.size)
+		antennaGroup.AddAntennaAtWithResonantHarmonics(coordinate)
 	} else {
 		antennaGroup.AddAntennaAt(coordinate)
 	}
