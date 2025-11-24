@@ -1,15 +1,20 @@
 package day08
 
+import (
+	"maps"
+	"slices"
+)
+
 type AntennaGroup struct {
 	locations []Coordinate
-	antinodes []Coordinate // maybe a set (map with no duplicates) would be better
+	antinodes map[Coordinate]bool
 	mapSize   int
 }
 
 func NewAntennaGroup(mapSize int) AntennaGroup {
 	return AntennaGroup{
 		locations: []Coordinate{},
-		antinodes: []Coordinate{},
+		antinodes: map[Coordinate]bool{},
 		mapSize:   mapSize,
 	}
 }
@@ -27,10 +32,10 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 			toAdd.Y + yDifference,
 		}
 		if !firstAntinode.IsOutOfBounds(this.mapSize) {
-			this.antinodes = append(this.antinodes, firstAntinode)
+			this.antinodes[firstAntinode] = true
 		}
 		if !secondAntinode.IsOutOfBounds(this.mapSize) {
-			this.antinodes = append(this.antinodes, secondAntinode)
+			this.antinodes[secondAntinode] = true
 		}
 	}
 
@@ -38,16 +43,8 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 }
 
 func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
-
-	// with a set (map with no duplicates) antinodes field we can avoid these checks
-	if len(this.locations) > 0 {
-		this.antinodes = append(this.antinodes, toAdd)
-		if len(this.locations) == 1 {
-			this.antinodes = append(this.antinodes, this.locations[0])
-		}
-	}
-
 	for _, alreadyPresent := range this.locations {
+		this.antinodes[alreadyPresent] = true
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
 
@@ -64,18 +61,20 @@ func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 
 			continueLoop = false
 			if !firstAntinode.IsOutOfBounds(this.mapSize) {
-				this.antinodes = append(this.antinodes, firstAntinode)
+				this.antinodes[firstAntinode] = true
 				continueLoop = true
 			}
 			if !secondAntinode.IsOutOfBounds(this.mapSize) {
-				this.antinodes = append(this.antinodes, secondAntinode)
+				this.antinodes[secondAntinode] = true
 				continueLoop = true
 			}
 		}
-
 	}
 
 	this.locations = append(this.locations, toAdd)
+	if len(this.locations) > 1 {
+		this.antinodes[toAdd] = true
+	}
 }
 
 func (this AntennaGroup) GetAntennas() []Coordinate {
@@ -83,5 +82,5 @@ func (this AntennaGroup) GetAntennas() []Coordinate {
 }
 
 func (this AntennaGroup) GetAntinodes() []Coordinate {
-	return this.antinodes
+	return slices.Collect(maps.Keys(this.antinodes))
 }

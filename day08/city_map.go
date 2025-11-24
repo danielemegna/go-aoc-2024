@@ -66,7 +66,7 @@ func (this CityMap) Antennas() []Coordinate {
 }
 
 func (this CityMap) AntinodesInMap() []Coordinate {
-	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set
+	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set?
 	for _, antennaGroup := range this.antennaGroups {
 		for _, antinode := range antennaGroup.GetAntinodes() {
 			result[antinode] = true
