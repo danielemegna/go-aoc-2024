@@ -1,20 +1,15 @@
 package day08
 
-import (
-	"maps"
-	"slices"
-)
-
 type AntennaGroup struct {
 	locations []Coordinate
-	antinodes map[Coordinate]bool
+	antinodes Set[Coordinate]
 	mapSize   int
 }
 
 func NewAntennaGroup(mapSize int) AntennaGroup {
 	return AntennaGroup{
 		locations: []Coordinate{},
-		antinodes: map[Coordinate]bool{},
+		antinodes: NewSet[Coordinate](),
 		mapSize:   mapSize,
 	}
 }
@@ -32,10 +27,10 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 			toAdd.Y + yDifference,
 		}
 		if !firstAntinode.IsOutOfBounds(this.mapSize) {
-			this.antinodes[firstAntinode] = true
+			this.antinodes.Add(firstAntinode)
 		}
 		if !secondAntinode.IsOutOfBounds(this.mapSize) {
-			this.antinodes[secondAntinode] = true
+			this.antinodes.Add(secondAntinode)
 		}
 	}
 
@@ -44,8 +39,8 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 
 func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
-		this.antinodes[toAdd] = true
-		this.antinodes[alreadyPresent] = true
+		this.antinodes.Add(toAdd)
+		this.antinodes.Add(alreadyPresent)
 
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
@@ -61,7 +56,7 @@ func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 				if nextLeftAntinode.IsOutOfBounds(this.mapSize) {
 					isLeftAntinodeInBounds = false
 				} else {
-					this.antinodes[nextLeftAntinode] = true
+					this.antinodes.Add(nextLeftAntinode)
 				}
 			}
 
@@ -73,7 +68,7 @@ func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 				if(nextRightAntinode.IsOutOfBounds(this.mapSize)) {
 					isRightAntinodeInBounds = false
 				} else {
-					this.antinodes[nextRightAntinode] = true
+					this.antinodes.Add(nextRightAntinode)
 				}
 			}
 		}
@@ -87,5 +82,5 @@ func (this AntennaGroup) GetAntennas() []Coordinate {
 }
 
 func (this AntennaGroup) GetAntinodes() []Coordinate {
-	return slices.Collect(maps.Keys(this.antinodes))
+	return this.antinodes.ToSlice()
 }
