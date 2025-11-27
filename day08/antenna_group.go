@@ -44,37 +44,42 @@ func (this *AntennaGroup) AddAntennaAt(toAdd Coordinate) {
 
 func (this *AntennaGroup) AddAntennaAtWithResonantHarmonics(toAdd Coordinate) {
 	for _, alreadyPresent := range this.locations {
+		this.antinodes[toAdd] = true
 		this.antinodes[alreadyPresent] = true
+
 		var xDifference = toAdd.X - alreadyPresent.X
 		var yDifference = toAdd.Y - alreadyPresent.Y
 
-		var continueLoop = true
-		for i := 1; continueLoop; i++ {
-			var firstAntinode = Coordinate{
-				alreadyPresent.X - (xDifference * i),
-				alreadyPresent.Y - (yDifference * i),
-			}
-			var secondAntinode = Coordinate{
-				toAdd.X + (xDifference * i),
-				toAdd.Y + (yDifference * i),
+		var isLeftAntinodeInBounds = true
+		var isRightAntinodeInBounds = true
+		for i := 1; isLeftAntinodeInBounds || isRightAntinodeInBounds; i++ {
+			if isLeftAntinodeInBounds {
+				var nextLeftAntinode = Coordinate{
+					alreadyPresent.X - (xDifference * i),
+					alreadyPresent.Y - (yDifference * i),
+				}
+				if nextLeftAntinode.IsOutOfBounds(this.mapSize) {
+					isLeftAntinodeInBounds = false
+				} else {
+					this.antinodes[nextLeftAntinode] = true
+				}
 			}
 
-			continueLoop = false
-			if !firstAntinode.IsOutOfBounds(this.mapSize) {
-				this.antinodes[firstAntinode] = true
-				continueLoop = true
-			}
-			if !secondAntinode.IsOutOfBounds(this.mapSize) {
-				this.antinodes[secondAntinode] = true
-				continueLoop = true
+			if isRightAntinodeInBounds {
+				var nextRightAntinode = Coordinate{
+					toAdd.X + (xDifference * i),
+					toAdd.Y + (yDifference * i),
+				}
+				if(nextRightAntinode.IsOutOfBounds(this.mapSize)) {
+					isRightAntinodeInBounds = false
+				} else {
+					this.antinodes[nextRightAntinode] = true
+				}
 			}
 		}
 	}
 
 	this.locations = append(this.locations, toAdd)
-	if len(this.locations) > 1 {
-		this.antinodes[toAdd] = true
-	}
 }
 
 func (this AntennaGroup) GetAntennas() []Coordinate {
