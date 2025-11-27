@@ -1,8 +1,7 @@
 package day08
 
 import (
-	"maps"
-	"slices"
+	"github.com/samber/lo"
 	"strings"
 )
 
@@ -66,13 +65,11 @@ func (this CityMap) Antennas() []Coordinate {
 }
 
 func (this CityMap) AntinodesInMap() []Coordinate {
-	var result = map[Coordinate]bool{} // we can avoid duplicate handling here if we turn the antinodes field in a set?
+	var antinodesWithDuplicates = []Coordinate{}
 	for _, antennaGroup := range this.antennaGroups {
-		for _, antinode := range antennaGroup.GetAntinodes() {
-			result[antinode] = true
-		}
+		antinodesWithDuplicates = append(antinodesWithDuplicates, antennaGroup.GetAntinodes()...)
 	}
-	return slices.Collect(maps.Keys(result))
+	return lo.Uniq(antinodesWithDuplicates)
 }
 
 // maybe not needed after the refactoring
