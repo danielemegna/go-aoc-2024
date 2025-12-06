@@ -18,7 +18,7 @@ const WALL MapValue = -1
 
 func ParseRacetrack(inputLines []string) RacetrackMap {
 	var mapValues = make([][]MapValue, len(inputLines))
-	var startCoordinate Coordinate
+	var racetrackStart = RacetrackElement{}
 
 	for y := 0; y < len(inputLines); y++ {
 		mapValues[y] = make([]MapValue, len(inputLines[y]))
@@ -28,22 +28,40 @@ func ParseRacetrack(inputLines []string) RacetrackMap {
 				mapValues[y][x] = WALL
 			case 'S':
 				mapValues[y][x] = START
-				startCoordinate = Coordinate{x, y}
+				racetrackStart.coordinate = Coordinate{x, y}
 			default:
 				mapValues[y][x] = 1
 			}
 		}
 	}
 
-	var trackLength = 8
-	// TODO:
-	// - complete linked list from start
-	// - update mapValues with values > 1
-	// - detect trackLength from map
+	var trackLength = 0
+	var currentRacetrackElement = &racetrackStart
+	for {
+		var c = currentRacetrackElement.coordinate
+		var nextCoordinate Coordinate
+		if mapValues[c.Y][c.X+1] == 1 {
+			nextCoordinate = Coordinate{c.X + 1, c.Y}
+		} else if mapValues[c.Y][c.X-1] == 1 {
+			nextCoordinate = Coordinate{c.X - 1, c.Y}
+		} else if mapValues[c.Y+1][c.X] == 1 {
+			nextCoordinate = Coordinate{c.X, c.Y + 1}
+		} else if mapValues[c.Y-1][c.X] == 1 {
+			nextCoordinate = Coordinate{c.X, c.Y - 1}
+		} else {
+			break
+		}
+
+		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength+1
+		var newRacetrackElement = RacetrackElement{coordinate: nextCoordinate}
+		currentRacetrackElement.next = &newRacetrackElement
+		currentRacetrackElement = currentRacetrackElement.next
+		trackLength++
+	}
 
 	return RacetrackMap{
 		values: mapValues,
-		start:  RacetrackElement{coordinate: startCoordinate, next: nil},
+		start:  racetrackStart,
 		length: trackLength,
 	}
 }
