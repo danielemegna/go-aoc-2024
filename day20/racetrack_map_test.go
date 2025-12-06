@@ -16,7 +16,7 @@ var SMALL_RACETRACK_INPUT_LINES = []string{
 }
 
 func TestParseSmallRacetrack(t *testing.T) {
-	var racetrackMap = ParseRacetrack(SMALL_RACETRACK_INPUT_LINES)
+	var racetrackMap = ParseRacetrack(simulateFileContent(SMALL_RACETRACK_INPUT_LINES))
 
 	assert.Equal(t, Coordinate{1, 1}, racetrackMap.StartCoordinate())
 	assert.Equal(t, 8, racetrackMap.Length())
@@ -31,7 +31,7 @@ func TestParseSmallRacetrack(t *testing.T) {
 }
 
 func TestParseProvidedExampleRacetrack(t *testing.T) {
-	var racetrackMap = ParseRacetrack(PROVIDED_EXAMPLE_INPUT_LINES)
+	var racetrackMap = ParseRacetrack(simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES))
 
 	assert.Equal(t, Coordinate{1, 3}, racetrackMap.StartCoordinate())
 	assert.Equal(t, 84, racetrackMap.Length())

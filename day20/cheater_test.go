@@ -6,7 +6,7 @@ import (
 )
 
 func TestFindPossibileCheatsInSmallTrack(t *testing.T) {
-	var racetrackMap = ParseRacetrack(SMALL_RACETRACK_INPUT_LINES)
+	var racetrackMap = ParseRacetrack(simulateFileContent(SMALL_RACETRACK_INPUT_LINES))
 
 	var expected = []Cheat{
 		{startPosition: Coordinate{2, 1}, endPosition: Coordinate{2, 3}, savingInPicoseconds: 6 - 2},

@@ -1,5 +1,7 @@
 package day20
 
+import "strings"
+
 type RacetrackMap struct {
 	values [][]MapValue
 	start  RacetrackElement
@@ -16,7 +18,8 @@ type MapValue = int
 const START MapValue = 0
 const WALL MapValue = -1
 
-func ParseRacetrack(inputLines []string) RacetrackMap {
+func ParseRacetrack(rawMap string) RacetrackMap {
+	var inputLines = linesFrom(rawMap)
 	var mapValues = make([][]MapValue, len(inputLines))
 	var racetrackStart = RacetrackElement{}
 
@@ -76,4 +79,9 @@ func (this RacetrackMap) ValueAt(c Coordinate) MapValue {
 
 func (this RacetrackMap) Length() int {
 	return this.length
+}
+
+func linesFrom(s string) []string {
+	var trimmed = strings.TrimSpace(s)
+	return strings.Split(trimmed, "\n")
 }
