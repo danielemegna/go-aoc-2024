@@ -8,7 +8,7 @@ type Cheat struct {
 
 func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 	return []Cheat{
-		{startPosition: Coordinate{1, 0}, endPosition: Coordinate{1, 2}, savingInPicoseconds: 6 - 2},
-		{startPosition: Coordinate{2, 0}, endPosition: Coordinate{2, 2}, savingInPicoseconds: 4 - 2},
+		{startPosition: Coordinate{2, 1}, endPosition: Coordinate{2, 3}, savingInPicoseconds: 6 - 2},
+		{startPosition: Coordinate{3, 1}, endPosition: Coordinate{3, 3}, savingInPicoseconds: 4 - 2},
 	}
 }
