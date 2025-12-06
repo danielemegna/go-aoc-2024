@@ -19,6 +19,7 @@ const WALL MapValue = -1
 func ParseRacetrack(inputLines []string) RacetrackMap {
 	var mapValues = make([][]MapValue, len(inputLines))
 	var startCoordinate Coordinate
+	var endCoordinate Coordinate
 
 	for y := 0; y < len(inputLines); y++ {
 		mapValues[y] = make([]MapValue, len(inputLines[y]))
@@ -29,22 +30,54 @@ func ParseRacetrack(inputLines []string) RacetrackMap {
 			case 'S':
 				mapValues[y][x] = START
 				startCoordinate = Coordinate{x, y}
+			case 'E':
+				endCoordinate = Coordinate{x, y}
+				mapValues[y][x] = 1
 			default:
 				mapValues[y][x] = 1
 			}
 		}
 	}
 
-	var trackLength = 8
-	// TODO:
-	// - complete linked list from start
-	// - update mapValues with values > 1
-	// - detect trackLength from map
+	// Build the linked list and calculate distances
+	startElement := &RacetrackElement{coordinate: startCoordinate, next: nil}
+	currentElement := startElement
+	currentCoordinate := startCoordinate
+	distance := 0
+	visited := make(map[Coordinate]bool)
+	visited[currentCoordinate] = true
+
+	for currentCoordinate != endCoordinate {
+		mapValues[currentCoordinate.Y][currentCoordinate.X] = distance
+
+		// Find next coordinate
+		directions := []Coordinate{{0, -1}, {0, 1}, {-1, 0}, {1, 0}}
+		for _, dir := range directions {
+			next := Coordinate{currentCoordinate.X + dir.X, currentCoordinate.Y + dir.Y}
+
+			if next.Y >= 0 && next.Y < len(mapValues) &&
+				next.X >= 0 && next.X < len(mapValues[next.Y]) &&
+				mapValues[next.Y][next.X] != WALL &&
+				!visited[next] {
+
+				nextElement := &RacetrackElement{coordinate: next, next: nil}
+				currentElement.next = nextElement
+				currentElement = nextElement
+				currentCoordinate = next
+				visited[next] = true
+				distance++
+				break
+			}
+		}
+	}
+
+	// Set final distance for end coordinate
+	mapValues[currentCoordinate.Y][currentCoordinate.X] = distance
 
 	return RacetrackMap{
 		values: mapValues,
-		start:  RacetrackElement{coordinate: startCoordinate, next: nil},
-		length: trackLength,
+		start:  *startElement,
+		length: distance,
 	}
 }
 
