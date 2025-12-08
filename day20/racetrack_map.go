@@ -1,6 +1,9 @@
 package day20
 
-import "strings"
+import (
+	"math"
+	"strings"
+)
 
 type RacetrackMap struct {
 	values [][]MapValue
@@ -17,27 +20,11 @@ type MapValue = int
 
 const START MapValue = 0
 const WALL MapValue = -1
-const TRACK MapValue = 99999
+const TRACK MapValue = math.MaxInt
 
-func ParseRacetrack(rawMap string) RacetrackMap {
-	var inputLines = linesFrom(rawMap)
-	var mapValues = make([][]MapValue, len(inputLines))
-	var racetrackStart = RacetrackElement{}
-
-	for y := 0; y < len(inputLines); y++ {
-		mapValues[y] = make([]MapValue, len(inputLines[y]))
-		for x := 0; x < len(inputLines[y]); x++ {
-			switch inputLines[y][x] {
-			case '#':
-				mapValues[y][x] = WALL
-			case 'S':
-				mapValues[y][x] = START
-				racetrackStart.Coordinate = Coordinate{x, y}
-			default:
-				mapValues[y][x] = TRACK
-			}
-		}
-	}
+func ParseRacetrack(rawMapString string) RacetrackMap {
+	var mapValues, racetrackStartCoordinate = mapValuesParsing(rawMapString)
+	var racetrackStart = RacetrackElement{Coordinate: racetrackStartCoordinate, Next: nil}
 
 	var trackLength = 0
 	var currentRacetrackElement = &racetrackStart
@@ -82,6 +69,28 @@ func (this RacetrackMap) RacetrackLength() int {
 
 func (this RacetrackMap) MapSize() int {
 	return len(this.values) // assuming always square maps
+}
+
+func mapValuesParsing(rawMapString string) ([][]MapValue, Coordinate) {
+	var inputLines = linesFrom(rawMapString)
+	var rawMap = make([][]MapValue, len(inputLines))
+
+	var racetrackStartCoordinate Coordinate
+	for y := 0; y < len(inputLines); y++ {
+		rawMap[y] = make([]MapValue, len(inputLines[y]))
+		for x := 0; x < len(inputLines[y]); x++ {
+			switch inputLines[y][x] {
+			case '#':
+				rawMap[y][x] = WALL
+			case 'S':
+				rawMap[y][x] = START
+				racetrackStartCoordinate = Coordinate{x, y}
+			default:
+				rawMap[y][x] = TRACK
+			}
+		}
+	}
+	return rawMap, racetrackStartCoordinate
 }
 
 func linesFrom(s string) []string {
