@@ -18,8 +18,10 @@ var SMALL_RACETRACK_INPUT_LINES = []string{
 func TestParseSmallRacetrack(t *testing.T) {
 	var racetrackMap = ParseRacetrack(simulateFileContent(SMALL_RACETRACK_INPUT_LINES))
 
-	assert.Equal(t, Coordinate{1, 1}, racetrackMap.StartCoordinate())
-	assert.Equal(t, 8, racetrackMap.Length())
+	assert.Equal(t, Coordinate{1, 1}, racetrackMap.RacetrackStart().Coordinate)
+	assert.NotNil(t, racetrackMap.RacetrackStart().Next)
+	assert.Equal(t, 8, racetrackMap.RacetrackLength())
+	assert.Equal(t, 6, racetrackMap.MapSize())
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{0,0}))
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{3,2}))
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{5,5}))
@@ -33,8 +35,10 @@ func TestParseSmallRacetrack(t *testing.T) {
 func TestParseProvidedExampleRacetrack(t *testing.T) {
 	var racetrackMap = ParseRacetrack(simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES))
 
-	assert.Equal(t, Coordinate{1, 3}, racetrackMap.StartCoordinate())
-	assert.Equal(t, 84, racetrackMap.Length())
+	assert.Equal(t, Coordinate{1, 3}, racetrackMap.RacetrackStart().Coordinate)
+	assert.NotNil(t, racetrackMap.RacetrackStart().Next)
+	assert.Equal(t, 84, racetrackMap.RacetrackLength())
+	assert.Equal(t, 15, racetrackMap.MapSize())
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{0,0}))
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{5,4}))
 	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{10,7}))

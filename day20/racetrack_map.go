@@ -9,8 +9,8 @@ type RacetrackMap struct {
 }
 
 type RacetrackElement struct {
-	coordinate Coordinate
-	next       *RacetrackElement
+	Coordinate Coordinate
+	Next       *RacetrackElement
 }
 
 type MapValue = int
@@ -31,7 +31,7 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 				mapValues[y][x] = WALL
 			case 'S':
 				mapValues[y][x] = START
-				racetrackStart.coordinate = Coordinate{x, y}
+				racetrackStart.Coordinate = Coordinate{x, y}
 			default:
 				mapValues[y][x] = 1
 			}
@@ -41,7 +41,7 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 	var trackLength = 0
 	var currentRacetrackElement = &racetrackStart
 	for {
-		var c = currentRacetrackElement.coordinate
+		var c = currentRacetrackElement.Coordinate
 		var nextCoordinate Coordinate
 		if mapValues[c.Y][c.X+1] == 1 {
 			nextCoordinate = Coordinate{c.X + 1, c.Y}
@@ -56,9 +56,9 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 		}
 
 		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength+1
-		var newRacetrackElement = RacetrackElement{coordinate: nextCoordinate}
-		currentRacetrackElement.next = &newRacetrackElement
-		currentRacetrackElement = currentRacetrackElement.next
+		var newRacetrackElement = RacetrackElement{Coordinate: nextCoordinate}
+		currentRacetrackElement.Next = &newRacetrackElement
+		currentRacetrackElement = currentRacetrackElement.Next
 		trackLength++
 	}
 
@@ -69,16 +69,20 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 	}
 }
 
-func (this RacetrackMap) StartCoordinate() Coordinate {
-	return this.start.coordinate
+func (this RacetrackMap) RacetrackStart() RacetrackElement {
+	return this.start
 }
 
 func (this RacetrackMap) ValueAt(c Coordinate) MapValue {
 	return this.values[c.Y][c.X]
 }
 
-func (this RacetrackMap) Length() int {
+func (this RacetrackMap) RacetrackLength() int {
 	return this.length
+}
+
+func (this RacetrackMap) MapSize() int {
+	return len(this.values) // assuming always square maps
 }
 
 func linesFrom(s string) []string {
