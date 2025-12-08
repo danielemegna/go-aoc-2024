@@ -31,7 +31,6 @@ func TestSolveFirstPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveFirstPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
 	assert.Equal(t, 1355, CountCheatsSavingAtLeast(100, fileContent))
 }
