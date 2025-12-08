@@ -35,10 +35,15 @@ func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 					continue
 				}
 
+				var savedPicoseconds = secondStepValue - currentRacetrackValue - 2
+				if(savedPicoseconds < 1) {
+					continue
+				}
+
 				result = append(result, Cheat{
 					startPosition:       currentRacetrackPosition.Coordinate,
 					endPosition:         secondStepCheat,
-					savingInPicoseconds: secondStepValue - currentRacetrackValue - 2,
+					savingInPicoseconds: savedPicoseconds,
 				})
 			}
 
