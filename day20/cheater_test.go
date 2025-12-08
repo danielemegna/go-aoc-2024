@@ -15,5 +15,11 @@ func TestFindPossibileCheatsInSmallTrack(t *testing.T) {
 	assert.ElementsMatch(t, expected, PossibleCheatsIn(racetrackMap))
 }
 
+func TestFindPossibileCheatsInProvidedExampleTrack(t *testing.T) {
+	t.Skip("WIP")
+	var racetrackMap = ParseRacetrack(simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES))
+	assert.Len(t, PossibleCheatsIn(racetrackMap), 14 + 14 + 2 + 4 + 2 + 3 + 1 + 1 + 1 + 1 + 1)
+}
+
 // TEST: map with cheat starting from track start position ?
 // TEST: cheat with L-angle move saving some picoseconds ? (>0)
