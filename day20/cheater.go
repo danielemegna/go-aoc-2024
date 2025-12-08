@@ -7,8 +7,45 @@ type Cheat struct {
 }
 
 func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
-	return []Cheat{
-		{startPosition: Coordinate{2, 1}, endPosition: Coordinate{2, 3}, savingInPicoseconds: 6 - 2},
-		{startPosition: Coordinate{3, 1}, endPosition: Coordinate{3, 3}, savingInPicoseconds: 4 - 2},
+	var result = []Cheat{}
+
+	var currentRacetrackPosition = racetrackMap.RacetrackStart().Next
+
+	for currentRacetrackPosition != nil {
+
+		var currentRacetrackValue = racetrackMap.ValueAt(currentRacetrackPosition.Coordinate)
+
+		for _, firstStepCheat := range currentRacetrackPosition.Coordinate.CloseCoordinates() {
+			if racetrackMap.ValueAt(firstStepCheat) != WALL {
+				continue
+			}
+
+			for _, secondStepCheat := range firstStepCheat.CloseCoordinates() {
+				if secondStepCheat.IsOutOfBounds(racetrackMap.MapSize()) {
+					continue
+				}
+				if secondStepCheat == currentRacetrackPosition.Coordinate {
+					continue
+				}
+				var secondStepValue = racetrackMap.ValueAt(secondStepCheat)
+				if secondStepValue == WALL {
+					continue
+				}
+				if secondStepValue < currentRacetrackValue {
+					continue
+				}
+
+				result = append(result, Cheat{
+					startPosition:       currentRacetrackPosition.Coordinate,
+					endPosition:         secondStepCheat,
+					savingInPicoseconds: secondStepValue - currentRacetrackValue - 2,
+				})
+			}
+
+		}
+
+		currentRacetrackPosition = currentRacetrackPosition.Next
 	}
+
+	return result
 }

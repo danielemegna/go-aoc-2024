@@ -55,7 +55,7 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 			break
 		}
 
-		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength+1
+		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength + 1
 		var newRacetrackElement = RacetrackElement{Coordinate: nextCoordinate}
 		currentRacetrackElement.Next = &newRacetrackElement
 		currentRacetrackElement = currentRacetrackElement.Next
