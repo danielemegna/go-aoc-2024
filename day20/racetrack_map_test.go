@@ -15,6 +15,16 @@ var SMALL_RACETRACK_INPUT_LINES = []string{
 	"######",
 }
 
+var ANOTHER_RACETRACK_INPUT_LINES = []string{
+	"#######",
+	"#....S#",
+	"#.#####",
+	"#.....#",
+	"#####.#",
+	"###E..#",
+	"#######",
+}
+
 func TestParseSmallRacetrack(t *testing.T) {
 	var racetrackMap = ParseRacetrack(simulateFileContent(SMALL_RACETRACK_INPUT_LINES))
 
@@ -30,6 +40,19 @@ func TestParseSmallRacetrack(t *testing.T) {
 	assert.Equal(t, 2, racetrackMap.ValueAt(Coordinate{3,1}))
 	assert.Equal(t, 7, racetrackMap.ValueAt(Coordinate{2,3}))
 	assert.Equal(t, 8, racetrackMap.ValueAt(Coordinate{2,4}))
+}
+
+func TestParseAnotherRacetrack(t *testing.T) {
+	var racetrackMap = ParseRacetrack(simulateFileContent(ANOTHER_RACETRACK_INPUT_LINES))
+
+	assert.Equal(t, Coordinate{5, 1}, racetrackMap.RacetrackStart().Coordinate)
+	assert.NotNil(t, racetrackMap.RacetrackStart().Next)
+	assert.Equal(t, 14, racetrackMap.RacetrackLength())
+	assert.Equal(t, 7, racetrackMap.MapSize())
+	assert.Equal(t, WALL, racetrackMap.ValueAt(Coordinate{4,4}))
+	assert.Equal(t, START, racetrackMap.ValueAt(Coordinate{5,1}))
+	assert.Equal(t, 11, racetrackMap.ValueAt(Coordinate{5,4}))
+	assert.Equal(t, 14, racetrackMap.ValueAt(Coordinate{3,5}))
 }
 
 func TestParseProvidedExampleRacetrack(t *testing.T) {

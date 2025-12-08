@@ -17,6 +17,7 @@ type MapValue = int
 
 const START MapValue = 0
 const WALL MapValue = -1
+const TRACK MapValue = 99999
 
 func ParseRacetrack(rawMap string) RacetrackMap {
 	var inputLines = linesFrom(rawMap)
@@ -33,7 +34,7 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 				mapValues[y][x] = START
 				racetrackStart.Coordinate = Coordinate{x, y}
 			default:
-				mapValues[y][x] = 1
+				mapValues[y][x] = TRACK
 			}
 		}
 	}
@@ -41,22 +42,20 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 	var trackLength = 0
 	var currentRacetrackElement = &racetrackStart
 	for {
-		var c = currentRacetrackElement.Coordinate
-		var nextCoordinate Coordinate
-		if mapValues[c.Y][c.X+1] == 1 {
-			nextCoordinate = Coordinate{c.X + 1, c.Y}
-		} else if mapValues[c.Y][c.X-1] == 1 {
-			nextCoordinate = Coordinate{c.X - 1, c.Y}
-		} else if mapValues[c.Y+1][c.X] == 1 {
-			nextCoordinate = Coordinate{c.X, c.Y + 1}
-		} else if mapValues[c.Y-1][c.X] == 1 {
-			nextCoordinate = Coordinate{c.X, c.Y - 1}
-		} else {
+		var nextCoordinate *Coordinate
+		for _, close := range currentRacetrackElement.Coordinate.CloseCoordinates() {
+			if mapValues[close.Y][close.X] == TRACK {
+				nextCoordinate = &close
+				break
+			}
+		}
+
+		if nextCoordinate == nil {
 			break
 		}
 
 		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength + 1
-		var newRacetrackElement = RacetrackElement{Coordinate: nextCoordinate}
+		var newRacetrackElement = RacetrackElement{Coordinate: *nextCoordinate}
 		currentRacetrackElement.Next = &newRacetrackElement
 		currentRacetrackElement = currentRacetrackElement.Next
 		trackLength++
