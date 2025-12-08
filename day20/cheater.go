@@ -9,7 +9,7 @@ type Cheat struct {
 func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 	var result = []Cheat{}
 
-	var currentRacetrackPosition = racetrackMap.RacetrackStart().Next
+	var currentRacetrackPosition = racetrackMap.RacetrackStart()
 
 	for currentRacetrackPosition != nil {
 

@@ -68,8 +68,8 @@ func ParseRacetrack(rawMap string) RacetrackMap {
 	}
 }
 
-func (this RacetrackMap) RacetrackStart() RacetrackElement {
-	return this.start
+func (this RacetrackMap) RacetrackStart() *RacetrackElement {
+	return &this.start
 }
 
 func (this RacetrackMap) ValueAt(c Coordinate) MapValue {

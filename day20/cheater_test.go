@@ -15,11 +15,15 @@ func TestFindPossibileCheatsInSmallTrack(t *testing.T) {
 	assert.ElementsMatch(t, expected, PossibleCheatsIn(racetrackMap))
 }
 
+func TestFindPossibileCheatsInAnotherTrack(t *testing.T) {
+	var racetrackMap = ParseRacetrack(simulateFileContent(ANOTHER_RACETRACK_INPUT_LINES))
+	assert.Len(t, PossibleCheatsIn(racetrackMap), 6)
+}
+
 func TestFindPossibileCheatsInProvidedExampleTrack(t *testing.T) {
-	t.Skip("WIP")
 	var racetrackMap = ParseRacetrack(simulateFileContent(PROVIDED_EXAMPLE_INPUT_LINES))
 	assert.Len(t, PossibleCheatsIn(racetrackMap), 14 + 14 + 2 + 4 + 2 + 3 + 1 + 1 + 1 + 1 + 1)
 }
 
-// TEST: map with cheat starting from track start position ?
 // TEST: cheat with L-angle move saving some picoseconds ? (>0)
+// --> no, seems to be impossible with provided maps
