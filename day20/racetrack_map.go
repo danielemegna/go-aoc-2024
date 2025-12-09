@@ -8,7 +8,6 @@ import (
 type RacetrackMap struct {
 	values [][]MapValue
 	start  RacetrackElement
-	length int
 }
 
 type RacetrackElement struct {
@@ -24,34 +23,14 @@ const TRACK MapValue = math.MaxInt
 
 func ParseRacetrack(rawMapString string) RacetrackMap {
 	var mapValues, racetrackStartCoordinate = mapValuesParsing(rawMapString)
-	var racetrackStart = RacetrackElement{Coordinate: racetrackStartCoordinate, Next: nil}
+	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, Next: nil}
 
-	var trackLength = 0
-	var currentRacetrackElement = &racetrackStart
-	for {
-		var nextCoordinate *Coordinate
-		for _, close := range currentRacetrackElement.Coordinate.CloseCoordinates() {
-			if mapValues[close.Y][close.X] == TRACK {
-				nextCoordinate = &close
-				break
-			}
-		}
-
-		if nextCoordinate == nil {
-			break
-		}
-
-		mapValues[nextCoordinate.Y][nextCoordinate.X] = trackLength + 1
-		var newRacetrackElement = RacetrackElement{Coordinate: *nextCoordinate}
-		currentRacetrackElement.Next = &newRacetrackElement
-		currentRacetrackElement = currentRacetrackElement.Next
-		trackLength++
-	}
+	createRacetrackElementsChain(&racetrackStartElement, mapValues)
+	replaceTrackValuesWithPicosecondsFromStart(&racetrackStartElement, mapValues)
 
 	return RacetrackMap{
 		values: mapValues,
-		start:  racetrackStart,
-		length: trackLength,
+		start:  racetrackStartElement,
 	}
 }
 
@@ -63,12 +42,18 @@ func (this RacetrackMap) ValueAt(c Coordinate) MapValue {
 	return this.values[c.Y][c.X]
 }
 
-func (this RacetrackMap) RacetrackLength() int {
-	return this.length
-}
-
 func (this RacetrackMap) MapSize() int {
 	return len(this.values) // assuming always square maps
+}
+
+func (this RacetrackMap) RacetrackLength() int {
+	var length = 0
+	var element = &this.start
+	for element.Next != nil {
+		element = element.Next
+		length++
+	}
+	return length
 }
 
 func mapValuesParsing(rawMapString string) ([][]MapValue, Coordinate) {
@@ -91,6 +76,35 @@ func mapValuesParsing(rawMapString string) ([][]MapValue, Coordinate) {
 		}
 	}
 	return rawMap, racetrackStartCoordinate
+}
+
+func createRacetrackElementsChain(currentRacetrackElement *RacetrackElement, mapValues [][]MapValue) {
+	var nextCoordinate *Coordinate
+	for _, close := range currentRacetrackElement.Coordinate.CloseCoordinates() {
+		if mapValues[close.Y][close.X] == TRACK {
+			nextCoordinate = &close
+			break
+		}
+	}
+
+	if nextCoordinate == nil {
+		return
+	}
+
+	mapValues[nextCoordinate.Y][nextCoordinate.X] = 999
+	var newRacetrackElement = RacetrackElement{Coordinate: *nextCoordinate}
+	currentRacetrackElement.Next = &newRacetrackElement
+	createRacetrackElementsChain(currentRacetrackElement.Next, mapValues)
+}
+
+func replaceTrackValuesWithPicosecondsFromStart(racetrackStart *RacetrackElement, mapValues [][]MapValue) {
+	var picosecondsFromStart = 0
+	var currentElement = racetrackStart
+	for currentElement.Next != nil {
+		currentElement = currentElement.Next
+		mapValues[currentElement.Coordinate.Y][currentElement.Coordinate.X] = picosecondsFromStart + 1
+		picosecondsFromStart++
+	}
 }
 
 func linesFrom(s string) []string {
