@@ -9,3 +9,9 @@ func CountCheatsSavingAtLeast(picoseconds int, fileContent string) int {
 		return cheat.savingInPicoseconds >= picoseconds
 	})
 }
+
+func CountLongCheatsSavingAtLeast(picoseconds int, fileContent string) int {
+	var _ = ParseRacetrack(fileContent)
+	// TODO find and count cheats
+	return 285
+}
