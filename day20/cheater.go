@@ -10,9 +10,7 @@ func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 	var result = []Cheat{}
 
 	var currentRacetrackPosition = racetrackMap.RacetrackStart()
-
 	for currentRacetrackPosition != nil {
-
 		var currentRacetrackValue = racetrackMap.ValueAt(currentRacetrackPosition.Coordinate)
 
 		for _, firstStepCheat := range currentRacetrackPosition.Coordinate.CloseCoordinates() {
@@ -31,12 +29,8 @@ func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 				if secondStepValue == WALL {
 					continue
 				}
-				if secondStepValue < currentRacetrackValue {
-					continue
-				}
-
 				var savedPicoseconds = secondStepValue - currentRacetrackValue - 2
-				if(savedPicoseconds < 1) {
+				if savedPicoseconds < 1 {
 					continue
 				}
 
@@ -46,7 +40,6 @@ func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 					savingInPicoseconds: savedPicoseconds,
 				})
 			}
-
 		}
 
 		currentRacetrackPosition = currentRacetrackPosition.Next
