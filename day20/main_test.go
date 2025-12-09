@@ -41,9 +41,8 @@ func TestSolveSecondPartWithProvidedExample(t *testing.T) {
 }
 
 func TestSolveSecondPartWithFile(t *testing.T) {
-	t.Skip("WIP")
 	var fileContent = readFileContent()
-	assert.Equal(t, -1, CountLongCheatsSavingAtLeast(100, fileContent))
+	assert.Equal(t, 1007335, CountLongCheatsSavingAtLeast(100, fileContent))
 }
 
 func simulateFileContent(inputLines []string) string {
