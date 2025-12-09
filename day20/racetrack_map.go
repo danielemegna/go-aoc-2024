@@ -25,7 +25,7 @@ func ParseRacetrack(rawMapString string) RacetrackMap {
 	var mapValues, racetrackStartCoordinate = mapValuesParsing(rawMapString)
 	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, Next: nil}
 
-	createRacetrackElementsChain(&racetrackStartElement, mapValues)
+	createRacetrackElementsChain(&racetrackStartElement, nil, mapValues)
 	replaceTrackValuesWithPicosecondsFromStart(&racetrackStartElement, mapValues)
 
 	return RacetrackMap{
@@ -78,23 +78,30 @@ func mapValuesParsing(rawMapString string) ([][]MapValue, Coordinate) {
 	return rawMap, racetrackStartCoordinate
 }
 
-func createRacetrackElementsChain(currentRacetrackElement *RacetrackElement, mapValues [][]MapValue) {
-	var nextCoordinate *Coordinate
-	for _, close := range currentRacetrackElement.Coordinate.CloseCoordinates() {
-		if mapValues[close.Y][close.X] == TRACK {
-			nextCoordinate = &close
-			break
-		}
-	}
-
+func createRacetrackElementsChain(current *RacetrackElement, previous *RacetrackElement, mapValues [][]MapValue) {
+	var nextCoordinate = findNextRacetrackCoordinate(current.Coordinate, previous, mapValues)
 	if nextCoordinate == nil {
 		return
 	}
 
-	mapValues[nextCoordinate.Y][nextCoordinate.X] = 999
 	var newRacetrackElement = RacetrackElement{Coordinate: *nextCoordinate}
-	currentRacetrackElement.Next = &newRacetrackElement
-	createRacetrackElementsChain(currentRacetrackElement.Next, mapValues)
+	current.Next = &newRacetrackElement
+	createRacetrackElementsChain(&newRacetrackElement, current, mapValues)
+}
+
+func findNextRacetrackCoordinate(current Coordinate, previous *RacetrackElement, mapValues [][]MapValue) *Coordinate {
+	for _, close := range current.CloseCoordinates() {
+		if mapValues[close.Y][close.X] == WALL {
+			continue
+		}
+		if previous != nil && close == previous.Coordinate {
+			continue
+		}
+
+		return &close
+	}
+
+	return nil
 }
 
 func replaceTrackValuesWithPicosecondsFromStart(racetrackStart *RacetrackElement, mapValues [][]MapValue) {
