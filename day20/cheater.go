@@ -9,40 +9,30 @@ type Cheat struct {
 func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 	var result = []Cheat{}
 
-	var currentRacetrackPosition = racetrackMap.RacetrackStart()
-	for currentRacetrackPosition != nil {
-		var currentRacetrackValue = racetrackMap.ValueAt(currentRacetrackPosition.Coordinate)
+	var cheatStartingElement = racetrackMap.RacetrackStart()
+	for cheatStartingElement.Next != nil {
+		var cheatStartingValue = racetrackMap.ValueAt(cheatStartingElement.Coordinate)
 
-		for _, firstStepCheat := range currentRacetrackPosition.Coordinate.CloseCoordinates() {
-			if racetrackMap.ValueAt(firstStepCheat) != WALL {
+		for cheatEndingElement := cheatStartingElement.Next; cheatEndingElement != nil; cheatEndingElement = cheatEndingElement.Next {
+			var cheatEndingValue = racetrackMap.ValueAt(cheatEndingElement.Coordinate)
+			var cheatDuration = CalcManhattanDistance(cheatStartingElement.Coordinate, cheatEndingElement.Coordinate)
+			if cheatDuration > 2 { // TODO take maxCheatDuration as argument to allow cheats > 2 !
 				continue
 			}
 
-			for _, secondStepCheat := range firstStepCheat.CloseCoordinates() {
-				if secondStepCheat.IsOutOfBounds(racetrackMap.MapSize()) {
-					continue
-				}
-				if secondStepCheat == currentRacetrackPosition.Coordinate {
-					continue
-				}
-				var secondStepValue = racetrackMap.ValueAt(secondStepCheat)
-				if secondStepValue == WALL {
-					continue
-				}
-				var savedPicoseconds = secondStepValue - currentRacetrackValue - 2
-				if savedPicoseconds < 1 {
-					continue
-				}
-
-				result = append(result, Cheat{
-					startPosition:       currentRacetrackPosition.Coordinate,
-					endPosition:         secondStepCheat,
-					savingInPicoseconds: savedPicoseconds,
-				})
+			var savedPicoseconds = cheatEndingValue - cheatStartingValue - cheatDuration
+			if savedPicoseconds < 1 {
+				continue
 			}
+
+			result = append(result, Cheat{
+				startPosition:       cheatStartingElement.Coordinate,
+				endPosition:         cheatEndingElement.Coordinate,
+				savingInPicoseconds: savedPicoseconds,
+			})
 		}
 
-		currentRacetrackPosition = currentRacetrackPosition.Next
+		cheatStartingElement = cheatStartingElement.Next
 	}
 
 	return result
