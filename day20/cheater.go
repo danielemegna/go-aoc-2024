@@ -6,7 +6,7 @@ type Cheat struct {
 	savingInPicoseconds int
 }
 
-func PossibleCheatsIn(racetrackMap RacetrackMap, maxCheatDuration int) []Cheat {
+func PossibleCheatsIn(racetrackMap Racetrack, maxCheatDuration int) []Cheat {
 	var result = []Cheat{}
 
 	var cheatStartingElement = racetrackMap.RacetrackStart()

@@ -1,12 +1,17 @@
 package day20
 
-import (
-	"math"
-	"strings"
+import "strings"
+
+type RacetrackMap = [][]MapValue
+type MapValue = int
+
+const (
+	TRACK MapValue = iota
+	WALL
 )
 
-type RacetrackMap struct {
-	start  RacetrackElement
+type Racetrack struct {
+	start RacetrackElement
 }
 
 type RacetrackElement struct {
@@ -15,28 +20,25 @@ type RacetrackElement struct {
 	Next              *RacetrackElement
 }
 
-type MapValue = int
+func ParseRacetrack(rawMapString string) Racetrack {
+	var racetrackMap, racetrackStartCoordinate = mapParsing(rawMapString)
+	var racetrackStartElement = RacetrackElement{
+		Coordinate:        racetrackStartCoordinate,
+		DistanceFromStart: 0,
+		Next:              nil,
+	}
+	createRacetrackElementsChain(&racetrackStartElement, nil, racetrackMap)
 
-const START MapValue = 0
-const WALL MapValue = -1
-const TRACK MapValue = math.MaxInt
-
-func ParseRacetrack(rawMapString string) RacetrackMap {
-	var mapValues, racetrackStartCoordinate = mapValuesParsing(rawMapString)
-	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, DistanceFromStart: 0, Next: nil}
-
-	createRacetrackElementsChain(&racetrackStartElement, nil, mapValues)
-
-	return RacetrackMap{
-		start:  racetrackStartElement,
+	return Racetrack{
+		start: racetrackStartElement,
 	}
 }
 
-func (this RacetrackMap) RacetrackStart() *RacetrackElement {
+func (this Racetrack) RacetrackStart() *RacetrackElement {
 	return &this.start
 }
 
-func (this RacetrackMap) RacetrackLength() int {
+func (this Racetrack) RacetrackLength() int {
 	var length = 0
 	var element = &this.start
 	for element.Next != nil {
@@ -46,44 +48,43 @@ func (this RacetrackMap) RacetrackLength() int {
 	return length
 }
 
-func mapValuesParsing(rawMapString string) ([][]MapValue, Coordinate) {
+func mapParsing(rawMapString string) (RacetrackMap, Coordinate) {
 	var inputLines = linesFrom(rawMapString)
-	var rawMap = make([][]MapValue, len(inputLines))
+	var racetrackMap = make(RacetrackMap, len(inputLines))
 
 	var racetrackStartCoordinate Coordinate
 	for y := 0; y < len(inputLines); y++ {
-		rawMap[y] = make([]MapValue, len(inputLines[y]))
+		racetrackMap[y] = make([]MapValue, len(inputLines[y]))
 		for x := 0; x < len(inputLines[y]); x++ {
 			switch inputLines[y][x] {
 			case '#':
-				rawMap[y][x] = WALL
+				racetrackMap[y][x] = WALL
 			case 'S':
-				rawMap[y][x] = START
 				racetrackStartCoordinate = Coordinate{x, y}
 			default:
-				rawMap[y][x] = TRACK
+				racetrackMap[y][x] = TRACK
 			}
 		}
 	}
-	return rawMap, racetrackStartCoordinate
+	return racetrackMap, racetrackStartCoordinate
 }
 
-func createRacetrackElementsChain(current *RacetrackElement, previous *RacetrackElement, mapValues [][]MapValue) {
+func createRacetrackElementsChain(current *RacetrackElement, previous *RacetrackElement, mapValues RacetrackMap) {
 	var nextCoordinate = findNextRacetrackCoordinate(current.Coordinate, previous, mapValues)
 	if nextCoordinate == nil {
 		return
 	}
 
 	var newRacetrackElement = RacetrackElement{
-		Coordinate: *nextCoordinate,
-		DistanceFromStart: current.DistanceFromStart+1,
-		Next: nil,
+		Coordinate:        *nextCoordinate,
+		DistanceFromStart: current.DistanceFromStart + 1,
+		Next:              nil,
 	}
 	current.Next = &newRacetrackElement
 	createRacetrackElementsChain(&newRacetrackElement, current, mapValues)
 }
 
-func findNextRacetrackCoordinate(current Coordinate, previous *RacetrackElement, mapValues [][]MapValue) *Coordinate {
+func findNextRacetrackCoordinate(current Coordinate, previous *RacetrackElement, mapValues RacetrackMap) *Coordinate {
 	for _, close := range current.CloseCoordinates() {
 		if mapValues[close.Y][close.X] == WALL {
 			continue
