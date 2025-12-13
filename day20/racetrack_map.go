@@ -6,7 +6,6 @@ import (
 )
 
 type RacetrackMap struct {
-	values [][]MapValue
 	start  RacetrackElement
 }
 
@@ -27,10 +26,8 @@ func ParseRacetrack(rawMapString string) RacetrackMap {
 	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, DistanceFromStart: 0, Next: nil}
 
 	createRacetrackElementsChain(&racetrackStartElement, nil, mapValues)
-	replaceTrackValuesWithPicosecondsFromStart(&racetrackStartElement, mapValues)
 
 	return RacetrackMap{
-		values: mapValues,
 		start:  racetrackStartElement,
 	}
 }
@@ -99,16 +96,6 @@ func findNextRacetrackCoordinate(current Coordinate, previous *RacetrackElement,
 	}
 
 	return nil
-}
-
-func replaceTrackValuesWithPicosecondsFromStart(racetrackStart *RacetrackElement, mapValues [][]MapValue) {
-	var picosecondsFromStart = 0
-	var currentElement = racetrackStart
-	for currentElement.Next != nil {
-		currentElement = currentElement.Next
-		mapValues[currentElement.Coordinate.Y][currentElement.Coordinate.X] = picosecondsFromStart + 1
-		picosecondsFromStart++
-	}
 }
 
 func linesFrom(s string) []string {
