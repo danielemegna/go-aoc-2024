@@ -11,8 +11,9 @@ type RacetrackMap struct {
 }
 
 type RacetrackElement struct {
-	Coordinate Coordinate
-	Next       *RacetrackElement
+	Coordinate        Coordinate
+	DistanceFromStart int
+	Next              *RacetrackElement
 }
 
 type MapValue = int
@@ -23,7 +24,7 @@ const TRACK MapValue = math.MaxInt
 
 func ParseRacetrack(rawMapString string) RacetrackMap {
 	var mapValues, racetrackStartCoordinate = mapValuesParsing(rawMapString)
-	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, Next: nil}
+	var racetrackStartElement = RacetrackElement{Coordinate: racetrackStartCoordinate, DistanceFromStart: 0, Next: nil}
 
 	createRacetrackElementsChain(&racetrackStartElement, nil, mapValues)
 	replaceTrackValuesWithPicosecondsFromStart(&racetrackStartElement, mapValues)
@@ -36,10 +37,6 @@ func ParseRacetrack(rawMapString string) RacetrackMap {
 
 func (this RacetrackMap) RacetrackStart() *RacetrackElement {
 	return &this.start
-}
-
-func (this RacetrackMap) ValueAt(c Coordinate) MapValue {
-	return this.values[c.Y][c.X]
 }
 
 func (this RacetrackMap) MapSize() int {
@@ -84,7 +81,11 @@ func createRacetrackElementsChain(current *RacetrackElement, previous *Racetrack
 		return
 	}
 
-	var newRacetrackElement = RacetrackElement{Coordinate: *nextCoordinate}
+	var newRacetrackElement = RacetrackElement{
+		Coordinate: *nextCoordinate,
+		DistanceFromStart: current.DistanceFromStart+1,
+		Next: nil,
+	}
 	current.Next = &newRacetrackElement
 	createRacetrackElementsChain(&newRacetrackElement, current, mapValues)
 }

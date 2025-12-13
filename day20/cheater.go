@@ -11,16 +11,16 @@ func PossibleCheatsIn(racetrackMap RacetrackMap, maxCheatDuration int) []Cheat {
 
 	var cheatStartingElement = racetrackMap.RacetrackStart()
 	for cheatStartingElement.Next != nil {
-		var cheatStartingValue = racetrackMap.ValueAt(cheatStartingElement.Coordinate)
+		var cheatStartDistanceFromStart = cheatStartingElement.DistanceFromStart
 
 		for cheatEndingElement := cheatStartingElement.Next; cheatEndingElement != nil; cheatEndingElement = cheatEndingElement.Next {
-			var cheatEndingValue = racetrackMap.ValueAt(cheatEndingElement.Coordinate)
+			var cheatEndDistanceFromStart = cheatEndingElement.DistanceFromStart
 			var cheatDuration = CalcManhattanDistance(cheatStartingElement.Coordinate, cheatEndingElement.Coordinate)
 			if cheatDuration > maxCheatDuration {
 				continue
 			}
 
-			var savedPicoseconds = cheatEndingValue - cheatStartingValue - cheatDuration
+			var savedPicoseconds = cheatEndDistanceFromStart - cheatStartDistanceFromStart - cheatDuration
 			if savedPicoseconds < 1 {
 				continue
 			}
