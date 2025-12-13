@@ -11,7 +11,9 @@ func CountCheatsSavingAtLeast(picoseconds int, fileContent string) int {
 }
 
 func CountLongCheatsSavingAtLeast(picoseconds int, fileContent string) int {
-	var _ = ParseRacetrack(fileContent)
-	// TODO find and count cheats
-	return 285
+	var racetrackMap = ParseRacetrack(fileContent)
+	var possibleCheats = PossibleCheatsIn(racetrackMap, 20)
+	return lo.CountBy(possibleCheats, func(cheat Cheat) bool {
+		return cheat.savingInPicoseconds >= picoseconds
+	})
 }
