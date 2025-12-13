@@ -6,7 +6,7 @@ type Cheat struct {
 	savingInPicoseconds int
 }
 
-func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
+func PossibleCheatsIn(racetrackMap RacetrackMap, maxCheatDuration int) []Cheat {
 	var result = []Cheat{}
 
 	var cheatStartingElement = racetrackMap.RacetrackStart()
@@ -16,7 +16,7 @@ func PossibleCheatsIn(racetrackMap RacetrackMap) []Cheat {
 		for cheatEndingElement := cheatStartingElement.Next; cheatEndingElement != nil; cheatEndingElement = cheatEndingElement.Next {
 			var cheatEndingValue = racetrackMap.ValueAt(cheatEndingElement.Coordinate)
 			var cheatDuration = CalcManhattanDistance(cheatStartingElement.Coordinate, cheatEndingElement.Coordinate)
-			if cheatDuration > 2 { // TODO take maxCheatDuration as argument to allow cheats > 2 !
+			if cheatDuration > maxCheatDuration {
 				continue
 			}
 
