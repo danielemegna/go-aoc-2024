@@ -1,9 +1,8 @@
 package day20
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 var SMALL_RACETRACK_INPUT_LINES = []string{
@@ -33,7 +32,7 @@ func TestParseSmallRacetrack(t *testing.T) {
 	assert.Equal(t, 0, racetrackMap.RacetrackStart().DistanceFromStart)
 	assert.Equal(t, 1, racetrackMap.RacetrackStart().Next.DistanceFromStart)
 	assert.Equal(t, 5, racetrackMap.RacetrackStart().Next.Next.Next.Next.Next.DistanceFromStart)
-	assert.Equal(t, 8, racetrackMap.RacetrackLength())
+	assert.Equal(t, 8, calcRacetrackLength(racetrackMap))
 }
 
 func TestParseAnotherRacetrack(t *testing.T) {
@@ -43,7 +42,7 @@ func TestParseAnotherRacetrack(t *testing.T) {
 	assert.NotNil(t, racetrackMap.RacetrackStart().Next)
 	assert.Equal(t, 0, racetrackMap.RacetrackStart().DistanceFromStart)
 	assert.Equal(t, 4, racetrackMap.RacetrackStart().Next.Next.Next.Next.DistanceFromStart)
-	assert.Equal(t, 14, racetrackMap.RacetrackLength())
+	assert.Equal(t, 14, calcRacetrackLength(racetrackMap))
 }
 
 func TestParseProvidedExampleRacetrack(t *testing.T) {
@@ -53,5 +52,15 @@ func TestParseProvidedExampleRacetrack(t *testing.T) {
 	assert.NotNil(t, racetrackMap.RacetrackStart().Next)
 	assert.Equal(t, 0, racetrackMap.RacetrackStart().DistanceFromStart)
 	assert.Equal(t, 6, racetrackMap.RacetrackStart().Next.Next.Next.Next.Next.Next.DistanceFromStart)
-	assert.Equal(t, 84, racetrackMap.RacetrackLength())
+	assert.Equal(t, 84, calcRacetrackLength(racetrackMap))
+}
+
+func calcRacetrackLength(this Racetrack) int {
+	var length = 0
+	var element = &this.start
+	for element.Next != nil {
+		element = element.Next
+		length++
+	}
+	return length
 }

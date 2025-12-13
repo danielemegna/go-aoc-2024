@@ -38,16 +38,6 @@ func (this Racetrack) RacetrackStart() *RacetrackElement {
 	return &this.start
 }
 
-func (this Racetrack) RacetrackLength() int {
-	var length = 0
-	var element = &this.start
-	for element.Next != nil {
-		element = element.Next
-		length++
-	}
-	return length
-}
-
 func mapParsing(rawMapString string) (RacetrackMap, Coordinate) {
 	var inputLines = linesFrom(rawMapString)
 	var racetrackMap = make(RacetrackMap, len(inputLines))
