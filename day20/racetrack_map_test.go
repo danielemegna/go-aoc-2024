@@ -34,7 +34,6 @@ func TestParseSmallRacetrack(t *testing.T) {
 	assert.Equal(t, 1, racetrackMap.RacetrackStart().Next.DistanceFromStart)
 	assert.Equal(t, 5, racetrackMap.RacetrackStart().Next.Next.Next.Next.Next.DistanceFromStart)
 	assert.Equal(t, 8, racetrackMap.RacetrackLength())
-	assert.Equal(t, 6, racetrackMap.MapSize())
 }
 
 func TestParseAnotherRacetrack(t *testing.T) {
@@ -45,7 +44,6 @@ func TestParseAnotherRacetrack(t *testing.T) {
 	assert.Equal(t, 0, racetrackMap.RacetrackStart().DistanceFromStart)
 	assert.Equal(t, 4, racetrackMap.RacetrackStart().Next.Next.Next.Next.DistanceFromStart)
 	assert.Equal(t, 14, racetrackMap.RacetrackLength())
-	assert.Equal(t, 7, racetrackMap.MapSize())
 }
 
 func TestParseProvidedExampleRacetrack(t *testing.T) {
@@ -56,5 +54,4 @@ func TestParseProvidedExampleRacetrack(t *testing.T) {
 	assert.Equal(t, 0, racetrackMap.RacetrackStart().DistanceFromStart)
 	assert.Equal(t, 6, racetrackMap.RacetrackStart().Next.Next.Next.Next.Next.Next.DistanceFromStart)
 	assert.Equal(t, 84, racetrackMap.RacetrackLength())
-	assert.Equal(t, 15, racetrackMap.MapSize())
 }

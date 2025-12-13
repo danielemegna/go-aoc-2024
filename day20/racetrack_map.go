@@ -39,10 +39,6 @@ func (this RacetrackMap) RacetrackStart() *RacetrackElement {
 	return &this.start
 }
 
-func (this RacetrackMap) MapSize() int {
-	return len(this.values) // assuming always square maps
-}
-
 func (this RacetrackMap) RacetrackLength() int {
 	var length = 0
 	var element = &this.start
