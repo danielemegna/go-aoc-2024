@@ -1,5 +1,7 @@
 package day21
 
+import "fmt"
+
 type DirectionalKeypad struct {
 	position DirectionalKeypadButton
 }
@@ -17,7 +19,7 @@ func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButt
 	case RIGHT:
 		return movesToReachFromRight(positionToReach)
 	default:
-		return []Move{}
+		panic(fmt.Errorf("Unexpected keypad Position: %#v", this.position))
 	}
 }
 

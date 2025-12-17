@@ -44,3 +44,10 @@ func TestMovesToReach(t *testing.T) {
 	}
 
 }
+
+func TestShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
+	assert.PanicsWithError(t, "Unexpected keypad Position: 42", func() {
+		var keypad = DirectionalKeypad{position: 42}
+		keypad.MovesToReach(UP)
+	})
+}
