@@ -7,74 +7,49 @@ type DirectionalKeypad struct {
 }
 
 func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) []Move {
-	switch this.position {
-	case ACTIVATE:
-		return movesToReachFromActivate(positionToReach)
+	return movesToReachFromPosition(this.position, positionToReach)
+}
+
+func movesToReachFromPosition(currentPosition DirectionalKeypadButton, positionToReach DirectionalKeypadButton) []Move {
+	if currentPosition == positionToReach {
+		return []Move{}
+	}
+
+	switch currentPosition {
+
+	case LEFT:
+		return append([]Move{RIGHT}, movesToReachFromPosition(DOWN, positionToReach)...)
+
 	case UP:
-		return movesToReachFromUp(positionToReach)
+		if positionToReach == ACTIVATE {
+			return []Move{RIGHT}
+		}
+		return append([]Move{DOWN}, movesToReachFromPosition(DOWN, positionToReach)...)
+
+	case RIGHT:
+		if positionToReach == ACTIVATE {
+			return []Move{UP}
+		}
+		return append([]Move{LEFT}, movesToReachFromPosition(DOWN, positionToReach)...)
+
+	case ACTIVATE:
+		if positionToReach == RIGHT {
+			return []Move{DOWN}
+		}
+		return append([]Move{LEFT}, movesToReachFromPosition(UP, positionToReach)...)
+
 	case DOWN:
-		return movesToReachFromDown(positionToReach)
-	case LEFT:
-		return movesToReachFromLeft(positionToReach)
-	case RIGHT:
-		return movesToReachFromRight(positionToReach)
-	default:
-		panic(fmt.Errorf("Unexpected keypad Position: %#v", this.position))
-	}
-}
+		switch positionToReach {
+		case RIGHT:
+			return []Move{RIGHT}
+		case LEFT:
+			return []Move{LEFT}
+		default:
+			return append([]Move{UP}, movesToReachFromPosition(UP, positionToReach)...)
+		}
 
-func movesToReachFromUp(positionToReach DirectionalKeypadButton) []Move {
-	switch positionToReach {
-	case UP:
-		return []Move{}
-	case ACTIVATE:
-		return []Move{RIGHT}
 	default:
-		return append([]Move{DOWN}, movesToReachFromDown(positionToReach)...)
-	}
-}
-
-func movesToReachFromRight(positionToReach DirectionalKeypadButton) []Move {
-	switch positionToReach {
-	case RIGHT:
-		return []Move{}
-	case ACTIVATE:
-		return []Move{UP}
-	default:
-		return append([]Move{LEFT}, movesToReachFromDown(positionToReach)...)
-	}
-}
-
-func movesToReachFromActivate(positionToReach DirectionalKeypadButton) []Move {
-	switch positionToReach {
-	case ACTIVATE:
-		return []Move{}
-	case RIGHT:
-		return []Move{DOWN}
-	default:
-		return append([]Move{LEFT}, movesToReachFromUp(positionToReach)...)
-	}
-}
-
-func movesToReachFromDown(positionToReach DirectionalKeypadButton) []Move {
-	switch positionToReach {
-	case DOWN:
-		return []Move{}
-	case RIGHT:
-		return []Move{RIGHT}
-	case LEFT:
-		return []Move{LEFT}
-	default:
-		return append([]Move{UP}, movesToReachFromUp(positionToReach)...)
-	}
-}
-
-func movesToReachFromLeft(positionToReach DirectionalKeypadButton) []Move {
-	switch positionToReach {
-	case LEFT:
-		return []Move{}
-	default:
-		return append([]Move{RIGHT}, movesToReachFromDown(positionToReach)...)
+		panic(fmt.Errorf("Unexpected keypad Position: %#v", currentPosition))
 	}
 }
 
