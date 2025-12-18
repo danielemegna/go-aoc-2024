@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestMovesToReach(t *testing.T) {
+func TestMovesToReachAPositionOnDirectionalKeypad(t *testing.T) {
 	var testCases = []struct {
 		startingPosition DirectionalKeypadButton
 		positionToReach  DirectionalKeypadButton
@@ -45,7 +45,7 @@ func TestMovesToReach(t *testing.T) {
 
 }
 
-func TestShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
+func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
 	assert.PanicsWithError(t, "Unexpected keypad Position: 42", func() {
 		var keypad = DirectionalKeypad{position: 42}
 		keypad.MovesToReach(UP)

@@ -7,10 +7,13 @@ type DirectionalKeypad struct {
 }
 
 func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) []Move {
-	return movesToReachFromPosition(this.position, positionToReach)
+	return movesToReachAPositionOnDirectionalKeypad(this.position, positionToReach)
 }
 
-func movesToReachFromPosition(currentPosition DirectionalKeypadButton, positionToReach DirectionalKeypadButton) []Move {
+func movesToReachAPositionOnDirectionalKeypad(
+	currentPosition DirectionalKeypadButton,
+	positionToReach DirectionalKeypadButton,
+) []Move {
 	if currentPosition == positionToReach {
 		return []Move{}
 	}
@@ -18,25 +21,25 @@ func movesToReachFromPosition(currentPosition DirectionalKeypadButton, positionT
 	switch currentPosition {
 
 	case LEFT:
-		return append([]Move{RIGHT}, movesToReachFromPosition(DOWN, positionToReach)...)
+		return append([]Move{RIGHT}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
 
 	case UP:
 		if positionToReach == ACTIVATE {
 			return []Move{RIGHT}
 		}
-		return append([]Move{DOWN}, movesToReachFromPosition(DOWN, positionToReach)...)
+		return append([]Move{DOWN}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
 
 	case RIGHT:
 		if positionToReach == ACTIVATE {
 			return []Move{UP}
 		}
-		return append([]Move{LEFT}, movesToReachFromPosition(DOWN, positionToReach)...)
+		return append([]Move{LEFT}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
 
 	case ACTIVATE:
 		if positionToReach == RIGHT {
 			return []Move{DOWN}
 		}
-		return append([]Move{LEFT}, movesToReachFromPosition(UP, positionToReach)...)
+		return append([]Move{LEFT}, movesToReachAPositionOnDirectionalKeypad(UP, positionToReach)...)
 
 	case DOWN:
 		switch positionToReach {
@@ -45,7 +48,7 @@ func movesToReachFromPosition(currentPosition DirectionalKeypadButton, positionT
 		case LEFT:
 			return []Move{LEFT}
 		default:
-			return append([]Move{UP}, movesToReachFromPosition(UP, positionToReach)...)
+			return append([]Move{UP}, movesToReachAPositionOnDirectionalKeypad(UP, positionToReach)...)
 		}
 
 	default:
