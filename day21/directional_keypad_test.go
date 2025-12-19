@@ -45,6 +45,30 @@ func TestMovesToReachAPositionOnDirectionalKeypad(t *testing.T) {
 
 }
 
+func TestComposeSequenceOfMoves(t *testing.T) {
+	var sequenceToCompose = []DirectionalKeypadButton{
+		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
+	}
+	var keypad = DirectionalKeypad{position: ACTIVATE}
+
+	var moves = keypad.ComposeSequence(sequenceToCompose)
+
+	assert.Len(t, moves, 28)
+}
+
+func TestComposeLongerSequenceOfMoves(t *testing.T) {
+	var sequenceToCompose = []DirectionalKeypadButton{
+		DOWN, LEFT, LEFT, ACTIVATE, RIGHT, RIGHT, UP, ACTIVATE, LEFT, ACTIVATE,
+		RIGHT, ACTIVATE, DOWN, ACTIVATE, LEFT, UP, ACTIVATE, ACTIVATE, RIGHT, ACTIVATE,
+		LEFT, DOWN, ACTIVATE, ACTIVATE, ACTIVATE, RIGHT, UP, ACTIVATE,
+	}
+	var keypad = DirectionalKeypad{position: ACTIVATE}
+
+	var moves = keypad.ComposeSequence(sequenceToCompose)
+
+	assert.Len(t, moves, 68)
+}
+
 func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
 	assert.PanicsWithError(t, "Unexpected keypad Position: 42", func() {
 		var keypad = DirectionalKeypad{position: 42}

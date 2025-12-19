@@ -6,6 +6,16 @@ type DirectionalKeypad struct {
 	position DirectionalKeypadButton
 }
 
+func (this *DirectionalKeypad) ComposeSequence(sequenceToCompose []DirectionalKeypadButton) []Move {
+	if len(sequenceToCompose) == 0 {
+		return []Move{}
+	}
+	var firstCode = sequenceToCompose[0]
+	var moves = this.MovesToReach(firstCode)
+	this.position = firstCode
+	return append(append(moves, ACTIVATE), this.ComposeSequence(sequenceToCompose[1:])...)
+}
+
 func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) []Move {
 	return movesToReachAPositionOnDirectionalKeypad(this.position, positionToReach)
 }
