@@ -27,7 +27,7 @@ func TestMovesToReachAPositionOnNumericKeypad(t *testing.T) {
 		{startingPosition: 3, positionToReach: 1, expectedMoves: []Move{LEFT, LEFT}},
 		{startingPosition: 3, positionToReach: 3, expectedMoves: []Move{}},
 		{startingPosition: 3, positionToReach: 2, expectedMoves: []Move{LEFT}},
-		//{startingPosition: 3, positionToReach: 4, expectedMoves: []Move{LEFT, UP, LEFT}},
+		{startingPosition: 3, positionToReach: 4, expectedMoves: []Move{UP, LEFT, LEFT}},
 		{startingPosition: 4, positionToReach: 2, expectedMoves: []Move{RIGHT, DOWN}},
 		{startingPosition: 5, positionToReach: 4, expectedMoves: []Move{LEFT}},
 		{startingPosition: 5, positionToReach: 6, expectedMoves: []Move{RIGHT}},
@@ -36,10 +36,15 @@ func TestMovesToReachAPositionOnNumericKeypad(t *testing.T) {
 		{startingPosition: 5, positionToReach: 3, expectedMoves: []Move{DOWN, RIGHT}},
 		{startingPosition: 5, positionToReach: 9, expectedMoves: []Move{UP, RIGHT}},
 		{startingPosition: 5, positionToReach: ACT, expectedMoves: []Move{DOWN, DOWN, RIGHT}},
+		{startingPosition: 6, positionToReach: 4, expectedMoves: []Move{LEFT, LEFT}},
 		{startingPosition: 7, positionToReach: 1, expectedMoves: []Move{DOWN, DOWN}},
 		{startingPosition: 7, positionToReach: 5, expectedMoves: []Move{DOWN, RIGHT}},
 		{startingPosition: 7, positionToReach: 6, expectedMoves: []Move{DOWN, RIGHT, RIGHT}},
 		{startingPosition: 7, positionToReach: ACT, expectedMoves: []Move{DOWN, RIGHT, DOWN, DOWN, RIGHT}},
+		{startingPosition: 9, positionToReach: ACT, expectedMoves: []Move{DOWN, DOWN, DOWN}},
+		{startingPosition: 9, positionToReach: 7, expectedMoves: []Move{LEFT, LEFT}},
+		{startingPosition: 9, positionToReach: 2, expectedMoves: []Move{DOWN, DOWN, LEFT}},
+		{startingPosition: 9, positionToReach: 1, expectedMoves: []Move{DOWN, DOWN, LEFT, LEFT}},
 	}
 
 	for index, testCase := range testCases {

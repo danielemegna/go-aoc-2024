@@ -25,12 +25,10 @@ func movesToReachAPositionOnNumericKeypad(
 		}
 		return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(3, positionToReach)...)
 	case 0:
-		switch positionToReach {
-		case ACT:
+		if positionToReach == ACT {
 			return []Move{RIGHT}
-		default:
-			return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(2, positionToReach)...)
 		}
+		return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(2, positionToReach)...)
 	case 2:
 		switch positionToReach {
 		case 1:
@@ -67,21 +65,19 @@ func movesToReachAPositionOnNumericKeypad(
 		case 6:
 			return []Move{RIGHT}
 		default:
-			if positionToReach > 5 {
+			if positionToReach > 6 {
 				return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(8, positionToReach)...)
 			}
 			return append([]Move{DOWN}, movesToReachAPositionOnNumericKeypad(2, positionToReach)...)
 		}
 	case 6:
-		switch positionToReach {
-		case 5:
-			return []Move{LEFT}
-		default:
-			if positionToReach > 6 {
-				return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(9, positionToReach)...)
-			}
+		if positionToReach > 6 {
+			return append([]Move{UP}, movesToReachAPositionOnNumericKeypad(9, positionToReach)...)
+		}
+		if positionToReach < 4 {
 			return append([]Move{DOWN}, movesToReachAPositionOnNumericKeypad(3, positionToReach)...)
 		}
+		return append([]Move{LEFT}, movesToReachAPositionOnNumericKeypad(5, positionToReach)...)
 	case 7:
 		if positionToReach > 7 {
 			return append([]Move{RIGHT}, movesToReachAPositionOnNumericKeypad(8, positionToReach)...)
