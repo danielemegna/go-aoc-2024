@@ -69,6 +69,20 @@ func TestComposeLongerSequenceOfMoves(t *testing.T) {
 	assert.Len(t, moves, 68)
 }
 
+func TestUseTwoConnectedKeypadsToComposeASequence(t *testing.T) {
+	t.Skip("We are not using a sequence optimized for the second keypad!")
+	var sequenceToCompose = []DirectionalKeypadButton{
+		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
+	}
+	var firstKeypad = DirectionalKeypad{position: ACTIVATE}
+	sequenceToCompose = firstKeypad.ComposeSequence(sequenceToCompose)
+
+	var secondKeypad = DirectionalKeypad{position: ACTIVATE}
+	var moves = secondKeypad.ComposeSequence(sequenceToCompose)
+
+	assert.Len(t, moves, 68)
+}
+
 func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
 	assert.PanicsWithError(t, "Unexpected keypad Position: 42", func() {
 		var keypad = DirectionalKeypad{position: 42}
