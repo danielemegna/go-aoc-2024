@@ -6,6 +6,16 @@ type NumericKeypad struct {
 	position NumericKeypadButton
 }
 
+func (this *NumericKeypad) ComposeCode(codeToCompose []NumericKeypadButton) []Move {
+	if len(codeToCompose) == 0 {
+		return []Move{}
+	}
+	var firstCode = codeToCompose[0]
+	var moves = this.MovesToReach(firstCode)
+	this.position = firstCode
+	return append(append(moves, ACTIVATE), this.ComposeCode(codeToCompose[1:])...)
+}
+
 func (this NumericKeypad) MovesToReach(positionToReach NumericKeypadButton) []Move {
 	return movesToReachAPositionOnNumericKeypad(this.position, positionToReach)
 }

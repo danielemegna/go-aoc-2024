@@ -57,6 +57,15 @@ func TestMovesToReachAPositionOnNumericKeypad(t *testing.T) {
 
 }
 
+func TestComposeCodes(t *testing.T) {
+	var codeToCompose = []NumericKeypadButton{0, 2, 9, ACT}
+	var numericKeypad = NumericKeypad{position: ACT}
+
+	var moves = numericKeypad.ComposeCode(codeToCompose)
+
+	assert.Equal(t, []Move{LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE}, moves)
+}
+
 func TestNumericKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
 	assert.PanicsWithError(t, "Unexpected keypad Position: 42", func() {
 		var keypad = NumericKeypad{position: 42}
