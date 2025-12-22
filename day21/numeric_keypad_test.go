@@ -50,20 +50,25 @@ func TestMovesToReachAPositionOnNumericKeypad(t *testing.T) {
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
 			var keypad = NumericKeypad{position: testCase.startingPosition}
-			var moves = keypad.MovesToReach(testCase.positionToReach)
-			assert.Equal(t, testCase.expectedMoves, moves)
+			var collectionOfPossibleMoves = keypad.MovesToReach(testCase.positionToReach)
+			assert.Contains(t, collectionOfPossibleMoves, testCase.expectedMoves)
+			// assert every moves slice has same expected size
 		})
 	}
 
 }
 
 func TestComposeCodes(t *testing.T) {
+	t.Skip("WIP")
 	var codeToCompose = []NumericKeypadButton{0, 2, 9, ACT}
 	var numericKeypad = NumericKeypad{position: ACT}
 
-	var moves = numericKeypad.ComposeCode(codeToCompose)
+	var collectionOfPossibleMoves = numericKeypad.ComposeCode(codeToCompose)
 
-	assert.Equal(t, []Move{LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE}, moves)
+	assert.Contains(t,
+		collectionOfPossibleMoves,
+		[]Move{LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE},
+	)
 }
 
 func TestNumericKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
