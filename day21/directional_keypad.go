@@ -1,69 +1,120 @@
 package day21
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/samber/lo"
+)
 
 type DirectionalKeypad struct {
 	position DirectionalKeypadButton
 }
 
-func (this *DirectionalKeypad) ComposeSequence(sequenceToCompose []DirectionalKeypadButton) []Move {
-	if len(sequenceToCompose) == 0 {
-		return []Move{}
-	}
+// TODO: remove duplication with NumericKeypad#ComposeCode
+func (this *DirectionalKeypad) ComposeSequence(sequenceToCompose []DirectionalKeypadButton) [][]Move {
 	var firstCode = sequenceToCompose[0]
-	var moves = this.MovesToReach(firstCode)
+	var collectionOfMoves = this.MovesToReach(firstCode)
+	collectionOfMoves = lo.Map(collectionOfMoves, func(moves []Move, _ int) []Move {
+		return append(moves, ACTIVATE)
+	})
+
+	if len(sequenceToCompose) == 1 {
+		return collectionOfMoves
+	}
+
 	this.position = firstCode
-	return append(append(moves, ACTIVATE), this.ComposeSequence(sequenceToCompose[1:])...)
+	var collectionOfRestsMoves = this.ComposeSequence(sequenceToCompose[1:])
+
+	return lo.FlatMap(collectionOfMoves, func(moves []Move, _ int) [][]Move {
+		return lo.Map(collectionOfRestsMoves, func(rest []Move, _ int) []Move {
+			return append(moves, rest...)
+		})
+	})
 }
 
-func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) []Move {
+func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) [][]Move {
 	return movesToReachAPositionOnDirectionalKeypad(this.position, positionToReach)
 }
 
 func movesToReachAPositionOnDirectionalKeypad(
 	currentPosition DirectionalKeypadButton,
 	positionToReach DirectionalKeypadButton,
-) []Move {
+) [][]Move {
 	if currentPosition == positionToReach {
-		return []Move{}
+		return [][]Move{{}}
 	}
 
 	switch currentPosition {
 
 	case LEFT:
-		return append([]Move{RIGHT}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
+		return continueOnDirectionalKeypadWith(RIGHT, DOWN, positionToReach)
 
 	case UP:
-		if positionToReach == ACTIVATE {
-			return []Move{RIGHT}
+		switch positionToReach {
+		case ACTIVATE:
+			return [][]Move{{RIGHT}}
+		case DOWN, LEFT:
+			return continueOnDirectionalKeypadWith(DOWN, DOWN, positionToReach)
+		case RIGHT:
+			return append(
+				continueOnDirectionalKeypadWith(DOWN, DOWN, positionToReach),
+				continueOnDirectionalKeypadWith(RIGHT, ACTIVATE, positionToReach)...,
+			)
 		}
-		return append([]Move{DOWN}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
 
 	case RIGHT:
-		if positionToReach == ACTIVATE {
-			return []Move{UP}
+		switch positionToReach {
+		case ACTIVATE:
+			return [][]Move{{UP}}
+		case DOWN, LEFT:
+			return continueOnDirectionalKeypadWith(LEFT, DOWN, positionToReach)
+		case UP:
+			return append(
+				continueOnDirectionalKeypadWith(UP, ACTIVATE, positionToReach),
+				continueOnDirectionalKeypadWith(LEFT, DOWN, positionToReach)...,
+			)
 		}
-		return append([]Move{LEFT}, movesToReachAPositionOnDirectionalKeypad(DOWN, positionToReach)...)
 
 	case ACTIVATE:
-		if positionToReach == RIGHT {
-			return []Move{DOWN}
+		switch positionToReach {
+		case UP:
+			return [][]Move{{LEFT}}
+		case RIGHT:
+			return [][]Move{{DOWN}}
+		case DOWN, LEFT:
+			return append(
+				continueOnDirectionalKeypadWith(DOWN, RIGHT, positionToReach),
+				continueOnDirectionalKeypadWith(LEFT, UP, positionToReach)...,
+			)
 		}
-		return append([]Move{LEFT}, movesToReachAPositionOnDirectionalKeypad(UP, positionToReach)...)
 
 	case DOWN:
 		switch positionToReach {
 		case RIGHT:
-			return []Move{RIGHT}
+			return [][]Move{{RIGHT}}
 		case LEFT:
-			return []Move{LEFT}
-		default:
-			return append([]Move{UP}, movesToReachAPositionOnDirectionalKeypad(UP, positionToReach)...)
+			return [][]Move{{LEFT}}
+		case UP:
+			return [][]Move{{UP}}
+		case ACTIVATE:
+			return append(
+				continueOnDirectionalKeypadWith(RIGHT, RIGHT, positionToReach),
+				continueOnDirectionalKeypadWith(UP, UP, positionToReach)...,
+			)
 		}
 
 	default:
 		panic(fmt.Errorf("Unexpected keypad Position: %#v", currentPosition))
+
 	}
+	panic(fmt.Errorf(
+		"Something went wrong from position %#v reaching %#v", currentPosition, positionToReach,
+	))
+}
+
+func continueOnDirectionalKeypadWith(move Move, newPosition DirectionalKeypadButton, positionToReach DirectionalKeypadButton) [][]Move {
+	return lo.Map(movesToReachAPositionOnDirectionalKeypad(newPosition, positionToReach), func(tail []Move, i int) []Move {
+		return append([]Move{move}, tail...)
+	})
 }
 
 type Move int

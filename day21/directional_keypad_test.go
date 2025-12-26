@@ -2,6 +2,7 @@ package day21
 
 import (
 	"github.com/stretchr/testify/assert"
+	"math"
 	"strconv"
 	"testing"
 )
@@ -38,49 +39,68 @@ func TestMovesToReachAPositionOnDirectionalKeypad(t *testing.T) {
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
 			var keypad = DirectionalKeypad{position: testCase.startingPosition}
-			var moves = keypad.MovesToReach(testCase.positionToReach)
-			assert.Equal(t, testCase.expectedMoves, moves)
+
+			var collectionOfPossibleMoves = keypad.MovesToReach(testCase.positionToReach)
+
+			assert.Contains(t, collectionOfPossibleMoves, testCase.expectedMoves)
+			for _, moves := range collectionOfPossibleMoves {
+				assert.Len(t, moves, len(testCase.expectedMoves))
+			}
 		})
 	}
 
 }
 
 func TestComposeSequenceOfMoves(t *testing.T) {
+	var keypad = DirectionalKeypad{position: ACTIVATE}
 	var sequenceToCompose = []DirectionalKeypadButton{
 		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
 	}
-	var keypad = DirectionalKeypad{position: ACTIVATE}
 
-	var moves = keypad.ComposeSequence(sequenceToCompose)
+	var collectionOfPossibleMoves = keypad.ComposeSequence(sequenceToCompose)
 
-	assert.Len(t, moves, 28)
+	assert.Len(t, collectionOfPossibleMoves, 32)
+	for _, moves := range collectionOfPossibleMoves {
+		assert.Len(t, moves, 28)
+	}
 }
 
 func TestComposeLongerSequenceOfMoves(t *testing.T) {
+	var keypad = DirectionalKeypad{position: ACTIVATE}
 	var sequenceToCompose = []DirectionalKeypadButton{
 		DOWN, LEFT, LEFT, ACTIVATE, RIGHT, RIGHT, UP, ACTIVATE, LEFT, ACTIVATE,
 		RIGHT, ACTIVATE, DOWN, ACTIVATE, LEFT, UP, ACTIVATE, ACTIVATE, RIGHT, ACTIVATE,
 		LEFT, DOWN, ACTIVATE, ACTIVATE, ACTIVATE, RIGHT, UP, ACTIVATE,
 	}
-	var keypad = DirectionalKeypad{position: ACTIVATE}
 
-	var moves = keypad.ComposeSequence(sequenceToCompose)
+	var collectionOfPossibleMoves = keypad.ComposeSequence(sequenceToCompose)
 
-	assert.Len(t, moves, 68)
+	assert.Len(t, collectionOfPossibleMoves, 2048)
+	for _, moves := range collectionOfPossibleMoves {
+		assert.Len(t, moves, 68)
+	}
 }
 
 func TestUseTwoConnectedKeypadsToComposeASequence(t *testing.T) {
-	t.Skip("We are not using a sequence optimized for the second keypad!")
 	var sequenceToCompose = []DirectionalKeypadButton{
 		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
 	}
 	var firstKeypad = DirectionalKeypad{position: ACTIVATE}
-	sequenceToCompose = firstKeypad.ComposeSequence(sequenceToCompose)
+	var collectionOfPossibleMoves = firstKeypad.ComposeSequence(sequenceToCompose)
 
-	var secondKeypad = DirectionalKeypad{position: ACTIVATE}
-	var moves = secondKeypad.ComposeSequence(sequenceToCompose)
+	// TODO: move all this on some production function like "find shortest path to compose ...."
+	var min = math.MaxInt
+	for _, moves := range collectionOfPossibleMoves {
+		var secondKeypad = DirectionalKeypad{position: ACTIVATE}
+		var innerCollectionOfPossibleMoves = secondKeypad.ComposeSequence(moves)
+		for _, innerMoves := range innerCollectionOfPossibleMoves {
+			if min > len(innerMoves) {
+				min = len(innerMoves)
+			}
+		}
+	}
 
-	assert.Len(t, moves, 68)
+	assert.Equal(t, 68, min)
 }
 
 func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
