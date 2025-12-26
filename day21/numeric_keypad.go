@@ -10,19 +10,22 @@ type NumericKeypad struct {
 }
 
 func (this *NumericKeypad) ComposeCode(codeToCompose []NumericKeypadButton) [][]Move {
-	if len(codeToCompose) == 0 {
-		return [][]Move{}
-	}
-
 	var firstCode = codeToCompose[0]
 	var collectionOfMoves = this.MovesToReach(firstCode)
+	collectionOfMoves = lo.Map(collectionOfMoves, func(moves []Move, _ int) []Move {
+		return append(moves, ACTIVATE)
+	})
+
+	if len(codeToCompose) == 1 {
+		return collectionOfMoves
+	}
+
 	this.position = firstCode
-	var restOfCodeToCompose = codeToCompose[1:]
-	var collectionOfRestsMoves = this.ComposeCode(restOfCodeToCompose)
+	var collectionOfRestsMoves = this.ComposeCode(codeToCompose[1:])
 
 	return lo.FlatMap(collectionOfMoves, func(moves []Move, _ int) [][]Move {
 		return lo.Map(collectionOfRestsMoves, func(rest []Move, _ int) []Move {
-			return append(append(moves, ACTIVATE), rest...)
+			return append(moves, rest...)
 		})
 	})
 }
@@ -239,7 +242,6 @@ func continueWith(move Move, newPosition NumericKeypadButton, positionToReach Nu
 	return lo.Map(movesToReachAPositionOnNumericKeypad(newPosition, positionToReach), func(tail []Move, i int) []Move {
 		return append([]Move{move}, tail...)
 	})
-
 }
 
 type NumericKeypadButton = int

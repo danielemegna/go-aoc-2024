@@ -50,25 +50,30 @@ func TestMovesToReachAPositionOnNumericKeypad(t *testing.T) {
 	for index, testCase := range testCases {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
 			var keypad = NumericKeypad{position: testCase.startingPosition}
+
 			var collectionOfPossibleMoves = keypad.MovesToReach(testCase.positionToReach)
+
 			assert.Contains(t, collectionOfPossibleMoves, testCase.expectedMoves)
-			// assert every moves slice has same expected size
+			for _, moves := range collectionOfPossibleMoves {
+				assert.Len(t, moves, len(testCase.expectedMoves))
+			}
 		})
 	}
 
 }
 
 func TestComposeCodes(t *testing.T) {
-	t.Skip("WIP")
 	var codeToCompose = []NumericKeypadButton{0, 2, 9, ACT}
 	var numericKeypad = NumericKeypad{position: ACT}
 
 	var collectionOfPossibleMoves = numericKeypad.ComposeCode(codeToCompose)
 
-	assert.Contains(t,
-		collectionOfPossibleMoves,
-		[]Move{LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE},
-	)
+	var expected = [][]Move{
+		{LEFT, ACTIVATE, UP, ACTIVATE, RIGHT, UP, UP, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE},
+		{LEFT, ACTIVATE, UP, ACTIVATE, UP, RIGHT, UP, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE},
+		{LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE},
+	}
+	assert.ElementsMatch(t, expected, collectionOfPossibleMoves)
 }
 
 func TestNumericKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
