@@ -82,3 +82,8 @@ func TestNumericKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
 		keypad.MovesToReach(5)
 	})
 }
+
+func TestParseNumericCodeSequence(t *testing.T) {
+	assert.Equal(t, []NumericKeypadButton{0, 2, 9, ACT}, ParseNumericCodeSequence("029A"))
+	assert.Equal(t, []NumericKeypadButton{9, 8, 0, ACT}, ParseNumericCodeSequence("980A"))
+}

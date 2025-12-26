@@ -9,6 +9,10 @@ type NumericKeypad struct {
 	position NumericKeypadButton
 }
 
+type NumericKeypadButton = int
+
+const ACT NumericKeypadButton = -1
+
 func (this *NumericKeypad) ComposeCode(codeToCompose []NumericKeypadButton) [][]Move {
 	var firstCode = codeToCompose[0]
 	var collectionOfMoves = this.MovesToReach(firstCode)
@@ -244,6 +248,15 @@ func continueWith(move Move, newPosition NumericKeypadButton, positionToReach Nu
 	})
 }
 
-type NumericKeypadButton = int
-
-const ACT NumericKeypadButton = -1
+func ParseNumericCodeSequence(raw string) []NumericKeypadButton {
+	var result = []NumericKeypadButton{}
+	for _, char := range raw {
+		switch char {
+		case 'A':
+			result = append(result, ACT)
+		default:
+			result = append(result, int(char)-'0')
+		}
+	}
+	return result
+}
