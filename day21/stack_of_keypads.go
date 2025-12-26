@@ -10,42 +10,33 @@ type StackOfKeypads struct {
 
 func (this StackOfKeypads) LengthOfShortestSequenceToPressOnFirstKeypadFor(codeToCompose []NumericKeypadButton) int {
 	var numericKeypad = NumericKeypad{position: ACT}
-	var possibleMovesToComposeCode = numericKeypad.ComposeCode(codeToCompose)
+	var candidates = numericKeypad.ComposeCode(codeToCompose)
 
-	var shortestSequenceLength = lo.Min(lo.Map(possibleMovesToComposeCode, func(moves []Move, _ int) int {
+	var shortestSequenceLength = lo.Min(lo.Map(candidates, func(moves []Move, _ int) int {
 		return len(moves)
 	}))
 
-	if this.totalNumberOfKeypads == 2 {
-		return shortestSequenceLength
-	}
-	var onlyShortSequences = lo.Filter(possibleMovesToComposeCode, func(moves []Move, _ int) bool {
-		return len(moves) == shortestSequenceLength
-	})
+	var remainingKeypads = this.totalNumberOfKeypads - 2
+	for remainingKeypads > 0 {
+		candidates = filterByLength(candidates, shortestSequenceLength)
 
-	var possibleMovesToComposeSequence = lo.FlatMap(onlyShortSequences, func(moves []Move, _ int) [][]Move {
-		var directionalKeypad = DirectionalKeypad{position: ACTIVATE}
-		return directionalKeypad.ComposeSequence(moves)
-	})
+		candidates = lo.FlatMap(candidates, func(moves []Move, _ int) [][]Move {
+			var directionalKeypad = DirectionalKeypad{position: ACTIVATE}
+			return directionalKeypad.ComposeSequence(moves)
+		})
 
-	shortestSequenceLength = lo.Min(lo.Map(possibleMovesToComposeSequence, func(moves []Move, _ int) int {
-		return len(moves)
-	}))
+		shortestSequenceLength = lo.Min(lo.Map(candidates, func(moves []Move, _ int) int {
+			return len(moves)
+		}))
 
-	if this.totalNumberOfKeypads == 3 {
-		return shortestSequenceLength
+		remainingKeypads--
 	}
 
-	onlyShortSequences = lo.Filter(possibleMovesToComposeSequence, func(moves []Move, _ int) bool {
-		return len(moves) == shortestSequenceLength
-	})
+	return shortestSequenceLength
+}
 
-	possibleMovesToComposeSequence = lo.FlatMap(onlyShortSequences, func(moves []Move, _ int) [][]Move {
-		var directionalKeypad = DirectionalKeypad{position: ACTIVATE}
-		return directionalKeypad.ComposeSequence(moves)
+func filterByLength(candidates [][]Move, desiredLength int) [][]Move {
+	return lo.Filter(candidates, func(moves []Move, _ int) bool {
+		return len(moves) == desiredLength
 	})
-
-	return lo.Min(lo.Map(possibleMovesToComposeSequence, func(moves []Move, _ int) int {
-		return len(moves)
-	}))
 }
