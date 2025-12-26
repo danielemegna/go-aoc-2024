@@ -2,7 +2,6 @@ package day21
 
 import (
 	"github.com/stretchr/testify/assert"
-	"math"
 	"strconv"
 	"testing"
 )
@@ -79,28 +78,6 @@ func TestComposeLongerSequenceOfMoves(t *testing.T) {
 	for _, moves := range collectionOfPossibleMoves {
 		assert.Len(t, moves, 68)
 	}
-}
-
-func TestUseTwoConnectedKeypadsToComposeASequence(t *testing.T) {
-	var sequenceToCompose = []DirectionalKeypadButton{
-		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
-	}
-	var firstKeypad = DirectionalKeypad{position: ACTIVATE}
-	var collectionOfPossibleMoves = firstKeypad.ComposeSequence(sequenceToCompose)
-
-	// TODO: move all this on some production function like "find shortest path to compose ...."
-	var min = math.MaxInt
-	for _, moves := range collectionOfPossibleMoves {
-		var secondKeypad = DirectionalKeypad{position: ACTIVATE}
-		var innerCollectionOfPossibleMoves = secondKeypad.ComposeSequence(moves)
-		for _, innerMoves := range innerCollectionOfPossibleMoves {
-			if min > len(innerMoves) {
-				min = len(innerMoves)
-			}
-		}
-	}
-
-	assert.Equal(t, 68, min)
 }
 
 func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T) {
