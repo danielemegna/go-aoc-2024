@@ -39,7 +39,8 @@ func TestMovesToReachAPositionOnDirectionalKeypad(t *testing.T) {
 		t.Run("Test case #"+strconv.Itoa(index+1), func(t *testing.T) {
 			var keypad = DirectionalKeypad{position: testCase.startingPosition}
 
-			var collectionOfPossibleMoves = keypad.MovesToReach(testCase.positionToReach)
+			var sequencesTree = keypad.MovesToReach(testCase.positionToReach)
+			var collectionOfPossibleMoves = sequencesTree.Explode()
 
 			assert.Contains(t, collectionOfPossibleMoves, testCase.expectedMoves)
 			for _, moves := range collectionOfPossibleMoves {
@@ -56,7 +57,8 @@ func TestComposeSequenceOfMoves(t *testing.T) {
 		LEFT, ACTIVATE, UP, ACTIVATE, UP, UP, RIGHT, ACTIVATE, DOWN, DOWN, DOWN, ACTIVATE,
 	}
 
-	var collectionOfPossibleMoves = keypad.ComposeSequence(sequenceToCompose)
+	var sequencesTree = keypad.ComposeSequence(sequenceToCompose)
+	var collectionOfPossibleMoves = sequencesTree.Explode()
 
 	assert.Len(t, collectionOfPossibleMoves, 32)
 	for _, moves := range collectionOfPossibleMoves {
@@ -72,7 +74,8 @@ func TestComposeLongerSequenceOfMoves(t *testing.T) {
 		LEFT, DOWN, ACTIVATE, ACTIVATE, ACTIVATE, RIGHT, UP, ACTIVATE,
 	}
 
-	var collectionOfPossibleMoves = keypad.ComposeSequence(sequenceToCompose)
+	var sequencesTree = keypad.ComposeSequence(sequenceToCompose)
+	var collectionOfPossibleMoves = sequencesTree.Explode()
 
 	assert.Len(t, collectionOfPossibleMoves, 2048)
 	for _, moves := range collectionOfPossibleMoves {
@@ -85,4 +88,25 @@ func TestDirectionalKeypadShouldPanicsWithErrorOnUnexpectedPosition(t *testing.T
 		var keypad = DirectionalKeypad{position: 42}
 		keypad.MovesToReach(UP)
 	})
+}
+
+func (this SequencesTree) Explode() []Sequence {
+	if len(this.tails) == 0 {
+		return []Sequence{this.head}
+	}
+
+	var result = []Sequence{}
+	for _, tailTree := range this.tails {
+		if len(tailTree.tails) == 0 {
+			var sequence = append(this.head, tailTree.head...)
+			result = append(result, sequence)
+		} else {
+			for _, innerSequence := range tailTree.Explode() {
+				var sequence = append(this.head, innerSequence...)
+				result = append(result, sequence)
+			}
+		}
+	}
+
+	return result
 }

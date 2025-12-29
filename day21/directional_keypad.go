@@ -2,45 +2,91 @@ package day21
 
 import (
 	"fmt"
-	"github.com/samber/lo"
+	"math"
 )
 
 type DirectionalKeypad struct {
 	position DirectionalKeypadButton
 }
 
-// TODO: remove duplication with NumericKeypad#ComposeCode
-func (this *DirectionalKeypad) ComposeSequence(sequenceToCompose []DirectionalKeypadButton) [][]Move {
+type Sequence = []Move
+
+type SequencesTree struct {
+	head  Sequence
+	tails []SequencesTree
+}
+
+func (this *SequencesTree) AppendTail(tree SequencesTree) {
+	this.tails = append(this.tails, tree)
+}
+
+func (this *SequencesTree) AddActivateToTails() {
+	if len(this.tails) == 0 {
+		this.head = append(this.head, ACTIVATE)
+		return
+	}
+
+	for i := 0; i < len(this.tails); i++ {
+		var tail = this.tails[i]
+		tail.AddActivateToTails()
+		this.tails[i] = tail
+	}
+}
+
+func (this *SequencesTree) AddTailToTails(tailTree SequencesTree) {
+	if len(this.tails) == 0 {
+		this.tails = append(this.tails, tailTree)
+		return
+	}
+
+	for i := 0; i < len(this.tails); i++ {
+		var tail = this.tails[i]
+		tail.AddTailToTails(tailTree)
+		this.tails[i] = tail
+	}
+}
+
+func (this SequencesTree) ShortestSequenceLength() int {
+	if len(this.tails) == 0 {
+		return len(this.head)
+	}
+
+	var shortest = math.MaxInt
+	for _, tail := range this.tails {
+		var length = len(this.head) + tail.ShortestSequenceLength()
+		if length < shortest {
+			shortest = length
+		}
+	}
+	return shortest
+}
+
+func (this *DirectionalKeypad) ComposeSequence(sequenceToCompose Sequence) SequencesTree {
 	var firstCode = sequenceToCompose[0]
-	var collectionOfMoves = this.MovesToReach(firstCode)
-	collectionOfMoves = lo.Map(collectionOfMoves, func(moves []Move, _ int) []Move {
-		return append(moves, ACTIVATE)
-	})
+	var sequenceTree = this.MovesToReach(firstCode)
+	sequenceTree.AddActivateToTails()
 
 	if len(sequenceToCompose) == 1 {
-		return collectionOfMoves
+		return sequenceTree
 	}
 
 	this.position = firstCode
-	var collectionOfRestsMoves = this.ComposeSequence(sequenceToCompose[1:])
+	var tailTree = this.ComposeSequence(sequenceToCompose[1:])
 
-	return lo.FlatMap(collectionOfMoves, func(moves []Move, _ int) [][]Move {
-		return lo.Map(collectionOfRestsMoves, func(rest []Move, _ int) []Move {
-			return append(moves, rest...)
-		})
-	})
+	sequenceTree.AddTailToTails(tailTree)
+	return sequenceTree
 }
 
-func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) [][]Move {
+func (this DirectionalKeypad) MovesToReach(positionToReach DirectionalKeypadButton) SequencesTree {
 	return movesToReachAPositionOnDirectionalKeypad(this.position, positionToReach)
 }
 
 func movesToReachAPositionOnDirectionalKeypad(
 	currentPosition DirectionalKeypadButton,
 	positionToReach DirectionalKeypadButton,
-) [][]Move {
+) SequencesTree {
 	if currentPosition == positionToReach {
-		return [][]Move{{}}
+		return SequencesTree{head: Sequence{}}
 	}
 
 	switch currentPosition {
@@ -51,55 +97,67 @@ func movesToReachAPositionOnDirectionalKeypad(
 	case UP:
 		switch positionToReach {
 		case ACTIVATE:
-			return [][]Move{{RIGHT}}
+			return SequencesTree{head: Sequence{RIGHT}}
 		case DOWN, LEFT:
 			return continueOnDirectionalKeypadWith(DOWN, DOWN, positionToReach)
 		case RIGHT:
-			return append(
-				continueOnDirectionalKeypadWith(DOWN, DOWN, positionToReach),
-				continueOnDirectionalKeypadWith(RIGHT, ACTIVATE, positionToReach)...,
-			)
+			return SequencesTree{
+				head: Sequence{},
+				tails: []SequencesTree{
+					continueOnDirectionalKeypadWith(DOWN, DOWN, positionToReach),
+					continueOnDirectionalKeypadWith(RIGHT, ACTIVATE, positionToReach),
+				},
+			}
 		}
 
 	case RIGHT:
 		switch positionToReach {
 		case ACTIVATE:
-			return [][]Move{{UP}}
+			return SequencesTree{head: Sequence{UP}}
 		case DOWN, LEFT:
 			return continueOnDirectionalKeypadWith(LEFT, DOWN, positionToReach)
 		case UP:
-			return append(
-				continueOnDirectionalKeypadWith(UP, ACTIVATE, positionToReach),
-				continueOnDirectionalKeypadWith(LEFT, DOWN, positionToReach)...,
-			)
+			return SequencesTree{
+				head: Sequence{},
+				tails: []SequencesTree{
+					continueOnDirectionalKeypadWith(UP, ACTIVATE, positionToReach),
+					continueOnDirectionalKeypadWith(LEFT, DOWN, positionToReach),
+				},
+			}
 		}
 
 	case ACTIVATE:
 		switch positionToReach {
 		case UP:
-			return [][]Move{{LEFT}}
+			return SequencesTree{head: Sequence{LEFT}}
 		case RIGHT:
-			return [][]Move{{DOWN}}
+			return SequencesTree{head: Sequence{DOWN}}
 		case DOWN, LEFT:
-			return append(
-				continueOnDirectionalKeypadWith(DOWN, RIGHT, positionToReach),
-				continueOnDirectionalKeypadWith(LEFT, UP, positionToReach)...,
-			)
+			return SequencesTree{
+				head: Sequence{},
+				tails: []SequencesTree{
+					continueOnDirectionalKeypadWith(DOWN, RIGHT, positionToReach),
+					continueOnDirectionalKeypadWith(LEFT, UP, positionToReach),
+				},
+			}
 		}
 
 	case DOWN:
 		switch positionToReach {
 		case RIGHT:
-			return [][]Move{{RIGHT}}
+			return SequencesTree{head: Sequence{RIGHT}}
 		case LEFT:
-			return [][]Move{{LEFT}}
+			return SequencesTree{head: Sequence{LEFT}}
 		case UP:
-			return [][]Move{{UP}}
+			return SequencesTree{head: Sequence{UP}}
 		case ACTIVATE:
-			return append(
-				continueOnDirectionalKeypadWith(RIGHT, RIGHT, positionToReach),
-				continueOnDirectionalKeypadWith(UP, UP, positionToReach)...,
-			)
+			return SequencesTree{
+				head: Sequence{},
+				tails: []SequencesTree{
+					continueOnDirectionalKeypadWith(RIGHT, RIGHT, positionToReach),
+					continueOnDirectionalKeypadWith(UP, UP, positionToReach),
+				},
+			}
 		}
 
 	default:
@@ -111,10 +169,12 @@ func movesToReachAPositionOnDirectionalKeypad(
 	))
 }
 
-func continueOnDirectionalKeypadWith(move Move, newPosition DirectionalKeypadButton, positionToReach DirectionalKeypadButton) [][]Move {
-	return lo.Map(movesToReachAPositionOnDirectionalKeypad(newPosition, positionToReach), func(tail []Move, i int) []Move {
-		return append([]Move{move}, tail...)
-	})
+func continueOnDirectionalKeypadWith(move Move, newPosition DirectionalKeypadButton, positionToReach DirectionalKeypadButton) SequencesTree {
+	var tailTree = movesToReachAPositionOnDirectionalKeypad(newPosition, positionToReach)
+	return SequencesTree{
+		head:  append(Sequence{move}, tailTree.head...),
+		tails: tailTree.tails,
+	}
 }
 
 type Move int
